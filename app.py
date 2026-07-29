@@ -226,7 +226,7 @@ with tab6:
     dakika = st.slider("Çalışma Süresi (Dakika)", min_value=1, max_value=60, value=25)
     
     if 'zaman' not in st.session_state:
-        st.session_state.zaman =ika * 60 if 'zaman' not in st.session_state else st.session_state.zaman
+        st.session_state.zaman = dakika * 60
 
     col_b, col_s = st.columns(2)
     with col_b:
