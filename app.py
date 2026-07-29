@@ -27,6 +27,9 @@ if 'soru_gecmisi' not in st.session_state:
 if 'gunluk_aktiviteler' not in st.session_state:
     st.session_state.gunluk_aktiviteler = {}
 
+if 'biten_konular' not in st.session_state:
+    st.session_state.biten_konular = []
+
 if 'zincir_gun' not in st.session_state:
     st.session_state.zincir_gun = 1
 
@@ -78,30 +81,37 @@ tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
 ])
 
 with tab1:
-    st.subheader(f"⏰ Günlük Ders Akışı ({bugun_isim} - Bugünün Dersleri: {ders1} & {ders2})")
-    st.info("Bugün ne çalışacağını düşünmeyeceksin. Programın aşağıda hazır, tik attıkça profiline işlenecek.")
+    st.subheader(f"⏰ Günlük Ders Akışı ve Konu Girişi ({bugun_isim} - Bugün: {ders1} & {ders2})")
+    st.info("Bugün hangi konuyu çalıştığını yazıp kaydedebilir, tamamladığın derslere tik atabilirsin.")
     
     col_l, col_r = st.columns(2)
     with col_l:
-        st.markdown(f"### 📝 Bugünün Planı")
-        t1 = st.checkbox(f"12.30 - {ders1} 1. Konu Videosu + Soru Çözümü", key="v1")
-        t2 = st.checkbox(f"14.00 - 20 dk Mola", key="m1")
-        t3 = st.checkbox(f"14.20 - {ders2} 1. Konu Videosu + Soru Çözümü", key="v2")
-        t4 = st.checkbox(f"15.50 - 20 dk Mola", key="m2")
-        t5 = st.checkbox(f"16.10 - 20 Paragraf Çözümü", key="para")
-        t6 = st.checkbox(f"17.00 - Günlük Genel Tekrar", key="genel_tekrar")
+        st.markdown(f"### 📝 Bugünün Planı ve Konu Notları")
+        t1 = st.checkbox(f"12.30 - {ders1} Konu Videosu + Soru Çözümü", key="v1")
+        konu_1 = st.text_input(f"✍️ {ders1} Çalıştığın Konu Adı:", placeholder="Örn: Sözcükte Anlam / Temel Kavramlar")
         
-        if st.button("💾 Bugünkü Çalışmaları Kaydet ve Profile İşle"):
+        t3 = st.checkbox(f"14.20 - {ders2} Konu Videosu + Soru Çözümü", key="v2")
+        konu_2 = st.text_input(f"✍️ {ders2} Çalıştığın Konu Adı:", placeholder="Örn: İlk Türk Devletleri / İklim Bilgisi")
+        
+        t5 = st.checkbox("16.10 - 20 Paragraf Çözümü", key="para")
+        t6 = st.checkbox("17.00 - Günlük Genel Tekrar", key="genel_tekrar")
+        
+        if st.button("💾 Bugünkü Çalışmaları ve Konuları Kaydet"):
             yapilanlar = []
             if t1: yapilanlar.append(f"{ders1} Çalışması")
-            if t2: yapilanlar.append("1. Mola")
             if t3: yapilanlar.append(f"{ders2} Çalışması")
-            if t4: yapilanlar.append("2. Mola")
             if t5: yapilanlar.append("20 Paragraf")
             if t6: yapilanlar.append("Günlük Genel Tekrar")
             
             st.session_state.gunluk_aktiviteler[str(bugun)] = yapilanlar
-            st.success("✅ Bugünkü program verilerin profile başarıyla işlendi!")
+            
+            # Konu bitirme listesine ekle
+            if konu_1.strip():
+                st.session_state.biten_konular.append({"Tarih": str(bugun), "Ders": ders1, "Konu": konu_1.strip()})
+            if konu_2.strip():
+                st.session_state.biten_konular.append({"Tarih": str(bugun), "Ders": ders2, "Konu": konu_2.strip()})
+                
+            st.success("✅ Çalışmaların ve bitirdiğin konular başarıyla profiline işlendi!")
 
     with col_r:
         st.markdown("### 🛑 Günlük Kurallar")
@@ -149,11 +159,11 @@ with tab3:
         st.success("✅ Bugünkü soruların kaydedildi ve profiline işlendi!")
 
 with tab4:
-    st.subheader("👤 Profil & Tüm Zamanların Gelişim Raporu")
+    st.subheader("👤 Profil & Bitirilen Konular Karnesi")
     
     col_p1, col_p2 = st.columns(2)
     with col_p1:
-        st.markdown("### 📈 Genel İstatistiklerin")
+        st.markdown("### 📈 Genel Soru İstatistiklerin")
         toplam_yanlis = 0
         toplam_dogru = 0
         if st.session_state.soru_gecmisi:
@@ -167,17 +177,13 @@ with tab4:
         st.warning(f"❌ **Toplam Yanlış:** {toplam_yanlis}")
         
     with col_p2:
-        st.markdown("### 📅 Günlük Tamamlanan Programlar")
-        if st.session_state.gunluk_aktiviteler:
-            for tarih, gorevler in st.session_state.gunluk_aktiviteler.items():
-                st.write(f"**Tarih: {tarih}**")
-                if gorevler:
-                    st.write("✔ " + ", ".join(gorevler))
-                else:
-                    st.write("Görev işaretlenmemiş.")
-                st.markdown("---")
+        st.markdown("### 🎯 Bitirdiğin Konular Listesi")
+        if st.session_state.biten_konular:
+            for k_item in st.session_state.biten_konular:
+                st.write(f"📌 **[{k_item['Tarih']}] {k_item['Ders']}:** {k_item['Konu']}")
+            st.markdown("---")
         else:
-            st.write("Henüz kaydedilmiş günlük program aktiviten yok.")
+            st.info("Henüz kaydedilmiş bir konu adı girilmedi. Günlük programdan ders çalışırken konuları yazabilirsin.")
 
     if st.session_state.soru_gecmisi:
         st.markdown("### 📊 Soru ve Net Detay Tablosu")
@@ -222,7 +228,6 @@ with tab5:
 
 with tab6:
     st.subheader("🍅 Çalışan Geri Sayımlı Pomodoro Sayaç")
-    
     dakika = st.slider("Çalışma Süresi (Dakika)", min_value=1, max_value=60, value=25)
     
     if 'zaman' not in st.session_state:
