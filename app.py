@@ -81,37 +81,42 @@ tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
 ])
 
 with tab1:
-    st.subheader(f"⏰ Günlük Ders Akışı ve Konu Girişi ({bugun_isim} - Bugün: {ders1} & {ders2})")
-    st.info("Bugün hangi konuyu çalıştığını yazıp kaydedebilir, tamamladığın derslere tik atabilirsin.")
+    st.info("💡 Eğer geçmiş bir günün programını girmeyi unuttuysan, aşağıdaki takvimden tarihi değiştirerek o günün verilerini kaydedebilirsin.")
+    secilen_tarih = st.date_input("📅 İşlem Yapılacak Tarihi Seçin:", value=bugun)
+    
+    secilen_gun_isim = secilen_tarih.strftime("%A")
+    sec_ders1, sec_ders2 = haftalik_program.get(secilen_gun_isim, ("Özel Ders", "Özel Ders"))
+
+    st.subheader(f"⏰ Günlük Ders Akışı ve Konu Girişi ({secilen_tarih.strftime('%d.%m.%Y')} - Dersler: {sec_ders1} & {sec_ders2})")
     
     col_l, col_r = st.columns(2)
     with col_l:
-        st.markdown(f"### 📝 Bugünün Planı ve Konu Notları")
-        t1 = st.checkbox(f"12.30 - {ders1} Konu Videosu + Soru Çözümü", key="v1")
-        konu_1 = st.text_input(f"✍️ {ders1} Çalıştığın Konu Adı:", placeholder="Örn: Sözcükte Anlam / Temel Kavramlar")
+        st.markdown(f"### 📝 {secilen_tarih.strftime('%d.%m.%Y')} Planı ve Konu Notları")
+        t1 = st.checkbox(f"12.30 - {sec_ders1} Konu Videosu + Soru Çözümü", key=f"v1_{secilen_tarih}")
+        konu_1 = st.text_input(f"✍️ {sec_ders1} Çalıştığın Konu Adı:", placeholder="Örn: Sözcükte Anlam / Temel Kavramlar", key=f"k1_{secilen_tarih}")
         
-        t3 = st.checkbox(f"14.20 - {ders2} Konu Videosu + Soru Çözümü", key="v2")
-        konu_2 = st.text_input(f"✍️ {ders2} Çalıştığın Konu Adı:", placeholder="Örn: İlk Türk Devletleri / İklim Bilgisi")
+        t3 = st.checkbox(f"14.20 - {sec_ders2} Konu Videosu + Soru Çözümü", key=f"v2_{secilen_tarih}")
+        konu_2 = st.text_input(f"✍️ {sec_ders2} Çalıştığın Konu Adı:", placeholder="Örn: İlk Türk Devletleri / İklim Bilgisi", key=f"k2_{secilen_tarih}")
         
-        t5 = st.checkbox("16.10 - 20 Paragraf Çözümü", key="para")
-        t6 = st.checkbox("17.00 - Günlük Genel Tekrar", key="genel_tekrar")
+        t5 = st.checkbox("16.10 - 20 Paragraf Çözümü", key=f"para_{secilen_tarih}")
+        t6 = st.checkbox("17.00 - Günlük Genel Tekrar", key=f"genel_tekrar_{secilen_tarih}")
         
-        if st.button("💾 Bugünkü Çalışmaları ve Konuları Kaydet"):
+        if st.button(f"💾 {secilen_tarih.strftime('%d.%m.%Y')} Çalışmalarını Kaydet"):
             yapilanlar = []
-            if t1: yapilanlar.append(f"{ders1} Çalışması")
-            if t3: yapilanlar.append(f"{ders2} Çalışması")
+            if t1: yapilanlar.append(f"{sec_ders1} Çalışması")
+            if t3: yapilanlar.append(f"{sec_ders2} Çalışması")
             if t5: yapilanlar.append("20 Paragraf")
             if t6: yapilanlar.append("Günlük Genel Tekrar")
             
-            st.session_state.gunluk_aktiviteler[str(bugun)] = yapilanlar
+            st.session_state.gunluk_aktiviteler[str(secilen_tarih)] = yapilanlar
             
             # Konu bitirme listesine ekle
             if konu_1.strip():
-                st.session_state.biten_konular.append({"Tarih": str(bugun), "Ders": ders1, "Konu": konu_1.strip()})
+                st.session_state.biten_konular.append({"Tarih": str(secilen_tarih), "Ders": sec_ders1, "Konu": konu_1.strip()})
             if konu_2.strip():
-                st.session_state.biten_konular.append({"Tarih": str(bugun), "Ders": ders2, "Konu": konu_2.strip()})
+                st.session_state.biten_konular.append({"Tarih": str(secilen_tarih), "Ders": sec_ders2, "Konu": konu_2.strip()})
                 
-            st.success("✅ Çalışmaların ve bitirdiğin konular başarıyla profiline işlendi!")
+            st.success(f"✅ {secilen_tarih.strftime('%d.%m.%Y')} tarihli çalışmaların ve bitirdiğin konular başarıyla profiline işlendi!")
 
     with col_r:
         st.markdown("### 🛑 Günlük Kurallar")
@@ -135,6 +140,9 @@ with tab2:
 
 with tab3:
     st.subheader("📊 Ders Bazlı Soru, Doğru, Yanlış ve Net Takibi")
+    st.info("💡 Geçmiş bir günün sorularını kaydetmek için tarihi değiştirebilirsin.")
+    soru_tarihi = st.date_input("📅 Soru Kaydı İçin Tarih Seçin:", value=bugun, key="soru_tarih")
+    
     st.write("Doğru ve yanlış sayılarını girdiğinde netlerin anında kusursuz hesaplanacaktır.")
 
     dersler_liste = ["Matematik", "Türkçe", "Coğrafya", "Tarih", "Vatandaşlık"]
@@ -145,18 +153,18 @@ with tab3:
         target_col = col_d1 if i < 3 else col_d2
         with target_col:
             st.markdown(f"**📚 {d_adi}**")
-            d = st.number_input(f"{d_adi} Doğru", min_value=0, max_value=200, key=f"{d_adi}_d", step=1)
-            y = st.number_input(f"{d_adi} Yanlış", min_value=0, max_value=200, key=f"{d_adi}_y", step=1)
+            d = st.number_input(f"{d_adi} Doğru", min_value=0, max_value=200, key=f"{d_adi}_d_{soru_tarihi}", step=1)
+            y = st.number_input(f"{d_adi} Yanlış", min_value=0, max_value=200, key=f"{d_adi}_y_{soru_tarihi}", step=1)
             
             net = float(d) - (float(y) * 0.25)
             st.markdown(f"👉 **Net: {net:.2f}**")
             girilen_veriler[d_adi] = {"Doğru": int(d), "Yanlış": int(y), "Net": net, "Toplam": int(d) + int(y)}
             st.markdown("---")
     
-    if st.button("🚀 Bugünkü Soru Sonuçlarını Kaydet", type="primary"):
+    if st.button(f"🚀 {soru_tarihi.strftime('%d.%m.%Y')} Soru Sonuçlarını Kaydet", type="primary"):
         toplam_gunluk_soru = sum([v["Toplam"] for v in girilen_veriler.values()])
-        st.session_state.soru_gecmisi.append({"Tarih": str(bugun), "Veri": girilen_veriler, "Toplam": toplam_gunluk_soru})
-        st.success("✅ Bugünkü soruların kaydedildi ve profiline işlendi!")
+        st.session_state.soru_gecmisi.append({"Tarih": str(soru_tarihi), "Veri": girilen_veriler, "Toplam": toplam_gunluk_soru})
+        st.success(f"✅ {soru_tarihi.strftime('%d.%m.%Y')} tarihine ait sorular kaydedildi ve profiline işlendi!")
 
 with tab4:
     st.subheader("👤 Profil & Bitirilen Konular Karnesi")
