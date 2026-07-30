@@ -2,6 +2,8 @@ import streamlit as st
 from datetime import datetime, date
 import pandas as pd
 import time
+import json
+import os
 
 # Sayfa Ayarları
 st.set_page_config(
@@ -20,25 +22,31 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Oturum Hafızası
-if 'soru_gecmisi' not in st.session_state:
-    st.session_state.soru_gecmisi = []
+VERI_DOSYASI = "veriler.json"
 
-if 'gunluk_aktiviteler' not in st.session_state:
-    st.session_state.gunluk_aktiviteler = {}
+# Kalıcı Veri Okuma ve Yazma Fonksiyonları
+def verileri_yukle():
+    if os.path.exists(VERI_DOSYASI):
+        try:
+            with open(VERI_DOSYASI, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except:
+            pass
+    return {"soru_gecmisi": [], "biten_konular": [], "zincir_gun": 1}
 
-if 'biten_konular' not in st.session_state:
-    st.session_state.biten_konular = []
+def verileri_kaydet(veri):
+    with open(VERI_DOSYASI, "w", encoding="utf-8") as f:
+        json.dump(veri, f, ensure_ascii=False, indent=4)
 
-if 'zincir_gun' not in st.session_state:
-    st.session_state.zincir_gun = 1
+# Verileri Yükle
+db = verileri_yukle()
 
 # Sınav Tarihi: 25 Ekim 2026
 sinav_tarihi = date(2026, 10, 25)
 bugun = date.today()
 kalan_gun = (sinav_tarihi - bugun).days
 
-# Haftalık Ders Programı Dağılımı (Pazartesi - Cuma)
+# Haftalık Ders Programı Dağılımı
 haftalik_program = {
     "Monday": ("Türkçe", "Tarih"),
     "Tuesday": ("Matematik", "Coğrafya"),
@@ -56,14 +64,15 @@ ders1, ders2 = haftalik_program.get(bugun_isim, ("Özel Ders", "Özel Ders"))
 st.title("🎯 Mehmet Ali Turan | KPSS 2026 Kişisel Koçluk Paneli")
 st.markdown("> *Canım istemese bile masaya oturacağım. Çünkü başarı motivasyonla değil, disiplinle gelir.* 🧠")
 
+toplam_cozulen_soru = sum([item["toplam"] for item in db["soru_gecmisi"]]) if db["soru_gecmisi"] else 0
+
 col1, col2, col3, col4 = st.columns(4)
 with col1:
     st.metric(label="🔥 Sınava Kalan Gün (25 Ekim)", value=f"{kalan_gun} Gün")
 with col2:
-    toplam_cozulen = sum([item['Toplam'] for item in st.session_state.soru_gecmisi]) if st.session_state.soru_gecmisi else 0
-    st.metric(label="📚 Toplam Çözülen Soru", value=f"{toplam_cozulen} Soru")
+    st.metric(label="📚 Toplam Çözülen Soru", value=f"{toplam_cozulen_soru} Soru")
 with col3:
-    st.metric(label="⭐ Günlük Zincir", value=f"{st.session_state.zincir_gun}. Gün")
+    st.metric(label="⭐ Günlük Zincir", value=f"{db['zincir_gun']}. Gün")
 with col4:
     st.metric(label="🎯 Bugünün Dersleri", value=f"{ders1} & {ders2}")
 
@@ -81,9 +90,8 @@ tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
 ])
 
 with tab1:
-    st.info("💡 Eğer geçmiş bir günün programını girmeyi unuttuysan, aşağıdaki takvimden tarihi değiştirerek o günün verilerini kaydedebilirsin.")
+    st.info("💡 Geçmiş bir günün programını girmeyi unuttuysan, aşağıdaki takvimden tarihi değiştirerek o günün verilerini kaydedebilirsin.")
     secilen_tarih = st.date_input("📅 İşlem Yapılacak Tarihi Seçin:", value=bugun)
-    
     secilen_gun_isim = secilen_tarih.strftime("%A")
     sec_ders1, sec_ders2 = haftalik_program.get(secilen_gun_isim, ("Özel Ders", "Özel Ders"))
 
@@ -101,22 +109,16 @@ with tab1:
         t5 = st.checkbox("16.10 - 20 Paragraf Çözümü", key=f"para_{secilen_tarih}")
         t6 = st.checkbox("17.00 - Günlük Genel Tekrar", key=f"genel_tekrar_{secilen_tarih}")
         
-        if st.button(f"💾 {secilen_tarih.strftime('%d.%m.%Y')} Çalışmalarını Kaydet"):
-            yapilanlar = []
-            if t1: yapilanlar.append(f"{sec_ders1} Çalışması")
-            if t3: yapilanlar.append(f"{sec_ders2} Çalışması")
-            if t5: yapilanlar.append("20 Paragraf")
-            if t6: yapilanlar.append("Günlük Genel Tekrar")
-            
-            st.session_state.gunluk_aktiviteler[str(secilen_tarih)] = yapilanlar
-            
-            # Konu bitirme listesine ekle
+        if st.button(f"💾 {secilen_tarih.strftime('%d.%m.%Y')} Konularını Kalıcı Kaydet"):
             if konu_1.strip():
-                st.session_state.biten_konular.append({"Tarih": str(secilen_tarih), "Ders": sec_ders1, "Konu": konu_1.strip()})
+                db["biten_konular"].append({"tarih": str(secilen_tarih), "ders": sec_ders1, "konu": konu_1.strip()})
             if konu_2.strip():
-                st.session_state.biten_konular.append({"Tarih": str(secilen_tarih), "Ders": sec_ders2, "Konu": konu_2.strip()})
+                db["biten_konular"].append({"tarih": str(secilen_tarih), "ders": sec_ders2, "konu": konu_2.strip()})
                 
-            st.success(f"✅ {secilen_tarih.strftime('%d.%m.%Y')} tarihli çalışmaların ve bitirdiğin konular başarıyla profiline işlendi!")
+            verileri_kaydet(db)
+            st.success("✅ Çalışmaların kalıcı olarak kaydedildi!")
+            time.sleep(1)
+            st.rerun()
 
     with col_r:
         st.markdown("### 🛑 Günlük Kurallar")
@@ -140,11 +142,8 @@ with tab2:
 
 with tab3:
     st.subheader("📊 Ders Bazlı Soru, Doğru, Yanlış ve Net Takibi")
-    st.info("💡 Geçmiş bir günün sorularını kaydetmek için tarihi değiştirebilirsin.")
     soru_tarihi = st.date_input("📅 Soru Kaydı İçin Tarih Seçin:", value=bugun, key="soru_tarih")
     
-    st.write("Doğru ve yanlış sayılarını girdiğinde netlerin anında kusursuz hesaplanacaktır.")
-
     dersler_liste = ["Matematik", "Türkçe", "Coğrafya", "Tarih", "Vatandaşlık"]
     girilen_veriler = {}
     
@@ -158,13 +157,24 @@ with tab3:
             
             net = float(d) - (float(y) * 0.25)
             st.markdown(f"👉 **Net: {net:.2f}**")
-            girilen_veriler[d_adi] = {"Doğru": int(d), "Yanlış": int(y), "Net": net, "Toplam": int(d) + int(y)}
+            girilen_veriler[d_adi] = {"d": int(d), "y": int(y), "net": net, "toplam": int(d) + int(y)}
             st.markdown("---")
     
-    if st.button(f"🚀 {soru_tarihi.strftime('%d.%m.%Y')} Soru Sonuçlarını Kaydet", type="primary"):
-        toplam_gunluk_soru = sum([v["Toplam"] for v in girilen_veriler.values()])
-        st.session_state.soru_gecmisi.append({"Tarih": str(soru_tarihi), "Veri": girilen_veriler, "Toplam": toplam_gunluk_soru})
-        st.success(f"✅ {soru_tarihi.strftime('%d.%m.%Y')} tarihine ait sorular kaydedildi ve profiline işlendi!")
+    if st.button(f"🚀 {soru_tarihi.strftime('%d.%m.%Y')} Soru Sonuçlarını Kalıcı Kaydet", type="primary"):
+        for d_adi, detay in girilen_veriler.items():
+            if detay["toplam"] > 0:
+                db["soru_gecmisi"].append({
+                    "tarih": str(soru_tarihi),
+                    "ders": d_adi,
+                    "dogru": detay["d"],
+                    "yanlis": detay["y"],
+                    "net": detay["net"],
+                    "toplam": detay["toplam"]
+                })
+        verileri_kaydet(db)
+        st.success("✅ Soruların kalıcı olarak hafızaya işlendi!")
+        time.sleep(1)
+        st.rerun()
 
 with tab4:
     st.subheader("👤 Profil & Bitirilen Konular Karnesi")
@@ -172,51 +182,34 @@ with tab4:
     col_p1, col_p2 = st.columns(2)
     with col_p1:
         st.markdown("### 📈 Genel Soru İstatistiklerin")
-        toplam_yanlis = 0
-        toplam_dogru = 0
-        if st.session_state.soru_gecmisi:
-            for kayit in st.session_state.soru_gecmisi:
-                for d_adi, detay in kayit["Veri"].items():
-                    toplam_dogru += detay["Doğru"]
-                    toplam_yanlis += detay["Yanlış"]
+        toplam_dogru = sum([item["dogru"] for item in db["soru_gecmisi"]]) if db["soru_gecmisi"] else 0
+        toplam_yanlis = sum([item["yanlis"] for item in db["soru_gecmisi"]]) if db["soru_gecmisi"] else 0
         
-        st.info(f"📚 **Toplam Çözülen Soru:** {toplam_cozulen}")
+        st.info(f"📚 **Toplam Çözülen Soru:** {toplam_cozulen_soru}")
         st.success(f"✅ **Toplam Doğru:** {toplam_dogru}")
         st.warning(f"❌ **Toplam Yanlış:** {toplam_yanlis}")
         
     with col_p2:
         st.markdown("### 🎯 Bitirdiğin Konular Listesi")
-        if st.session_state.biten_konular:
-            for k_item in st.session_state.biten_konular:
-                st.write(f"📌 **[{k_item['Tarih']}] {k_item['Ders']}:** {k_item['Konu']}")
-            st.markdown("---")
+        if db["biten_konular"]:
+            for k_item in db["biten_konular"]:
+                st.write(f"📌 **[{k_item['tarih']}] {k_item['ders']}:** {k_item['konu']}")
         else:
-            st.info("Henüz kaydedilmiş bir konu adı girilmedi. Günlük programdan ders çalışırken konuları yazabilirsin.")
+            st.info("Henüz kaydedilmiş bir konu yok.")
 
-    if st.session_state.soru_gecmisi:
-        st.markdown("### 📊 Soru ve Net Detay Tablosu")
-        tablo_listesi = []
-        for kayit in st.session_state.soru_gecmisi:
-            tarih = kayit["Tarih"]
-            for d_adi, detay in kayit["Veri"].items():
-                tablo_listesi.append({
-                    "Tarih": tarih, 
-                    "Ders": d_adi, 
-                    "Doğru": detay["Doğru"], 
-                    "Yanlış": detay["Yanlış"], 
-                    "Net": round(detay["Net"], 2), 
-                    "Toplam Soru": detay["Toplam"]
-                })
-        st.dataframe(pd.DataFrame(tablo_listesi), use_container_width=True)
+    if db["soru_gecmisi"]:
+        st.markdown("### 📊 Soru Detay Tablosu")
+        df_soru = pd.DataFrame(db["soru_gecmisi"])[["tarih", "ders", "dogru", "yanlis", "net", "toplam"]]
+        st.dataframe(df_soru, use_container_width=True)
 
 with tab5:
     st.subheader("🔥 75 Günlük Zinciri Kırma Takvimi")
     col_z1, col_z2 = st.columns([2, 1])
     with col_z1:
-        st.markdown(f"**Şu anki zincir durumun: {st.session_state.zincir_gun}. Gün**")
+        st.markdown(f"**Şu anki zincir durumun: {db['zincir_gun']}. Gün**")
         kutular_html = "<div style='display: flex; flex-wrap: wrap; gap: 8px;'>"
         for g in range(1, 76):
-            if g <= st.session_state.zincir_gun:
+            if g <= db["zincir_gun"]:
                 kutular_html += f"<div style='width: 35px; height: 35px; background: #e11d48; color: white; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-weight: bold; font-size: 12px;'>{g}</div>"
             else:
                 kutular_html += f"<div style='width: 35px; height: 35px; background: #1f2937; color: #9ca3af; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-weight: bold; font-size: 12px;'>{g}</div>"
@@ -226,30 +219,20 @@ with tab5:
     with col_z2:
         st.markdown("### ⚙️ Zincir Yönetimi")
         if st.button("🔥 Bugün Çalıştım, Zinciri İlerlet"):
-            if st.session_state.zincir_gun < 75:
-                st.session_state.zincir_gun += 1
-                st.success("Tebrikler! Zincire yeni bir halka eklendi.")
-                st.rerun()
-            else:
-                st.balloons()
-                st.success("Mükemmel! 75 günlük zinciri tamamladın!")
+            db["zincir_gun"] += 1
+            verileri_kaydet(db)
+            st.success("Zincir güncellendi!")
+            time.sleep(1)
+            st.rerun()
 
 with tab6:
     st.subheader("🍅 Çalışan Geri Sayımlı Pomodoro Sayaç")
     dakika = st.slider("Çalışma Süresi (Dakika)", min_value=1, max_value=60, value=25)
     
-    if 'zaman' not in st.session_state:
-        st.session_state.zaman = dakika * 60
-
     col_b, col_s = st.columns(2)
     with col_b:
         baslat_p = st.button("▶️ Geri Sayımı Başlat")
-    with col_s:
-        sifirla_p = st.button("🔄 Süreyi Sıfırla")
-
-    if sifirla_p:
-        st.session_state.zaman = dakika * 60
-
+    
     if baslat_p:
         placeholder = st.empty()
         toplam_saniye = dakika * 60
@@ -259,7 +242,7 @@ with tab6:
             placeholder.markdown(f'<div class="timer-box">⏳ {m:02d}:{sn:02d}</div>', unsafe_allow_html=True)
             time.sleep(1)
         st.balloons()
-        st.success("🎉 Tebrikler! Odak seansı başarıyla tamamlandı, mola verme vakti!")
+        st.success("🎉 Tebrikler! Odak seansı başarıyla tamamlandı!")
 
 with tab7:
     st.subheader("🧠 Günün Motivasyon Sözü")
