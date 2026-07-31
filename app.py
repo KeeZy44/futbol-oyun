@@ -2,8 +2,7 @@ import streamlit as st
 from datetime import datetime, date
 import pandas as pd
 import time
-import json
-import os
+from supabase import create_client, Client
 
 # Sayfa Ayarları
 st.set_page_config(
@@ -11,6 +10,18 @@ st.set_page_config(
     page_icon="🎯",
     layout="wide"
 )
+
+# Supabase Bağlantısı
+@st.cache_resource
+def init_supabase() -> Client:
+    url = st.secrets["SUPABASE_URL"]
+    key = st.secrets["SUPABASE_KEY"]
+    return create_client(url, key)
+
+try:
+    supabase = init_supabase()
+except Exception as e:
+    st.error("Supabase bağlantısı kurulamadı. Lütfen Secrets ayarlarınızı kontrol edin.")
 
 # Özel CSS Tasarımı
 st.markdown("""
@@ -22,29 +33,37 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-VERI_DOSYASI = "veriler.json"
+# Veritabanından Verileri Çekme Fonksiyonları
+def veri_getir_sorular():
+    try:
+        res = supabase.table("kpss_soru_gecmisi").select("*").execute()
+        return res.data if res.data else []
+    except:
+        return []
 
-# Kalıcı Veri Okuma ve Yazma Fonksiyonları
-def verileri_yukle():
-    if os.path.exists(VERI_DOSYASI):
-        try:
-            with open(VERI_DOSYASI, "r", encoding="utf-8") as f:
-                return json.load(f)
-        except:
-            pass
-    return {"soru_gecmisi": [], "biten_konular": [], "zincir_gun": 1}
+def veri_getir_konular():
+    try:
+        res = supabase.table("kpss_biten_konular").select("*").execute()
+        return res.data if res.data else []
+    except:
+        return []
 
-def verileri_kaydet(veri):
-    with open(VERI_DOSYASI, "w", encoding="utf-8") as f:
-        json.dump(veri, f, ensure_ascii=False, indent=4)
-
-# Verileri Yükle
-db = verileri_yukle()
+def veri_getir_zincir():
+    try:
+        res = supabase.table("kpss_zincir").select("zincir_gun").eq("id", 1).execute()
+        return res.data[0]["zincir_gun"] if res.data else 1
+    except:
+        return 1
 
 # Sınav Tarihi: 25 Ekim 2026
 sinav_tarihi = date(2026, 10, 25)
 bugun = date.today()
 kalan_gun = (sinav_tarihi - bugun).days
+
+# Veritabanı Verileri
+soru_gecmisi = veri_getir_sorular()
+biten_konular = veri_getir_konular()
+zincir_gun = veri_getir_zincir()
 
 # Haftalık Ders Programı Dağılımı
 haftalik_program = {
@@ -64,7 +83,7 @@ ders1, ders2 = haftalik_program.get(bugun_isim, ("Özel Ders", "Özel Ders"))
 st.title("🎯 Mehmet Ali Turan | KPSS 2026 Kişisel Koçluk Paneli")
 st.markdown("> *Canım istemese bile masaya oturacağım. Çünkü başarı motivasyonla değil, disiplinle gelir.* 🧠")
 
-toplam_cozulen_soru = sum([item["toplam"] for item in db["soru_gecmisi"]]) if db["soru_gecmisi"] else 0
+toplam_cozulen_soru = sum([item["toplam"] for item in soru_gecmisi]) if soru_gecmisi else 0
 
 col1, col2, col3, col4 = st.columns(4)
 with col1:
@@ -72,7 +91,7 @@ with col1:
 with col2:
     st.metric(label="📚 Toplam Çözülen Soru", value=f"{toplam_cozulen_soru} Soru")
 with col3:
-    st.metric(label="⭐ Günlük Zincir", value=f"{db['zincir_gun']}. Gün")
+    st.metric(label="⭐ Günlük Zincir", value=f"{zincir_gun}. Gün")
 with col4:
     st.metric(label="🎯 Bugünün Dersleri", value=f"{ders1} & {ders2}")
 
@@ -109,14 +128,17 @@ with tab1:
         t5 = st.checkbox("16.10 - 20 Paragraf Çözümü", key=f"para_{secilen_tarih}")
         t6 = st.checkbox("17.00 - Günlük Genel Tekrar", key=f"genel_tekrar_{secilen_tarih}")
         
-        if st.button(f"💾 {secilen_tarih.strftime('%d.%m.%Y')} Konularını Kalıcı Kaydet"):
+        if st.button(f"💾 {secilen_tarih.strftime('%d.%m.%Y')} Konularını Veritabanına Kaydet"):
             if konu_1.strip():
-                db["biten_konular"].append({"tarih": str(secilen_tarih), "ders": sec_ders1, "konu": konu_1.strip()})
+                supabase.table("kpss_biten_konular").insert({
+                    "tarih": str(secilen_tarih), "ders": sec_ders1, "konu": konu_1.strip()
+                }).execute()
             if konu_2.strip():
-                db["biten_konular"].append({"tarih": str(secilen_tarih), "ders": sec_ders2, "konu": konu_2.strip()})
+                supabase.table("kpss_biten_konular").insert({
+                    "tarih": str(secilen_tarih), "ders": sec_ders2, "konu": konu_2.strip()
+                }).execute()
                 
-            verileri_kaydet(db)
-            st.success("✅ Çalışmaların kalıcı olarak kaydedildi!")
+            st.success("✅ Konular Supabase bulut veritabanına kalıcı olarak kaydedildi!")
             time.sleep(1)
             st.rerun()
 
@@ -160,30 +182,29 @@ with tab3:
             girilen_veriler[d_adi] = {"d": int(d), "y": int(y), "net": net, "toplam": int(d) + int(y)}
             st.markdown("---")
     
-    if st.button(f"🚀 {soru_tarihi.strftime('%d.%m.%Y')} Soru Sonuçlarını Kalıcı Kaydet", type="primary"):
+    if st.button(f"🚀 {soru_tarihi.strftime('%d.%m.%Y')} Soru Sonuçlarını Veritabanına Kaydet", type="primary"):
         for d_adi, detay in girilen_veriler.items():
             if detay["toplam"] > 0:
-                db["soru_gecmisi"].append({
+                supabase.table("kpss_soru_gecmisi").insert({
                     "tarih": str(soru_tarihi),
                     "ders": d_adi,
                     "dogru": detay["d"],
                     "yanlis": detay["y"],
                     "net": detay["net"],
                     "toplam": detay["toplam"]
-                })
-        verileri_kaydet(db)
-        st.success("✅ Soruların kalıcı olarak hafızaya işlendi!")
+                }).execute()
+        st.success("✅ Sorular Supabase veritabanına kalıcı olarak işlendi!")
         time.sleep(1)
         st.rerun()
 
 with tab4:
-    st.subheader("👤 Profil & Bitirilen Konular Karnesi")
+    st.subheader("👤 Profil & Bitirilen Konular Karnesi (Kalıcı Veri)")
     
     col_p1, col_p2 = st.columns(2)
     with col_p1:
         st.markdown("### 📈 Genel Soru İstatistiklerin")
-        toplam_dogru = sum([item["dogru"] for item in db["soru_gecmisi"]]) if db["soru_gecmisi"] else 0
-        toplam_yanlis = sum([item["yanlis"] for item in db["soru_gecmisi"]]) if db["soru_gecmisi"] else 0
+        toplam_dogru = sum([item["dogru"] for item in soru_gecmisi]) if soru_gecmisi else 0
+        toplam_yanlis = sum([item["yanlis"] for item in soru_gecmisi]) if soru_gecmisi else 0
         
         st.info(f"📚 **Toplam Çözülen Soru:** {toplam_cozulen_soru}")
         st.success(f"✅ **Toplam Doğru:** {toplam_dogru}")
@@ -191,25 +212,25 @@ with tab4:
         
     with col_p2:
         st.markdown("### 🎯 Bitirdiğin Konular Listesi")
-        if db["biten_konular"]:
-            for k_item in db["biten_konular"]:
+        if biten_konular:
+            for k_item in biten_konular:
                 st.write(f"📌 **[{k_item['tarih']}] {k_item['ders']}:** {k_item['konu']}")
         else:
             st.info("Henüz kaydedilmiş bir konu yok.")
 
-    if db["soru_gecmisi"]:
+    if soru_gecmisi:
         st.markdown("### 📊 Soru Detay Tablosu")
-        df_soru = pd.DataFrame(db["soru_gecmisi"])[["tarih", "ders", "dogru", "yanlis", "net", "toplam"]]
+        df_soru = pd.DataFrame(soru_gecmisi)[["tarih", "ders", "dogru", "yanlis", "net", "toplam"]]
         st.dataframe(df_soru, use_container_width=True)
 
 with tab5:
     st.subheader("🔥 75 Günlük Zinciri Kırma Takvimi")
     col_z1, col_z2 = st.columns([2, 1])
     with col_z1:
-        st.markdown(f"**Şu anki zincir durumun: {db['zincir_gun']}. Gün**")
+        st.markdown(f"**Şu anki zincir durumun: {zincir_gun}. Gün**")
         kutular_html = "<div style='display: flex; flex-wrap: wrap; gap: 8px;'>"
         for g in range(1, 76):
-            if g <= db["zincir_gun"]:
+            if g <= zincir_gun:
                 kutular_html += f"<div style='width: 35px; height: 35px; background: #e11d48; color: white; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-weight: bold; font-size: 12px;'>{g}</div>"
             else:
                 kutular_html += f"<div style='width: 35px; height: 35px; background: #1f2937; color: #9ca3af; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-weight: bold; font-size: 12px;'>{g}</div>"
@@ -219,8 +240,8 @@ with tab5:
     with col_z2:
         st.markdown("### ⚙️ Zincir Yönetimi")
         if st.button("🔥 Bugün Çalıştım, Zinciri İlerlet"):
-            db["zincir_gun"] += 1
-            verileri_kaydet(db)
+            yeni_zincir = zincir_gun + 1
+            supabase.table("kpss_zincir").update({"zincir_gun": yeni_zincir}).eq("id", 1).execute()
             st.success("Zincir güncellendi!")
             time.sleep(1)
             st.rerun()
