@@ -2,129 +2,182 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Futbol Bilgi Arenası | 1 Ülke 1 Kulüp</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Futbol Bilgi Arenası PRO | Turan Medya</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { background-color: #08080a; color: #f3f4f6; font-family: 'Inter', system-ui, sans-serif; }
+        body { background-color: #060709; color: #f3f4f6; font-family: -apple-system, BlinkMacSystemFont, 'Inter', system-ui, sans-serif; }
         .glass-card {
-            background: linear-gradient(145deg, rgba(24, 24, 32, 0.9), rgba(14, 14, 20, 0.95));
+            background: linear-gradient(145deg, rgba(22, 24, 33, 0.95), rgba(12, 13, 18, 0.98));
             border: 1px solid rgba(255, 255, 255, 0.08);
             box-shadow: 0 10px 30px -10px rgba(0,0,0,0.8);
         }
         .slot-border {
-            border: 2px solid rgba(245, 158, 11, 0.4);
-            box-shadow: 0 0 25px rgba(245, 158, 11, 0.15);
+            border: 2px solid rgba(245, 158, 11, 0.5);
+            box-shadow: 0 0 25px rgba(245, 158, 11, 0.2);
         }
         .neon-glow {
             text-shadow: 0 0 15px rgba(245, 158, 11, 0.6);
         }
+        .spin-anim {
+            transform: scale(0.96);
+            filter: blur(0.5px);
+        }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between p-4 md:p-8 select-none">
+<body class="min-h-screen flex flex-col justify-between p-3 sm:p-6 select-none">
 
-    <!-- ÜST BAŞLIK & MOD SEÇİMİ -->
-    <header class="max-w-5xl mx-auto w-full flex flex-col sm:flex-row items-center justify-between pb-6 border-b border-white/10 gap-4">
+    <!-- ÜST BAŞLIK & MOD SEÇİCİ -->
+    <header class="max-w-4xl mx-auto w-full flex flex-col sm:flex-row items-center justify-between pb-4 border-b border-white/10 gap-3">
         <div class="flex items-center gap-3">
             <span class="text-3xl">⚽</span>
             <div>
-                <h1 class="text-2xl font-black tracking-wider text-amber-500 neon-glow">FUTBOL ARENASI</h1>
-                <p class="text-xs text-gray-400">1 Ülke + 1 Takım = 1 Oyuncu</p>
+                <h1 class="text-xl font-black tracking-wider text-amber-500 neon-glow">FUTBOL ARENASI PRO</h1>
+                <p class="text-[11px] text-gray-400" id="modeDescription">1 Ülke + 1 Takım = 1 Oyuncu</p>
             </div>
         </div>
 
-        <!-- OYUN MODLARI (İleride genişletilebilir) -->
-        <div class="flex items-center gap-2 bg-black/40 p-1.5 rounded-2xl border border-white/5">
-            <button class="bg-amber-500 text-black px-4 py-2 rounded-xl text-xs font-black shadow-lg">1 Ülke - 1 Kulüp</button>
-            <button class="text-gray-500 hover:text-gray-300 px-4 py-2 rounded-xl text-xs font-bold transition">Çapraz Kulüp (Yakında)</button>
+        <div class="flex items-center gap-2 bg-black/50 p-1.5 rounded-2xl border border-white/5">
+            <button id="modBtn1" onclick="oyunModuDegistir('ulke-kulup')" class="bg-amber-500 text-black px-3.5 py-1.5 rounded-xl text-xs font-black shadow-lg transition">
+                1 Ülke - 1 Kulüp
+            </button>
+            <button id="modBtn2" onclick="oyunModuDegistir('capraz-kulup')" class="text-gray-400 hover:text-white px-3.5 py-1.5 rounded-xl text-xs font-bold transition">
+                Çapraz 2 Kulüp
+            </button>
         </div>
     </header>
 
-    <!-- OYUN ALANI -->
-    <main class="max-w-5xl mx-auto w-full grid grid-cols-1 lg:grid-cols-3 gap-8 my-auto py-6">
+    <!-- OYUN VE SKOR ALANI -->
+    <main class="max-w-4xl mx-auto w-full grid grid-cols-1 lg:grid-cols-3 gap-6 my-auto py-4">
 
         <!-- KURA VE SLOT ALANI (SOL & ORTA) -->
-        <div class="lg:col-span-2 flex flex-col items-center justify-center gap-8">
-            <div class="grid grid-cols-2 gap-4 md:gap-6 w-full max-w-lg">
-                <!-- ÜLKE KARTI -->
-                <div class="glass-card slot-border rounded-3xl p-6 flex flex-col items-center justify-center text-center h-56 transition-all duration-300">
-                    <span class="text-xs uppercase font-extrabold tracking-widest text-gray-500 mb-3">MİLLİYET / ÜLKE</span>
-                    <div id="ulkeBayrak" class="text-6xl my-auto transition-transform duration-200">🇹🇷</div>
-                    <h3 id="ulkeAdi" class="text-lg md:text-xl font-black text-white mt-2">Türkiye</h3>
+        <div class="lg:col-span-2 flex flex-col items-center justify-center gap-5">
+            <div class="grid grid-cols-2 gap-3 sm:gap-4 w-full max-w-lg">
+                <!-- 1. KUTU (ÜLKE veya 1. KULÜP) -->
+                <div id="card1" class="glass-card slot-border rounded-3xl p-5 flex flex-col items-center justify-center text-center h-52 transition-all duration-150">
+                    <span id="titleBox1" class="text-[10px] uppercase font-black tracking-widest text-amber-500/80 mb-2">MİLLİYET / ÜLKE</span>
+                    <div id="iconBox1" class="text-5xl sm:text-6xl my-auto">🇹🇷</div>
+                    <h3 id="textBox1" class="text-base sm:text-lg font-black text-white mt-1">Türkiye</h3>
                 </div>
 
-                <!-- TAKIM KARTI -->
-                <div class="glass-card slot-border rounded-3xl p-6 flex flex-col items-center justify-center text-center h-56 transition-all duration-300">
-                    <span class="text-xs uppercase font-extrabold tracking-widest text-gray-500 mb-3">KULÜP</span>
-                    <div id="takimLogo" class="text-5xl my-auto transition-transform duration-200">🦅</div>
-                    <h3 id="takimAdi" class="text-lg md:text-xl font-black text-white mt-2">Beşiktaş</h3>
+                <!-- 2. KUTU (2. KULÜP) -->
+                <div id="card2" class="glass-card slot-border rounded-3xl p-5 flex flex-col items-center justify-center text-center h-52 transition-all duration-150">
+                    <span id="titleBox2" class="text-[10px] uppercase font-black tracking-widest text-amber-500/80 mb-2">KULÜP</span>
+                    <div id="iconBox2" class="text-5xl sm:text-6xl my-auto">🦅</div>
+                    <h3 id="textBox2" class="text-base sm:text-lg font-black text-white mt-1">Beşiktaş</h3>
                 </div>
             </div>
 
             <!-- KURA ÇEKME BUTONU -->
-            <button id="drawBtn" onclick="kuraCek()" class="w-full max-w-lg bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black text-sm md:text-base font-black py-4 px-8 rounded-2xl shadow-xl shadow-amber-500/20 active:scale-95 transition-all flex items-center justify-center gap-3">
-                <i class="fa-solid fa-dice text-lg"></i>
-                <span>YENİ KURA ÇEK (VEYA SPACE)</span>
+            <button id="drawBtn" onclick="kuraCek()" class="w-full max-w-lg bg-gradient-to-r from-amber-500 to-amber-600 active:scale-95 text-black text-base font-black py-4 rounded-2xl shadow-xl shadow-amber-500/25 transition-all flex items-center justify-center gap-3 cursor-pointer">
+                <i class="fa-solid fa-dice text-xl"></i>
+                <span>YENİ KURA ÇEK (SPACE)</span>
             </button>
         </div>
 
-        <!-- CANLI YARIŞMA SKORU & FİKSTÜR (SAĞ PANEL) -->
-        <div class="glass-card rounded-3xl p-6 flex flex-col justify-between">
+        <!-- 4 KİŞİLİK YARIŞMACI VE SKOR PANELİ (SAĞ) -->
+        <div class="glass-card rounded-3xl p-4 sm:p-5 flex flex-col justify-between border border-white/5">
             <div>
-                <h3 class="text-sm font-black text-gray-300 uppercase tracking-wider mb-4 pb-2 border-b border-white/5 flex items-center justify-between">
-                    <span>Masa Maçı (İlk 3 Alan)</span>
-                    <button onclick="skorSifirla()" class="text-[11px] text-gray-500 hover:text-rose-400 transition">Sıfırla</button>
-                </h3>
-
-                <!-- YARIŞMACI 1 -->
-                <div class="bg-black/30 p-4 rounded-2xl border border-white/5 mb-3 flex items-center justify-between">
-                    <div>
-                        <input type="text" id="p1Name" value="Oyuncu 1" class="bg-transparent text-sm font-bold text-white outline-none w-28 border-b border-transparent focus:border-amber-500">
-                        <p class="text-[10px] text-gray-500">Klavye: [A] Tuşu</p>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <span id="p1Score" class="text-2xl font-black text-amber-400 min-w-[28px] text-center">0</span>
-                        <button onclick="skorArtir(1)" class="w-8 h-8 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 font-black text-sm transition">+</button>
-                    </div>
+                <div class="flex items-center justify-between pb-3 mb-3 border-b border-white/10">
+                    <h3 class="text-xs font-black text-gray-300 uppercase tracking-wider">Yarışmacılar (İlk 3 Alan)</h3>
+                    <button onclick="skorSifirla()" class="text-[10px] text-gray-500 hover:text-rose-400 font-bold transition">Sıfırla</button>
                 </div>
 
-                <!-- YARIŞMACI 2 -->
-                <div class="bg-black/30 p-4 rounded-2xl border border-white/5 mb-6 flex items-center justify-between">
-                    <div>
-                        <input type="text" id="p2Name" value="Oyuncu 2" class="bg-transparent text-sm font-bold text-white outline-none w-28 border-b border-transparent focus:border-amber-500">
-                        <p class="text-[10px] text-gray-500">Klavye: [L] Tuşu</p>
+                <div class="grid grid-cols-2 gap-2.5">
+                    <!-- OYUNCU 1 -->
+                    <div class="bg-black/40 p-2.5 rounded-2xl border border-white/5 flex flex-col items-center">
+                        <input type="text" id="p1Name" value="Ahmet" class="bg-transparent text-xs font-black text-center text-amber-400 outline-none w-full mb-1">
+                        <span id="p1Score" class="text-2xl font-black text-white my-0.5">0</span>
+                        <div class="flex gap-1 w-full mt-1">
+                            <button onclick="skorDegis(1, -1)" class="w-1/3 bg-white/5 hover:bg-white/10 text-gray-400 font-bold py-1 rounded-lg text-xs">-</button>
+                            <button onclick="skorDegis(1, 1)" class="w-2/3 bg-amber-500/20 active:bg-amber-500 active:text-black text-amber-400 font-black py-1 rounded-lg text-xs transition border border-amber-500/30">+1</button>
+                        </div>
+                        <span class="text-[10px] text-gray-500 font-bold mt-1.5">Set: <b id="p1Sets" class="text-white">0</b></span>
                     </div>
-                    <div class="flex items-center gap-2">
-                        <span id="p2Score" class="text-2xl font-black text-amber-400 min-w-[28px] text-center">0</span>
-                        <button onclick="skorArtir(2)" class="w-8 h-8 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 font-black text-sm transition">+</button>
-                    </div>
-                </div>
 
-                <!-- GENEL TABLO / SET SKORU -->
-                <div class="p-3 bg-amber-500/5 rounded-xl border border-amber-500/10">
-                    <p class="text-[11px] font-bold text-gray-400 uppercase text-center mb-1">Set Durumu</p>
-                    <div class="flex justify-around items-center text-white font-black text-lg">
-                        <span id="p1Sets">0</span>
-                        <span class="text-gray-600 text-xs">SET</span>
-                        <span id="p2Sets">0</span>
+                    <!-- OYUNCU 2 -->
+                    <div class="bg-black/40 p-2.5 rounded-2xl border border-white/5 flex flex-col items-center">
+                        <input type="text" id="p2Name" value="Mehmet" class="bg-transparent text-xs font-black text-center text-amber-400 outline-none w-full mb-1">
+                        <span id="p2Score" class="text-2xl font-black text-white my-0.5">0</span>
+                        <div class="flex gap-1 w-full mt-1">
+                            <button onclick="skorDegis(2, -1)" class="w-1/3 bg-white/5 hover:bg-white/10 text-gray-400 font-bold py-1 rounded-lg text-xs">-</button>
+                            <button onclick="skorDegis(2, 1)" class="w-2/3 bg-amber-500/20 active:bg-amber-500 active:text-black text-amber-400 font-black py-1 rounded-lg text-xs transition border border-amber-500/30">+1</button>
+                        </div>
+                        <span class="text-[10px] text-gray-500 font-bold mt-1.5">Set: <b id="p2Sets" class="text-white">0</b></span>
+                    </div>
+
+                    <!-- OYUNCU 3 -->
+                    <div class="bg-black/40 p-2.5 rounded-2xl border border-white/5 flex flex-col items-center">
+                        <input type="text" id="p3Name" value="Can" class="bg-transparent text-xs font-black text-center text-sky-400 outline-none w-full mb-1">
+                        <span id="p3Score" class="text-2xl font-black text-white my-0.5">0</span>
+                        <div class="flex gap-1 w-full mt-1">
+                            <button onclick="skorDegis(3, -1)" class="w-1/3 bg-white/5 hover:bg-white/10 text-gray-400 font-bold py-1 rounded-lg text-xs">-</button>
+                            <button onclick="skorDegis(3, 1)" class="w-2/3 bg-sky-500/20 active:bg-sky-500 active:text-black text-sky-400 font-black py-1 rounded-lg text-xs transition border border-sky-500/30">+1</button>
+                        </div>
+                        <span class="text-[10px] text-gray-500 font-bold mt-1.5">Set: <b id="p3Sets" class="text-white">0</b></span>
+                    </div>
+
+                    <!-- OYUNCU 4 -->
+                    <div class="bg-black/40 p-2.5 rounded-2xl border border-white/5 flex flex-col items-center">
+                        <input type="text" id="p4Name" value="Burak" class="bg-transparent text-xs font-black text-center text-rose-400 outline-none w-full mb-1">
+                        <span id="p4Score" class="text-2xl font-black text-white my-0.5">0</span>
+                        <div class="flex gap-1 w-full mt-1">
+                            <button onclick="skorDegis(4, -1)" class="w-1/3 bg-white/5 hover:bg-white/10 text-gray-400 font-bold py-1 rounded-lg text-xs">-</button>
+                            <button onclick="skorDegis(4, 1)" class="w-2/3 bg-rose-500/20 active:bg-rose-500 active:text-black text-rose-400 font-black py-1 rounded-lg text-xs transition border border-rose-500/30">+1</button>
+                        </div>
+                        <span class="text-[10px] text-gray-500 font-bold mt-1.5">Set: <b id="p4Sets" class="text-white">0</b></span>
                     </div>
                 </div>
             </div>
 
-            <div class="text-[11px] text-gray-500 text-center mt-4">
-                Space: Kura Çek | A: Oyuncu 1 Puan | L: Oyuncu 2 Puan
+            <div class="text-[10px] text-gray-500 text-center mt-3">
+                Klavye: 1, 2, 3, 4 tuşlarıyla hızlıca puan verebilirsin
             </div>
         </div>
 
     </main>
 
-    <footer class="text-center text-xs text-gray-600 py-3">
-        Toptan Muhabbetler Formatı — Futbol Bilgi Ligi v1.0
+    <footer class="text-center text-[11px] text-gray-600 py-2">
+        Toptan Muhabbetler Formatı — Futbol Bilgi Ligi v2.0
     </footer>
 
     <script>
-        // ÜLKELER VERİTABANI
+        // SES EFEKTİ MOTORU (Tarayıcı içi Web Audio API)
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playTickSound() {
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(450, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.05);
+            } catch(e) {}
+        }
+
+        function playWinSound() {
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // D5
+                osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.1); // A5
+                gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.35);
+            } catch(e) {}
+        }
+
+        // VERİTABANI
         const ulkeler = [
             { ad: "Türkiye", bayrak: "🇹🇷" }, { ad: "Brezilya", bayrak: "🇧🇷" },
             { ad: "Arjantin", bayrak: "🇦🇷" }, { ad: "Portekiz", bayrak: "🇵🇹" },
@@ -145,7 +198,6 @@
             { ad: "Şili", bayrak: "🇨🇱" }, { ad: "Cezayir", bayrak: "🇩🇿" }
         ];
 
-        // TAKIMLAR VERİTABANI
         const takimlar = [
             { ad: "Galatasaray", icon: "🦁" }, { ad: "Fenerbahçe", icon: "🟡" },
             { ad: "Beşiktaş", icon: "🦅" }, { ad: "Trabzonspor", icon: "🔴" },
@@ -164,88 +216,145 @@
             { ad: "PSV Eindhoven", icon: "🔴" }, { ad: "Flamengo", icon: "🔴" }
         ];
 
+        let aktifMod = 'ulke-kulup'; // 'ulke-kulup' veya 'capraz-kulup'
         let donuyor = false;
+
+        function oyunModuDegistir(mod) {
+            aktifMod = mod;
+            const b1 = document.getElementById("modBtn1");
+            const b2 = document.getElementById("modBtn2");
+            const desc = document.getElementById("modeDescription");
+            const tBox1 = document.getElementById("titleBox1");
+
+            if (mod === 'ulke-kulup') {
+                b1.className = "bg-amber-500 text-black px-3.5 py-1.5 rounded-xl text-xs font-black shadow-lg transition";
+                b2.className = "text-gray-400 hover:text-white px-3.5 py-1.5 rounded-xl text-xs font-bold transition";
+                desc.innerText = "1 Ülke + 1 Takım = 1 Oyuncu";
+                tBox1.innerText = "MİLLİYET / ÜLKE";
+                document.getElementById("iconBox1").innerText = "🇹🇷";
+                document.getElementById("textBox1").innerText = "Türkiye";
+            } else {
+                b2.className = "bg-amber-500 text-black px-3.5 py-1.5 rounded-xl text-xs font-black shadow-lg transition";
+                b1.className = "text-gray-400 hover:text-white px-3.5 py-1.5 rounded-xl text-xs font-bold transition";
+                desc.innerText = "2 Kulüpte de Oynamış Ortak Oyuncu";
+                tBox1.innerText = "1. KULÜP";
+                document.getElementById("iconBox1").innerText = "👑";
+                document.getElementById("textBox1").innerText = "Real Madrid";
+            }
+        }
 
         function kuraCek() {
             if (donuyor) return;
             donuyor = true;
 
-            const uBayrakEl = document.getElementById("ulkeBayrak");
-            const uAdEl = document.getElementById("ulkeAdi");
-            const tLogoEl = document.getElementById("takimLogo");
-            const tAdEl = document.getElementById("takimAdi");
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            const c1 = document.getElementById("card1");
+            const c2 = document.getElementById("card2");
+            const i1 = document.getElementById("iconBox1");
+            const t1 = document.getElementById("textBox1");
+            const i2 = document.getElementById("iconBox2");
+            const t2 = document.getElementById("textBox2");
             const btn = document.getElementById("drawBtn");
 
             btn.classList.add("opacity-50", "pointer-events-none");
+            c1.classList.add("spin-anim");
+            c2.classList.add("spin-anim");
 
             let sayac = 0;
             const aralik = setInterval(() => {
-                const rU = ulkeler[Math.floor(Math.random() * ulkeler.length)];
-                const rT = takimlar[Math.floor(Math.random() * takimlar.length)];
+                playTickSound();
 
-                uBayrakEl.innerText = rU.bayrak;
-                uAdEl.innerText = rU.ad;
-                tLogoEl.innerText = rT.icon;
-                tAdEl.innerText = rT.ad;
+                if (aktifMod === 'ulke-kulup') {
+                    const rU = ulkeler[Math.floor(Math.random() * ulkeler.length)];
+                    const rT = takimlar[Math.floor(Math.random() * takimlar.length)];
+                    i1.innerText = rU.bayrak;
+                    t1.innerText = rU.ad;
+                    i2.innerText = rT.icon;
+                    t2.innerText = rT.ad;
+                } else {
+                    // Çapraz kulüp modu: İki farklı takım seç
+                    let rT1 = takimlar[Math.floor(Math.random() * takimlar.length)];
+                    let rT2 = takimlar[Math.floor(Math.random() * takimlar.length)];
+                    while(rT1.ad === rT2.ad) {
+                        rT2 = takimlar[Math.floor(Math.random() * takimlar.length)];
+                    }
+                    i1.innerText = rT1.icon;
+                    t1.innerText = rT1.ad;
+                    i2.innerText = rT2.icon;
+                    t2.innerText = rT2.ad;
+                }
 
                 sayac++;
-                if (sayac > 16) {
+                if (sayac > 14) {
                     clearInterval(aralik);
                     donuyor = false;
+                    playWinSound();
+                    c1.classList.remove("spin-anim");
+                    c2.classList.remove("spin-anim");
                     btn.classList.remove("opacity-50", "pointer-events-none");
                 }
-            }, 75);
+            }, 70);
         }
 
-        // SKOR YÖNETİMİ
-        let p1 = 0, p2 = 0;
-        let p1Sets = 0, p2Sets = 0;
+        // 4 KİŞİLİK SKOR YÖNETİMİ
+        const scores = { 1: 0, 2: 0, 3: 0, 4: 0 };
+        const sets = { 1: 0, 2: 0, 3: 0, 4: 0 };
 
-        function skorArtir(p) {
-            if (p === 1) {
-                p1++;
-                document.getElementById("p1Score").innerText = p1;
-                if (p1 >= 3) {
-                    p1Sets++;
-                    document.getElementById("p1Sets").innerText = p1Sets;
-                    alert(`${document.getElementById("p1Name").value} bu seti kazandı!`);
+        function skorDegis(player, delta) {
+            scores[player] = Math.max(0, scores[player] + delta);
+            document.getElementById(`p${player}Score`).innerText = scores[player];
+
+            if (scores[player] >= 3) {
+                sets[player]++;
+                document.getElementById(`p${player}Sets`).innerText = sets[player];
+
+                // Konfeti Şovu
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+
+                const isim = document.getElementById(`p${player}Name`).value;
+                setTimeout(() => {
+                    alert(`🏆 ${isim} bu seti kazandı!`);
                     turSifirla();
-                }
-            } else {
-                p2++;
-                document.getElementById("p2Score").innerText = p2;
-                if (p2 >= 3) {
-                    p2Sets++;
-                    document.getElementById("p2Sets").innerText = p2Sets;
-                    alert(`${document.getElementById("p2Name").value} bu seti kazandı!`);
-                    turSifirla();
-                }
+                }, 200);
             }
         }
 
         function turSifirla() {
-            p1 = 0; p2 = 0;
-            document.getElementById("p1Score").innerText = 0;
-            document.getElementById("p2Score").innerText = 0;
+            for (let i = 1; i <= 4; i++) {
+                scores[i] = 0;
+                document.getElementById(`p${i}Score`).innerText = 0;
+            }
         }
 
         function skorSifirla() {
             turSifirla();
-            p1Sets = 0; p2Sets = 0;
-            document.getElementById("p1Sets").innerText = 0;
-            document.getElementById("p2Sets").innerText = 0;
+            for (let i = 1; i <= 4; i++) {
+                sets[i] = 0;
+                document.getElementById(`p${i}Sets`).innerText = 0;
+            }
         }
 
-        // KLAVYE KISAYOLLARI
+        // KLAVYE KONTROLLERİ
         window.addEventListener("keydown", (e) => {
-            if (e.target.tagName === 'INPUT') return; // İsim yazarken tuşlar tetiklenmesin
+            if (e.target.tagName === 'INPUT') return;
             if (e.code === "Space") {
                 e.preventDefault();
                 kuraCek();
-            } else if (e.code === "KeyA") {
-                skorArtir(1);
-            } else if (e.code === "KeyL") {
-                skorArtir(2);
+            } else if (e.key === "1") {
+                skorDegis(1, 1);
+            } else if (e.key === "2") {
+                skorDegis(2, 1);
+            } else if (e.key === "3") {
+                skorDegis(3, 1);
+            } else if (e.key === "4") {
+                skorDegis(4, 1);
             }
         });
     </script>
