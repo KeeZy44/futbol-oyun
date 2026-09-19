@@ -18,6 +18,10 @@
             border: 2px solid rgba(245, 158, 11, 0.5);
             box-shadow: 0 0 25px rgba(245, 158, 11, 0.2);
         }
+        .winner-border {
+            border: 2px solid #10b981 !important;
+            box-shadow: 0 0 30px rgba(16, 185, 129, 0.4) !important;
+        }
         .neon-glow {
             text-shadow: 0 0 15px rgba(245, 158, 11, 0.6);
         }
@@ -29,7 +33,7 @@
 </head>
 <body class="min-h-screen flex flex-col justify-between p-3 sm:p-6 select-none">
 
-    <!-- ÜST BAŞLIK & 3 FARKLI MOD SEÇİCİ -->
+    <!-- ÜST BAŞLIK & 4 MOD SEÇİCİ -->
     <header class="max-w-4xl mx-auto w-full flex flex-col sm:flex-row items-center justify-between pb-4 border-b border-white/10 gap-3">
         <div class="flex items-center gap-3">
             <span class="text-3xl">⚽</span>
@@ -49,6 +53,9 @@
             <button id="modBtn3" onclick="oyunModuDegistir('ulke-mevki')" class="text-gray-400 hover:text-white px-3 py-1.5 rounded-xl text-xs font-bold transition">
                 Ülke + Mevki
             </button>
+            <button id="modBtn4" onclick="oyunModuDegistir('piyasa-degeri')" class="text-gray-400 hover:text-white px-3 py-1.5 rounded-xl text-xs font-bold transition">
+                💰 Piyasa Değeri
+            </button>
         </div>
     </header>
 
@@ -56,28 +63,36 @@
     <main class="max-w-4xl mx-auto w-full grid grid-cols-1 lg:grid-cols-3 gap-6 my-auto py-4">
 
         <!-- KURA VE SLOT ALANI (SOL & ORTA) -->
-        <div class="lg:col-span-2 flex flex-col items-center justify-center gap-5">
+        <div class="lg:col-span-2 flex flex-col items-center justify-center gap-4">
             <div class="grid grid-cols-2 gap-3 sm:gap-4 w-full max-w-lg">
-                <!-- 1. KUTU (ÜLKE veya 1. KULÜP) -->
-                <div id="card1" class="glass-card slot-border rounded-3xl p-5 flex flex-col items-center justify-center text-center h-52 transition-all duration-150">
-                    <span id="titleBox1" class="text-[10px] uppercase font-black tracking-widest text-amber-500/80 mb-2">MİLLİYET / ÜLKE</span>
+                <!-- 1. KUTU -->
+                <div id="card1" class="glass-card slot-border rounded-3xl p-5 flex flex-col items-center justify-center text-center h-56 transition-all duration-200">
+                    <span id="titleBox1" class="text-[10px] uppercase font-black tracking-widest text-amber-500/80 mb-1">MİLLİYET / ÜLKE</span>
                     <div id="iconBox1" class="text-5xl sm:text-6xl my-auto">🇹🇷</div>
                     <h3 id="textBox1" class="text-base sm:text-lg font-black text-white mt-1">Türkiye</h3>
+                    <p id="subBox1" class="text-xs text-amber-400 font-bold hidden"></p>
                 </div>
 
-                <!-- 2. KUTU (KULÜP veya MEVKİ) -->
-                <div id="card2" class="glass-card slot-border rounded-3xl p-5 flex flex-col items-center justify-center text-center h-52 transition-all duration-150">
-                    <span id="titleBox2" class="text-[10px] uppercase font-black tracking-widest text-amber-500/80 mb-2">KULÜP</span>
+                <!-- 2. KUTU -->
+                <div id="card2" class="glass-card slot-border rounded-3xl p-5 flex flex-col items-center justify-center text-center h-56 transition-all duration-200">
+                    <span id="titleBox2" class="text-[10px] uppercase font-black tracking-widest text-amber-500/80 mb-1">KULÜP</span>
                     <div id="iconBox2" class="text-5xl sm:text-6xl my-auto">🦅</div>
                     <h3 id="textBox2" class="text-base sm:text-lg font-black text-white mt-1">Beşiktaş</h3>
+                    <p id="subBox2" class="text-xs text-amber-400 font-bold hidden"></p>
                 </div>
             </div>
 
-            <!-- KURA ÇEKME BUTONU -->
-            <button id="drawBtn" onclick="kuraCek()" class="w-full max-w-lg bg-gradient-to-r from-amber-500 to-amber-600 active:scale-95 text-black text-base font-black py-4 rounded-2xl shadow-xl shadow-amber-500/25 transition-all flex items-center justify-center gap-3 cursor-pointer">
-                <i class="fa-solid fa-dice text-xl"></i>
-                <span>YENİ KURA ÇEK (SPACE)</span>
-            </button>
+            <!-- BUTONLAR (KURA VE PİYASA DEĞERİ AÇMA) -->
+            <div class="w-full max-w-lg flex flex-col gap-2">
+                <button id="drawBtn" onclick="kuraCek()" class="w-full bg-gradient-to-r from-amber-500 to-amber-600 active:scale-95 text-black text-base font-black py-4 rounded-2xl shadow-xl shadow-amber-500/25 transition-all flex items-center justify-center gap-3 cursor-pointer">
+                    <i class="fa-solid fa-dice text-xl"></i>
+                    <span>YENİ KURA ÇEK (SPACE)</span>
+                </button>
+                <button id="revealBtn" onclick="degerleriAc()" class="w-full bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white text-sm font-black py-3 rounded-2xl shadow-lg shadow-emerald-600/20 transition-all flex items-center justify-center gap-2 hidden cursor-pointer">
+                    <i class="fa-solid fa-eye text-base"></i>
+                    <span>DEĞERLERİ AÇ & KARŞILAŞTIR</span>
+                </button>
+            </div>
         </div>
 
         <!-- 4 KİŞİLİK SKOR PANELİ -->
@@ -143,7 +158,7 @@
     </main>
 
     <footer class="text-center text-[11px] text-gray-600 py-2">
-        Toptan Muhabbetler Formatı — Futbol Bilgi Ligi v3.0
+        Toptan Muhabbetler Formatı — Futbol Bilgi Ligi v4.0
     </footer>
 
     <script>
@@ -217,7 +232,6 @@
             { ad: "PSV Eindhoven", icon: "🔴" }, { ad: "Flamengo", icon: "🔴" }
         ];
 
-        // MEVKİLER HAVUZU
         const mevkiler = [
             { ad: "Kaleci", icon: "🧤" },
             { ad: "Stoper", icon: "🛡️" },
@@ -231,21 +245,65 @@
             { ad: "Santrafor / Forvet", icon: "🏹" }
         ];
 
+        // PİYASA DEĞERİ HAVUZU (Oyuncu, Kulüp, Değer M€)
+        const oyuncuDegerleri = [
+            { ad: "Erling Haaland", kulup: "Man City", deger: 200, icon: "⚡" },
+            { ad: "Vinicius Junior", kulup: "Real Madrid", deger: 200, icon: "⚡" },
+            { ad: "Jude Bellingham", kulup: "Real Madrid", deger: 180, icon: "👑" },
+            { ad: "Kylian Mbappé", kulup: "Real Madrid", deger: 180, icon: "⚡" },
+            { ad: "Lamine Yamal", kulup: "Barcelona", deger: 180, icon: "💎" },
+            { ad: "Phil Foden", kulup: "Man City", deger: 140, icon: "🎯" },
+            { ad: "Bukayo Saka", kulup: "Arsenal", deger: 130, icon: "🔴" },
+            { ad: "Florian Wirtz", kulup: "Leverkusen", deger: 130, icon: "🧠" },
+            { ad: "Jamal Musiala", kulup: "Bayern Münih", deger: 130, icon: "🪄" },
+            { ad: "Federico Valverde", kulup: "Real Madrid", deger: 130, icon: "🛡️" },
+            { ad: "Rodri", kulup: "Man City", deger: 110, icon: "⚓" },
+            { ad: "Declan Rice", kulup: "Arsenal", deger: 110, icon: "⚓" },
+            { ad: "Martin Ødegaard", kulup: "Arsenal", deger: 110, icon: "🎯" },
+            { ad: "Eduardo Camavinga", kulup: "Real Madrid", deger: 100, icon: "🪄" },
+            { ad: "Aurélien Tchouaméni", kulup: "Real Madrid", deger: 100, icon: "🛡️" },
+            { ad: "Cole Palmer", kulup: "Chelsea", deger: 100, icon: "🥶" },
+            { ad: "Lautaro Martínez", kulup: "Inter", deger: 100, icon: "🏹" },
+            { ad: "Harry Kane", kulup: "Bayern Münih", deger: 90, icon: "🏹" },
+            { ad: "Rafael Leão", kulup: "Milan", deger: 85, icon: "⚡" },
+            { ad: "Arda Güler", kulup: "Real Madrid", deger: 60, icon: "🇹🇷" },
+            { ad: "Kenan Yıldız", kulup: "Juventus", deger: 50, icon: "🇹🇷" },
+            { ad: "Barış Alper Yılmaz", kulup: "Galatasaray", deger: 25, icon: "🇹🇷" },
+            { ad: "Ferdi Kadıoğlu", kulup: "Brighton", deger: 35, icon: "🇹🇷" },
+            { ad: "Semih Kılıçsoy", kulup: "Beşiktaş", deger: 18, icon: "🇹🇷" },
+            { ad: "Mauro Icardi", kulup: "Galatasaray", deger: 12, icon: "🏹" },
+            { ad: "Victor Osimhen", kulup: "Galatasaray", deger: 75, icon: "🦁" }
+        ];
+
         let aktifMod = 'ulke-kulup';
         let donuyor = false;
+        let p1Mevcut = null;
+        let p2Mevcut = null;
 
         function oyunModuDegistir(mod) {
             aktifMod = mod;
             const b1 = document.getElementById("modBtn1");
             const b2 = document.getElementById("modBtn2");
             const b3 = document.getElementById("modBtn3");
+            const b4 = document.getElementById("modBtn4");
             const desc = document.getElementById("modeDescription");
             const tBox1 = document.getElementById("titleBox1");
             const tBox2 = document.getElementById("titleBox2");
+            const sub1 = document.getElementById("subBox1");
+            const sub2 = document.getElementById("subBox2");
+            const revBtn = document.getElementById("revealBtn");
+            const c1 = document.getElementById("card1");
+            const c2 = document.getElementById("card2");
 
-            b1.className = "text-gray-400 hover:text-white px-3 py-1.5 rounded-xl text-xs font-bold transition";
-            b2.className = "text-gray-400 hover:text-white px-3 py-1.5 rounded-xl text-xs font-bold transition";
-            b3.className = "text-gray-400 hover:text-white px-3 py-1.5 rounded-xl text-xs font-bold transition";
+            c1.classList.remove("winner-border");
+            c2.classList.remove("winner-border");
+
+            const allBtns = [b1, b2, b3, b4];
+            allBtns.forEach(b => b.className = "text-gray-400 hover:text-white px-3 py-1.5 rounded-xl text-xs font-bold transition");
+
+            sub1.classList.add("hidden");
+            sub2.classList.add("hidden");
+            revBtn.classList.add("hidden");
 
             if (mod === 'ulke-kulup') {
                 b1.className = "bg-amber-500 text-black px-3 py-1.5 rounded-xl text-xs font-black shadow-lg transition";
@@ -274,6 +332,13 @@
                 document.getElementById("textBox1").innerText = "Brezilya";
                 document.getElementById("iconBox2").innerText = "🏃‍♂️";
                 document.getElementById("textBox2").innerText = "Sol Bek";
+            } else if (mod === 'piyasa-degeri') {
+                b4.className = "bg-amber-500 text-black px-3 py-1.5 rounded-xl text-xs font-black shadow-lg transition";
+                desc.innerText = "Kim Daha Değerli? Tahmin Et ve Değeri Aç!";
+                tBox1.innerText = "1. OYUNCU";
+                tBox2.innerText = "2. OYUNCU";
+                revBtn.classList.remove("hidden");
+                kuraCek();
             }
         }
 
@@ -291,7 +356,13 @@
             const t1 = document.getElementById("textBox1");
             const i2 = document.getElementById("iconBox2");
             const t2 = document.getElementById("textBox2");
+            const sub1 = document.getElementById("subBox1");
+            const sub2 = document.getElementById("subBox2");
             const btn = document.getElementById("drawBtn");
+            const revBtn = document.getElementById("revealBtn");
+
+            c1.classList.remove("winner-border");
+            c2.classList.remove("winner-border");
 
             btn.classList.add("opacity-50", "pointer-events-none");
             c1.classList.add("spin-anim");
@@ -325,6 +396,22 @@
                     t1.innerText = rU.ad;
                     i2.innerText = rM.icon;
                     t2.innerText = rM.ad;
+                } else if (aktifMod === 'piyasa-degeri') {
+                    let o1 = oyuncuDegerleri[Math.floor(Math.random() * oyuncuDegerleri.length)];
+                    let o2 = oyuncuDegerleri[Math.floor(Math.random() * oyuncuDegerleri.length)];
+                    while(o1.ad === o2.ad) {
+                        o2 = oyuncuDegerleri[Math.floor(Math.random() * oyuncuDegerleri.length)];
+                    }
+                    p1Mevcut = o1;
+                    p2Mevcut = o2;
+                    i1.innerText = o1.icon;
+                    t1.innerText = `${o1.ad} (${o1.kulup})`;
+                    i2.innerText = o2.icon;
+                    t2.innerText = `${o2.ad} (${o2.kulup})`;
+                    sub1.classList.remove("hidden");
+                    sub2.classList.remove("hidden");
+                    sub1.innerText = "Değer: ??? M€";
+                    sub2.innerText = "Değer: ??? M€";
                 }
 
                 sayac++;
@@ -337,6 +424,28 @@
                     btn.classList.remove("opacity-50", "pointer-events-none");
                 }
             }, 70);
+        }
+
+        function degerleriAc() {
+            if (!p1Mevcut || !p2Mevcut || aktifMod !== 'piyasa-degeri') return;
+            const sub1 = document.getElementById("subBox1");
+            const sub2 = document.getElementById("subBox2");
+            const c1 = document.getElementById("card1");
+            const c2 = document.getElementById("card2");
+
+            sub1.innerText = `💰 ${p1Mevcut.deger} Milyon €`;
+            sub2.innerText = `💰 ${p2Mevcut.deger} Milyon €`;
+
+            playWinSound();
+
+            if (p1Mevcut.deger > p2Mevcut.deger) {
+                c1.classList.add("winner-border");
+            } else if (p2Mevcut.deger > p1Mevcut.deger) {
+                c2.classList.add("winner-border");
+            } else {
+                c1.classList.add("winner-border");
+                c2.classList.add("winner-border");
+            }
         }
 
         const scores = { 1: 0, 2: 0, 3: 0, 4: 0 };
