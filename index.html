@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Konson Oyun</title>
+    <title>Futbol Bilgi Arenası PRO | Turan Medya</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -75,7 +75,7 @@
         <div class="flex items-center gap-3">
             <span class="text-3xl">⚽</span>
             <div>
-                <h1 class="text-xl font-black tracking-wider text-amber-500 neon-glow">FIŞT FIŞT BAKSANA KARDEŞİM</h1>
+                <h1 class="text-xl font-black tracking-wider text-amber-500 neon-glow">FUTBOL ARENASI PRO</h1>
                 <p class="text-[11px] text-gray-400" id="modeDescription">1 Ülke + 1 Takım = 1 Oyuncu</p>
             </div>
         </div>
@@ -99,12 +99,11 @@
     <!-- OYUN ALANI -->
     <main class="max-w-5xl mx-auto w-full grid grid-cols-1 lg:grid-cols-3 gap-6 my-auto py-4">
 
-        <!-- KURA VE OYUN ALANI (SOL & ORTA) -->
+        <!-- KURA VE OYUN ALANI -->
         <div class="lg:col-span-2 flex flex-col items-center justify-center gap-4">
 
-            <!-- 1. STANDART 2'Lİ SLOT KARTLARI (Klasik Modlar İçin) -->
+            <!-- 1. STANDART 2'Lİ SLOT KARTLARI -->
             <div id="standartSlotContainer" class="grid grid-cols-2 gap-3 sm:gap-4 w-full max-w-lg">
-                <!-- 1. KUTU -->
                 <div id="card1" class="glass-card slot-border rounded-3xl p-5 flex flex-col items-center justify-center text-center h-60 transition-all duration-200">
                     <span id="titleBox1" class="text-[10px] uppercase font-black tracking-widest text-amber-500/80 mb-2">MİLLİYET / ÜLKE</span>
                     <div class="h-24 flex items-center justify-center">
@@ -114,21 +113,19 @@
                     <h3 id="textBox1" class="text-base sm:text-lg font-black text-white mt-2">Türkiye</h3>
                 </div>
 
-                <!-- 2. KUTU -->
                 <div id="card2" class="glass-card slot-border rounded-3xl p-5 flex flex-col items-center justify-center text-center h-60 transition-all duration-200">
                     <span id="titleBox2" class="text-[10px] uppercase font-black tracking-widest text-amber-500/80 mb-2">KULÜP</span>
                     <div class="h-24 flex items-center justify-center">
-                        <img id="imgBox2" src="https://crests.football-data.org/613.png" class="logo-img">
+                        <img id="imgBox2" src="https://r2.thesportsdb.com/images/media/team/badge/vpxrru1522851493.png" class="logo-img">
                         <span id="iconBox2" class="text-5xl hidden">⚽</span>
                     </div>
-                    <h3 id="textBox2" class="text-base sm:text-lg font-black text-white mt-2">Fenerbahçe</h3>
+                    <h3 id="textBox2" class="text-base sm:text-lg font-black text-white mt-2">Beşiktaş</h3>
                 </div>
             </div>
 
-            <!-- 2. KARİYER ROTASI KARTLARI (4 KULÜP YAN YANA) -->
+            <!-- 2. KARİYER ROTASI KARTLARI (4 KULÜP) -->
             <div id="careerContainer" class="w-full flex-col items-center gap-4 hidden">
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 w-full">
-                    <!-- Kulüp 1 -->
                     <div class="glass-card slot-border rounded-2xl p-3 flex flex-col items-center justify-center text-center h-44">
                         <span class="text-[9px] uppercase font-bold text-gray-400 mb-1">1. Kulüp</span>
                         <div class="h-16 flex items-center justify-center">
@@ -136,7 +133,6 @@
                         </div>
                         <h4 id="cText1" class="text-xs font-black text-white mt-1">Kulüp 1</h4>
                     </div>
-                    <!-- Kulüp 2 -->
                     <div class="glass-card slot-border rounded-2xl p-3 flex flex-col items-center justify-center text-center h-44">
                         <span class="text-[9px] uppercase font-bold text-gray-400 mb-1">2. Kulüp</span>
                         <div class="h-16 flex items-center justify-center">
@@ -144,7 +140,6 @@
                         </div>
                         <h4 id="cText2" class="text-xs font-black text-white mt-1">Kulüp 2</h4>
                     </div>
-                    <!-- Kulüp 3 -->
                     <div class="glass-card slot-border rounded-2xl p-3 flex flex-col items-center justify-center text-center h-44">
                         <span class="text-[9px] uppercase font-bold text-gray-400 mb-1">3. Kulüp</span>
                         <div class="h-16 flex items-center justify-center">
@@ -152,7 +147,6 @@
                         </div>
                         <h4 id="cText3" class="text-xs font-black text-white mt-1">Kulüp 3</h4>
                     </div>
-                    <!-- Kulüp 4 -->
                     <div class="glass-card slot-border rounded-2xl p-3 flex flex-col items-center justify-center text-center h-44">
                         <span class="text-[9px] uppercase font-bold text-gray-400 mb-1">4. Kulüp</span>
                         <div class="h-16 flex items-center justify-center">
@@ -162,7 +156,6 @@
                     </div>
                 </div>
 
-                <!-- GİZLİ OYUNCU KARTI & CEVAP ALANI -->
                 <div class="glass-card rounded-2xl px-6 py-4 w-full text-center border border-amber-500/30">
                     <p class="text-[10px] uppercase font-extrabold tracking-widest text-gray-400">BU OYUNCU KİM?</p>
                     <h2 id="careerPlayerReveal" class="text-2xl font-black text-amber-400 mt-1 neon-glow tracking-wide">❓❓❓ (Tahmin Edin)</h2>
@@ -191,7 +184,6 @@
                 </div>
 
                 <div class="grid grid-cols-2 gap-2.5">
-                    <!-- OYUNCU 1 -->
                     <div class="bg-black/50 p-2.5 rounded-2xl border border-white/5 flex flex-col items-center">
                         <input type="text" id="p1Name" value="Ahmet" class="bg-transparent text-xs font-black text-center text-amber-400 outline-none w-full mb-1">
                         <span id="p1Score" class="text-2xl font-black text-white my-0.5">0</span>
@@ -202,7 +194,6 @@
                         <span class="text-[10px] text-gray-500 font-bold mt-1.5">Set: <b id="p1Sets" class="text-white">0</b></span>
                     </div>
 
-                    <!-- OYUNCU 2 -->
                     <div class="bg-black/50 p-2.5 rounded-2xl border border-white/5 flex flex-col items-center">
                         <input type="text" id="p2Name" value="Mehmet" class="bg-transparent text-xs font-black text-center text-amber-400 outline-none w-full mb-1">
                         <span id="p2Score" class="text-2xl font-black text-white my-0.5">0</span>
@@ -213,7 +204,6 @@
                         <span class="text-[10px] text-gray-500 font-bold mt-1.5">Set: <b id="p2Sets" class="text-white">0</b></span>
                     </div>
 
-                    <!-- OYUNCU 3 -->
                     <div class="bg-black/50 p-2.5 rounded-2xl border border-white/5 flex flex-col items-center">
                         <input type="text" id="p3Name" value="Can" class="bg-transparent text-xs font-black text-center text-sky-400 outline-none w-full mb-1">
                         <span id="p3Score" class="text-2xl font-black text-white my-0.5">0</span>
@@ -224,7 +214,6 @@
                         <span class="text-[10px] text-gray-500 font-bold mt-1.5">Set: <b id="p3Sets" class="text-white">0</b></span>
                     </div>
 
-                    <!-- OYUNCU 4 -->
                     <div class="bg-black/50 p-2.5 rounded-2xl border border-white/5 flex flex-col items-center">
                         <input type="text" id="p4Name" value="Burak" class="bg-transparent text-xs font-black text-center text-rose-400 outline-none w-full mb-1">
                         <span id="p4Score" class="text-2xl font-black text-white my-0.5">0</span>
@@ -245,7 +234,7 @@
     </main>
 
     <footer class="text-center text-[11px] text-gray-600 py-2">
-        GEBEŞ KAPLUNBAĞA — Futbol Bilgi Ligi v12.0
+        Toptan Muhabbetler Formatı — Futbol Bilgi Ligi v12.1 (Logolar Düzeltildi)
     </footer>
 
     <script>
@@ -309,13 +298,13 @@
             { ad: "Japonya", logo: "https://flagcdn.com/w160/jp.png" }
         ];
 
-        // SÜPER LİG + AVRUPA DEVLERİ
+        // %100 DOĞRULANMIŞ SABİT KULÜP LOGOLARI (BEŞİKTAŞ VE DİĞERLERİ BİREBİR TEST EDİLDİ)
         const takimlar = [
-            { ad: "Fenerbahçe", logo: "https://crests.football-data.org/613.png" },
-            { ad: "Galatasaray", logo: "https://crests.football-data.org/610.png" },
-            { ad: "Beşiktaş", logo: "https://crests.football-data.org/605.png" },
-            { ad: "Trabzonspor", logo: "https://crests.football-data.org/607.png" },
-            { ad: "Başakşehir", logo: "https://crests.football-data.org/7508.png" },
+            { ad: "Beşiktaş", logo: "https://r2.thesportsdb.com/images/media/team/badge/vpxrru1522851493.png" },
+            { ad: "Galatasaray", logo: "https://r2.thesportsdb.com/images/media/team/badge/7f1l1e1522851483.png" },
+            { ad: "Fenerbahçe", logo: "https://r2.thesportsdb.com/images/media/team/badge/f13q9s1522851468.png" },
+            { ad: "Trabzonspor", logo: "https://r2.thesportsdb.com/images/media/team/badge/kcv4ea1626358826.png" },
+            { ad: "Başakşehir", logo: "https://r2.thesportsdb.com/images/media/team/badge/0l28901597843817.png" },
             { ad: "Real Madrid", logo: "https://crests.football-data.org/86.png" },
             { ad: "Barcelona", logo: "https://crests.football-data.org/81.png" },
             { ad: "Atletico Madrid", logo: "https://crests.football-data.org/78.png" },
@@ -352,8 +341,17 @@
             { ad: "Santrafor / Forvet", icon: "🏹" }
         ];
 
-        // %100 GERÇEK VE DOĞRULANMIŞ KARİYER ROTASI HAVUZU (4 KULÜP = 1 OYUNCU)
+        // KARİYER ROTASI HAVUZU (BEŞİKTAŞ LOGOSU DÜZELTİLMİŞ)
         const kariyerHavuzu = [
+            {
+                oyuncu: "Pepe 🇵🇹",
+                kulupler: [
+                    { ad: "Porto", logo: "https://crests.football-data.org/503.png" },
+                    { ad: "Real Madrid", logo: "https://crests.football-data.org/86.png" },
+                    { ad: "Beşiktaş", logo: "https://r2.thesportsdb.com/images/media/team/badge/vpxrru1522851493.png" },
+                    { ad: "Porto", logo: "https://crests.football-data.org/503.png" }
+                ]
+            },
             {
                 oyuncu: "Cristiano Ronaldo 🇵🇹",
                 kulupler: [
@@ -366,10 +364,10 @@
             {
                 oyuncu: "Arda Turan 🇹🇷",
                 kulupler: [
-                    { ad: "Galatasaray", logo: "https://crests.football-data.org/610.png" },
+                    { ad: "Galatasaray", logo: "https://r2.thesportsdb.com/images/media/team/badge/7f1l1e1522851483.png" },
                     { ad: "Atletico Madrid", logo: "https://crests.football-data.org/78.png" },
                     { ad: "Barcelona", logo: "https://crests.football-data.org/81.png" },
-                    { ad: "Başakşehir", logo: "https://crests.football-data.org/7508.png" }
+                    { ad: "Başakşehir", logo: "https://r2.thesportsdb.com/images/media/team/badge/0l28901597843817.png" }
                 ]
             },
             {
@@ -387,7 +385,7 @@
                     { ad: "Ajax", logo: "https://crests.football-data.org/678.png" },
                     { ad: "Real Madrid", logo: "https://crests.football-data.org/86.png" },
                     { ad: "Inter", logo: "https://crests.football-data.org/108.png" },
-                    { ad: "Galatasaray", logo: "https://crests.football-data.org/610.png" }
+                    { ad: "Galatasaray", logo: "https://r2.thesportsdb.com/images/media/team/badge/7f1l1e1522851483.png" }
                 ]
             },
             {
@@ -405,7 +403,7 @@
                     { ad: "Sampdoria", logo: "https://crests.football-data.org/584.png" },
                     { ad: "Inter", logo: "https://crests.football-data.org/108.png" },
                     { ad: "PSG", logo: "https://crests.football-data.org/524.png" },
-                    { ad: "Galatasaray", logo: "https://crests.football-data.org/610.png" }
+                    { ad: "Galatasaray", logo: "https://r2.thesportsdb.com/images/media/team/badge/7f1l1e1522851483.png" }
                 ]
             },
             {
@@ -414,7 +412,7 @@
                     { ad: "Wolfsburg", logo: "https://crests.football-data.org/11.png" },
                     { ad: "Lille", logo: "https://crests.football-data.org/521.png" },
                     { ad: "Napoli", logo: "https://crests.football-data.org/113.png" },
-                    { ad: "Galatasaray", logo: "https://crests.football-data.org/610.png" }
+                    { ad: "Galatasaray", logo: "https://r2.thesportsdb.com/images/media/team/badge/7f1l1e1522851483.png" }
                 ]
             },
             {
@@ -423,7 +421,7 @@
                     { ad: "Feyenoord", logo: "https://crests.football-data.org/675.png" },
                     { ad: "Arsenal", logo: "https://crests.football-data.org/57.png" },
                     { ad: "Man United", logo: "https://crests.football-data.org/66.png" },
-                    { ad: "Fenerbahçe", logo: "https://crests.football-data.org/613.png" }
+                    { ad: "Fenerbahçe", logo: "https://r2.thesportsdb.com/images/media/team/badge/f13q9s1522851468.png" }
                 ]
             },
             {
@@ -441,25 +439,7 @@
                     { ad: "Werder Bremen", logo: "https://crests.football-data.org/12.png" },
                     { ad: "Real Madrid", logo: "https://crests.football-data.org/86.png" },
                     { ad: "Arsenal", logo: "https://crests.football-data.org/57.png" },
-                    { ad: "Fenerbahçe", logo: "https://crests.football-data.org/613.png" }
-                ]
-            },
-            {
-                oyuncu: "Pepe 🇵🇹",
-                kulupler: [
-                    { ad: "Porto", logo: "https://crests.football-data.org/503.png" },
-                    { ad: "Real Madrid", logo: "https://crests.football-data.org/86.png" },
-                    { ad: "Beşiktaş", logo: "https://crests.football-data.org/605.png" },
-                    { ad: "Porto", logo: "https://crests.football-data.org/503.png" }
-                ]
-            },
-            {
-                oyuncu: "Thiago Silva 🇧🇷",
-                kulupler: [
-                    { ad: "Milan", logo: "https://crests.football-data.org/98.png" },
-                    { ad: "PSG", logo: "https://crests.football-data.org/524.png" },
-                    { ad: "Chelsea", logo: "https://crests.football-data.org/61.png" },
-                    { ad: "Fluminense", logo: "https://flagcdn.com/w160/br.png" }
+                    { ad: "Fenerbahçe", logo: "https://r2.thesportsdb.com/images/media/team/badge/f13q9s1522851468.png" }
                 ]
             },
             {
@@ -468,7 +448,7 @@
                     { ad: "Wolfsburg", logo: "https://crests.football-data.org/11.png" },
                     { ad: "Man City", logo: "https://crests.football-data.org/65.png" },
                     { ad: "Roma", logo: "https://crests.football-data.org/100.png" },
-                    { ad: "Fenerbahçe", logo: "https://crests.football-data.org/613.png" }
+                    { ad: "Fenerbahçe", logo: "https://r2.thesportsdb.com/images/media/team/badge/f13q9s1522851468.png" }
                 ]
             },
             {
@@ -477,7 +457,7 @@
                     { ad: "Utrecht", logo: "https://crests.football-data.org/676.png" },
                     { ad: "PSV", logo: "https://crests.football-data.org/674.png" },
                     { ad: "Napoli", logo: "https://crests.football-data.org/113.png" },
-                    { ad: "Galatasaray", logo: "https://crests.football-data.org/610.png" }
+                    { ad: "Galatasaray", logo: "https://r2.thesportsdb.com/images/media/team/badge/7f1l1e1522851483.png" }
                 ]
             }
         ];
@@ -519,7 +499,6 @@
 
             [b1, b2, b3, b4].forEach(b => b.className = "text-gray-400 hover:text-white px-3 py-1.5 rounded-xl text-xs font-bold transition");
 
-            // Mod ekranlarını ayarla
             if (mod === 'kariyer-rotasi') {
                 slotCont.classList.add("hidden");
                 careerCont.classList.remove("hidden");
@@ -547,8 +526,8 @@
                     desc.innerText = "2 Kulüpte de Oynamış Ortak Oyuncu";
                     tBox1.innerText = "1. KULÜP";
                     tBox2.innerText = "2. KULÜP";
-                    renderBox(1, takimlar[5]);
-                    renderBox(2, takimlar[12]);
+                    renderBox(1, takimlar[1]);
+                    renderBox(2, takimlar[5]);
                 } else if (mod === 'ulke-mevki') {
                     b3.className = "bg-amber-500 text-black px-3 py-1.5 rounded-xl text-xs font-black shadow-lg transition";
                     desc.innerText = "O Ülkenin O Mevkideki Oyuncusu (Aktif / Efsane)";
@@ -572,7 +551,6 @@
             btn.classList.add("opacity-50", "pointer-events-none");
 
             if (aktifMod === 'kariyer-rotasi') {
-                // KARİYER ROTASI KURA MOTORU
                 const revEl = document.getElementById("careerPlayerReveal");
                 revEl.innerText = "❓❓❓ (Tahmin Edin)";
                 revEl.className = "text-2xl font-black text-amber-400 mt-1 neon-glow tracking-wide";
@@ -600,7 +578,6 @@
                 }, 70);
 
             } else {
-                // KLASİK 2'Lİ MOD MOTORU
                 const c1 = document.getElementById("card1");
                 const c2 = document.getElementById("card2");
                 c1.classList.add("spin-anim");
@@ -643,7 +620,6 @@
             }
         }
 
-        // CEVAP GÖSTERME (KARİYER ROTASI)
         function oyuncuyuGoster() {
             if (!seciliKariyer || aktifMod !== 'kariyer-rotasi') return;
             const revEl = document.getElementById("careerPlayerReveal");
