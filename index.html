@@ -29,7 +29,7 @@
 </head>
 <body class="min-h-screen flex flex-col justify-between p-3 sm:p-6 select-none">
 
-    <!-- ÜST BAŞLIK & MOD SEÇİCİ -->
+    <!-- ÜST BAŞLIK & 3 FARKLI MOD SEÇİCİ -->
     <header class="max-w-4xl mx-auto w-full flex flex-col sm:flex-row items-center justify-between pb-4 border-b border-white/10 gap-3">
         <div class="flex items-center gap-3">
             <span class="text-3xl">⚽</span>
@@ -39,12 +39,15 @@
             </div>
         </div>
 
-        <div class="flex items-center gap-2 bg-black/50 p-1.5 rounded-2xl border border-white/5">
-            <button id="modBtn1" onclick="oyunModuDegistir('ulke-kulup')" class="bg-amber-500 text-black px-3.5 py-1.5 rounded-xl text-xs font-black shadow-lg transition">
+        <div class="flex flex-wrap items-center justify-center gap-1.5 bg-black/50 p-1.5 rounded-2xl border border-white/5">
+            <button id="modBtn1" onclick="oyunModuDegistir('ulke-kulup')" class="bg-amber-500 text-black px-3 py-1.5 rounded-xl text-xs font-black shadow-lg transition">
                 1 Ülke - 1 Kulüp
             </button>
-            <button id="modBtn2" onclick="oyunModuDegistir('capraz-kulup')" class="text-gray-400 hover:text-white px-3.5 py-1.5 rounded-xl text-xs font-bold transition">
+            <button id="modBtn2" onclick="oyunModuDegistir('capraz-kulup')" class="text-gray-400 hover:text-white px-3 py-1.5 rounded-xl text-xs font-bold transition">
                 Çapraz 2 Kulüp
+            </button>
+            <button id="modBtn3" onclick="oyunModuDegistir('ulke-mevki')" class="text-gray-400 hover:text-white px-3 py-1.5 rounded-xl text-xs font-bold transition">
+                Ülke + Mevki
             </button>
         </div>
     </header>
@@ -62,7 +65,7 @@
                     <h3 id="textBox1" class="text-base sm:text-lg font-black text-white mt-1">Türkiye</h3>
                 </div>
 
-                <!-- 2. KUTU (2. KULÜP) -->
+                <!-- 2. KUTU (KULÜP veya MEVKİ) -->
                 <div id="card2" class="glass-card slot-border rounded-3xl p-5 flex flex-col items-center justify-center text-center h-52 transition-all duration-150">
                     <span id="titleBox2" class="text-[10px] uppercase font-black tracking-widest text-amber-500/80 mb-2">KULÜP</span>
                     <div id="iconBox2" class="text-5xl sm:text-6xl my-auto">🦅</div>
@@ -77,7 +80,7 @@
             </button>
         </div>
 
-        <!-- 4 KİŞİLİK YARIŞMACI VE SKOR PANELİ (SAĞ) -->
+        <!-- 4 KİŞİLİK SKOR PANELİ -->
         <div class="glass-card rounded-3xl p-4 sm:p-5 flex flex-col justify-between border border-white/5">
             <div>
                 <div class="flex items-center justify-between pb-3 mb-3 border-b border-white/10">
@@ -133,18 +136,17 @@
             </div>
 
             <div class="text-[10px] text-gray-500 text-center mt-3">
-                Klavye: 1, 2, 3, 4 tuşlarıyla hızlıca puan verebilirsin
+                Klavye: 1, 2, 3, 4 tuşlarıyla puan ver | Space ile kura çek
             </div>
         </div>
 
     </main>
 
     <footer class="text-center text-[11px] text-gray-600 py-2">
-        Toptan Muhabbetler Formatı — Futbol Bilgi Ligi v2.0
+        Toptan Muhabbetler Formatı — Futbol Bilgi Ligi v3.0
     </footer>
 
     <script>
-        // SES EFEKTİ MOTORU (Tarayıcı içi Web Audio API)
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         function playTickSound() {
             try {
@@ -166,8 +168,8 @@
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
                 osc.type = 'sine';
-                osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // D5
-                osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.1); // A5
+                osc.frequency.setValueAtTime(587.33, audioCtx.currentTime);
+                osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.1);
                 gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35);
                 osc.connect(gain);
@@ -177,7 +179,6 @@
             } catch(e) {}
         }
 
-        // VERİTABANI
         const ulkeler = [
             { ad: "Türkiye", bayrak: "🇹🇷" }, { ad: "Brezilya", bayrak: "🇧🇷" },
             { ad: "Arjantin", bayrak: "🇦🇷" }, { ad: "Portekiz", bayrak: "🇵🇹" },
@@ -216,30 +217,63 @@
             { ad: "PSV Eindhoven", icon: "🔴" }, { ad: "Flamengo", icon: "🔴" }
         ];
 
-        let aktifMod = 'ulke-kulup'; // 'ulke-kulup' veya 'capraz-kulup'
+        // MEVKİLER HAVUZU
+        const mevkiler = [
+            { ad: "Kaleci", icon: "🧤" },
+            { ad: "Stoper", icon: "🛡️" },
+            { ad: "Sol Bek", icon: "🏃‍♂️" },
+            { ad: "Sağ Bek", icon: "🏃‍♂️" },
+            { ad: "Ön Libero / DOS", icon: "⚓" },
+            { ad: "Merkez Orta Saha", icon: "🧠" },
+            { ad: "On Numara (10)", icon: "🎯" },
+            { ad: "Sol Kanat", icon: "⚡" },
+            { ad: "Sağ Kanat", icon: "⚡" },
+            { ad: "Santrafor / Forvet", icon: "🏹" }
+        ];
+
+        let aktifMod = 'ulke-kulup';
         let donuyor = false;
 
         function oyunModuDegistir(mod) {
             aktifMod = mod;
             const b1 = document.getElementById("modBtn1");
             const b2 = document.getElementById("modBtn2");
+            const b3 = document.getElementById("modBtn3");
             const desc = document.getElementById("modeDescription");
             const tBox1 = document.getElementById("titleBox1");
+            const tBox2 = document.getElementById("titleBox2");
+
+            b1.className = "text-gray-400 hover:text-white px-3 py-1.5 rounded-xl text-xs font-bold transition";
+            b2.className = "text-gray-400 hover:text-white px-3 py-1.5 rounded-xl text-xs font-bold transition";
+            b3.className = "text-gray-400 hover:text-white px-3 py-1.5 rounded-xl text-xs font-bold transition";
 
             if (mod === 'ulke-kulup') {
-                b1.className = "bg-amber-500 text-black px-3.5 py-1.5 rounded-xl text-xs font-black shadow-lg transition";
-                b2.className = "text-gray-400 hover:text-white px-3.5 py-1.5 rounded-xl text-xs font-bold transition";
+                b1.className = "bg-amber-500 text-black px-3 py-1.5 rounded-xl text-xs font-black shadow-lg transition";
                 desc.innerText = "1 Ülke + 1 Takım = 1 Oyuncu";
                 tBox1.innerText = "MİLLİYET / ÜLKE";
+                tBox2.innerText = "KULÜP";
                 document.getElementById("iconBox1").innerText = "🇹🇷";
                 document.getElementById("textBox1").innerText = "Türkiye";
-            } else {
-                b2.className = "bg-amber-500 text-black px-3.5 py-1.5 rounded-xl text-xs font-black shadow-lg transition";
-                b1.className = "text-gray-400 hover:text-white px-3.5 py-1.5 rounded-xl text-xs font-bold transition";
+                document.getElementById("iconBox2").innerText = "🦅";
+                document.getElementById("textBox2").innerText = "Beşiktaş";
+            } else if (mod === 'capraz-kulup') {
+                b2.className = "bg-amber-500 text-black px-3 py-1.5 rounded-xl text-xs font-black shadow-lg transition";
                 desc.innerText = "2 Kulüpte de Oynamış Ortak Oyuncu";
                 tBox1.innerText = "1. KULÜP";
+                tBox2.innerText = "2. KULÜP";
                 document.getElementById("iconBox1").innerText = "👑";
                 document.getElementById("textBox1").innerText = "Real Madrid";
+                document.getElementById("iconBox2").innerText = "🔵";
+                document.getElementById("textBox2").innerText = "Chelsea";
+            } else if (mod === 'ulke-mevki') {
+                b3.className = "bg-amber-500 text-black px-3 py-1.5 rounded-xl text-xs font-black shadow-lg transition";
+                desc.innerText = "O Ülkenin O Mevkideki Oyuncusu (Aktif / Efsane)";
+                tBox1.innerText = "MİLLİYET / ÜLKE";
+                tBox2.innerText = "MEVKİ";
+                document.getElementById("iconBox1").innerText = "🇧🇷";
+                document.getElementById("textBox1").innerText = "Brezilya";
+                document.getElementById("iconBox2").innerText = "🏃‍♂️";
+                document.getElementById("textBox2").innerText = "Sol Bek";
             }
         }
 
@@ -274,8 +308,7 @@
                     t1.innerText = rU.ad;
                     i2.innerText = rT.icon;
                     t2.innerText = rT.ad;
-                } else {
-                    // Çapraz kulüp modu: İki farklı takım seç
+                } else if (aktifMod === 'capraz-kulup') {
                     let rT1 = takimlar[Math.floor(Math.random() * takimlar.length)];
                     let rT2 = takimlar[Math.floor(Math.random() * takimlar.length)];
                     while(rT1.ad === rT2.ad) {
@@ -285,6 +318,13 @@
                     t1.innerText = rT1.ad;
                     i2.innerText = rT2.icon;
                     t2.innerText = rT2.ad;
+                } else if (aktifMod === 'ulke-mevki') {
+                    const rU = ulkeler[Math.floor(Math.random() * ulkeler.length)];
+                    const rM = mevkiler[Math.floor(Math.random() * mevkiler.length)];
+                    i1.innerText = rU.bayrak;
+                    t1.innerText = rU.ad;
+                    i2.innerText = rM.icon;
+                    t2.innerText = rM.ad;
                 }
 
                 sayac++;
@@ -299,7 +339,6 @@
             }, 70);
         }
 
-        // 4 KİŞİLİK SKOR YÖNETİMİ
         const scores = { 1: 0, 2: 0, 3: 0, 4: 0 };
         const sets = { 1: 0, 2: 0, 3: 0, 4: 0 };
 
@@ -311,7 +350,6 @@
                 sets[player]++;
                 document.getElementById(`p${player}Sets`).innerText = sets[player];
 
-                // Konfeti Şovu
                 confetti({
                     particleCount: 100,
                     spread: 70,
@@ -341,7 +379,6 @@
             }
         }
 
-        // KLAVYE KONTROLLERİ
         window.addEventListener("keydown", (e) => {
             if (e.target.tagName === 'INPUT') return;
             if (e.code === "Space") {
