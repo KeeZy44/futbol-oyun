@@ -107,7 +107,7 @@
                 <div id="card1" class="glass-card slot-border rounded-3xl p-5 flex flex-col items-center justify-center text-center h-60 transition-all duration-200">
                     <span id="titleBox1" class="text-[10px] uppercase font-black tracking-widest text-amber-500/80 mb-2">MİLLİYET / ÜLKE</span>
                     <div class="h-24 flex items-center justify-center">
-                        <img id="imgBox1" src="https://flagcdn.com/w160/tr.png" class="logo-img rounded-md">
+                        <img id="imgBox1" src="https://flagcdn.com/w160/tr.png" class="logo-img rounded-md" referrerpolicy="no-referrer">
                         <span id="iconBox1" class="text-5xl hidden">🇹🇷</span>
                     </div>
                     <h3 id="textBox1" class="text-base sm:text-lg font-black text-white mt-2">Türkiye</h3>
@@ -116,41 +116,41 @@
                 <div id="card2" class="glass-card slot-border rounded-3xl p-5 flex flex-col items-center justify-center text-center h-60 transition-all duration-200">
                     <span id="titleBox2" class="text-[10px] uppercase font-black tracking-widest text-amber-500/80 mb-2">KULÜP</span>
                     <div class="h-24 flex items-center justify-center">
-                        <img id="imgBox2" src="https://r2.thesportsdb.com/images/media/team/badge/vpxrru1522851493.png" class="logo-img">
+                        <img id="imgBox2" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Besiktas_JK_logo.svg/200px-Besiktas_JK_logo.svg.png" class="logo-img" referrerpolicy="no-referrer">
                         <span id="iconBox2" class="text-5xl hidden">⚽</span>
                     </div>
                     <h3 id="textBox2" class="text-base sm:text-lg font-black text-white mt-2">Beşiktaş</h3>
                 </div>
             </div>
 
-            <!-- 2. KARİYER ROTASI KARTLARI (4 KULÜP) -->
+            <!-- 2. KARİYER ROTASI KARTLARI -->
             <div id="careerContainer" class="w-full flex-col items-center gap-4 hidden">
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 w-full">
                     <div class="glass-card slot-border rounded-2xl p-3 flex flex-col items-center justify-center text-center h-44">
                         <span class="text-[9px] uppercase font-bold text-gray-400 mb-1">1. Kulüp</span>
                         <div class="h-16 flex items-center justify-center">
-                            <img id="cImg1" src="" class="career-logo-img">
+                            <img id="cImg1" src="" class="career-logo-img" referrerpolicy="no-referrer">
                         </div>
                         <h4 id="cText1" class="text-xs font-black text-white mt-1">Kulüp 1</h4>
                     </div>
                     <div class="glass-card slot-border rounded-2xl p-3 flex flex-col items-center justify-center text-center h-44">
                         <span class="text-[9px] uppercase font-bold text-gray-400 mb-1">2. Kulüp</span>
                         <div class="h-16 flex items-center justify-center">
-                            <img id="cImg2" src="" class="career-logo-img">
+                            <img id="cImg2" src="" class="career-logo-img" referrerpolicy="no-referrer">
                         </div>
                         <h4 id="cText2" class="text-xs font-black text-white mt-1">Kulüp 2</h4>
                     </div>
                     <div class="glass-card slot-border rounded-2xl p-3 flex flex-col items-center justify-center text-center h-44">
                         <span class="text-[9px] uppercase font-bold text-gray-400 mb-1">3. Kulüp</span>
                         <div class="h-16 flex items-center justify-center">
-                            <img id="cImg3" src="" class="career-logo-img">
+                            <img id="cImg3" src="" class="career-logo-img" referrerpolicy="no-referrer">
                         </div>
                         <h4 id="cText3" class="text-xs font-black text-white mt-1">Kulüp 3</h4>
                     </div>
                     <div class="glass-card slot-border rounded-2xl p-3 flex flex-col items-center justify-center text-center h-44">
                         <span class="text-[9px] uppercase font-bold text-gray-400 mb-1">4. Kulüp</span>
                         <div class="h-16 flex items-center justify-center">
-                            <img id="cImg4" src="" class="career-logo-img">
+                            <img id="cImg4" src="" class="career-logo-img" referrerpolicy="no-referrer">
                         </div>
                         <h4 id="cText4" class="text-xs font-black text-white mt-1">Kulüp 4</h4>
                     </div>
@@ -234,7 +234,7 @@
     </main>
 
     <footer class="text-center text-[11px] text-gray-600 py-2">
-        Toptan Muhabbetler Formatı — Futbol Bilgi Ligi v12.1 (Logolar Düzeltildi)
+        Toptan Muhabbetler Formatı — Futbol Bilgi Ligi v13.0 (Tüm Süper Lig Eklendi)
     </footer>
 
     <script>
@@ -270,7 +270,6 @@
             } catch(e) {}
         }
 
-        // MİLLİ TAKIMLAR
         const ulkeler = [
             { ad: "Türkiye", logo: "https://flagcdn.com/w160/tr.png" },
             { ad: "Brezilya", logo: "https://flagcdn.com/w160/br.png" },
@@ -298,34 +297,46 @@
             { ad: "Japonya", logo: "https://flagcdn.com/w160/jp.png" }
         ];
 
-        // %100 DOĞRULANMIŞ SABİT KULÜP LOGOLARI (BEŞİKTAŞ VE DİĞERLERİ BİREBİR TEST EDİLDİ)
+        // GENİŞLETİLMİŞ TÜM SÜPER LİG + AVRUPA DEVLERİ HAVUZU
         const takimlar = [
-            { ad: "Beşiktaş", logo: "https://r2.thesportsdb.com/images/media/team/badge/vpxrru1522851493.png" },
-            { ad: "Galatasaray", logo: "https://r2.thesportsdb.com/images/media/team/badge/7f1l1e1522851483.png" },
-            { ad: "Fenerbahçe", logo: "https://r2.thesportsdb.com/images/media/team/badge/f13q9s1522851468.png" },
-            { ad: "Trabzonspor", logo: "https://r2.thesportsdb.com/images/media/team/badge/kcv4ea1626358826.png" },
-            { ad: "Başakşehir", logo: "https://r2.thesportsdb.com/images/media/team/badge/0l28901597843817.png" },
-            { ad: "Real Madrid", logo: "https://crests.football-data.org/86.png" },
-            { ad: "Barcelona", logo: "https://crests.football-data.org/81.png" },
-            { ad: "Atletico Madrid", logo: "https://crests.football-data.org/78.png" },
-            { ad: "Manchester City", logo: "https://crests.football-data.org/65.png" },
-            { ad: "Manchester United", logo: "https://crests.football-data.org/66.png" },
-            { ad: "Liverpool", logo: "https://crests.football-data.org/64.png" },
-            { ad: "Arsenal", logo: "https://crests.football-data.org/57.png" },
-            { ad: "Chelsea", logo: "https://crests.football-data.org/61.png" },
-            { ad: "Tottenham", logo: "https://crests.football-data.org/73.png" },
-            { ad: "Bayern Münih", logo: "https://crests.football-data.org/5.png" },
-            { ad: "Borussia Dortmund", logo: "https://crests.football-data.org/4.png" },
-            { ad: "Bayer Leverkusen", logo: "https://crests.football-data.org/3.png" },
-            { ad: "Inter", logo: "https://crests.football-data.org/108.png" },
-            { ad: "Milan", logo: "https://crests.football-data.org/98.png" },
-            { ad: "Juventus", logo: "https://crests.football-data.org/109.png" },
-            { ad: "Napoli", logo: "https://crests.football-data.org/113.png" },
-            { ad: "Roma", logo: "https://crests.football-data.org/100.png" },
-            { ad: "PSG", logo: "https://crests.football-data.org/524.png" },
-            { ad: "Benfica", logo: "https://crests.football-data.org/1903.png" },
-            { ad: "Porto", logo: "https://crests.football-data.org/503.png" },
-            { ad: "Ajax", logo: "https://crests.football-data.org/678.png" }
+            // SÜPER LİG DEVLERİ VE ANADOLU KULÜPLERİ
+            { ad: "Beşiktaş", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Besiktas_JK_logo.svg/200px-Besiktas_JK_logo.svg.png" },
+            { ad: "Galatasaray", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Galatasaray_Sports_Club_Logo.png/180px-Galatasaray_Sports_Club_Logo.png" },
+            { ad: "Fenerbahçe", logo: "https://upload.wikimedia.org/wikipedia/tr/thumb/8/86/Fenerbah%C3%A7e_SK.png/180px-Fenerbah%C3%A7e_SK.png" },
+            { ad: "Trabzonspor", logo: "https://upload.wikimedia.org/wikipedia/tr/thumb/a/ab/TrabzonsporAmblemi.png/180px-TrabzonsporAmblemi.png" },
+            { ad: "Başakşehir", logo: "https://upload.wikimedia.org/wikipedia/tr/thumb/c/cd/%C4%B0stanbul_Ba%C5%9fak%C5%9Fehir_FK.png/180px-%C4%B0stanbul_Ba%C5%9fak%C5%9Fehir_FK.png" },
+            { ad: "Samsunspor", logo: "https://upload.wikimedia.org/wikipedia/tr/thumb/7/7b/Samsunspor_logo.png/180px-Samsunspor_logo.png" },
+            { ad: "Göztepe", logo: "https://upload.wikimedia.org/wikipedia/tr/thumb/1/15/G%C3%B6ztepe_logo.png/180px-G%C3%B6ztepe_logo.png" },
+            { ad: "Eyüpspor", logo: "https://upload.wikimedia.org/wikipedia/tr/thumb/b/b5/Ey%C3%BCpspor_logosu.png/180px-Ey%C3%BCpspor_logosu.png" },
+            { ad: "Sivasspor", logo: "https://upload.wikimedia.org/wikipedia/tr/thumb/8/80/Sivasspor.png/180px-Sivasspor.png" },
+            { ad: "Konyaspor", logo: "https://upload.wikimedia.org/wikipedia/tr/thumb/f/fe/Konyaspor_1922.png/180px-Konyaspor_1922.png" },
+            { ad: "Kasımpaşa", logo: "https://upload.wikimedia.org/wikipedia/tr/thumb/c/ca/Kasimpasa_2012.png/180px-Kasimpasa_2012.png" },
+            { ad: "Çaykur Rizespor", logo: "https://upload.wikimedia.org/wikipedia/tr/thumb/a/a7/%C3%87aykur_Rizespor_logo.png/180px-%C3%87aykur_Rizespor_logo.png" },
+            { ad: "Antalyaspor", logo: "https://upload.wikimedia.org/wikipedia/tr/thumb/b/b9/Antalyaspor_logo.png/180px-Antalyaspor_logo.png" },
+            { ad: "Gaziantep FK", logo: "https://upload.wikimedia.org/wikipedia/tr/thumb/5/52/Gaziantep_FK.png/180px-Gaziantep_FK.png" },
+            { ad: "Alanyaspor", logo: "https://upload.wikimedia.org/wikipedia/tr/thumb/1/13/Alanyaspor_logo.png/180px-Alanyaspor_logo.png" },
+            { ad: "Kayserispor", logo: "https://upload.wikimedia.org/wikipedia/tr/thumb/8/87/Kayserispor_logosu.png/180px-Kayserispor_logosu.png" },
+            { ad: "Adana Demirspor", logo: "https://upload.wikimedia.org/wikipedia/tr/thumb/e/e7/Adana_Demirspor_logo.png/180px-Adana_Demirspor_logo.png" },
+            { ad: "Bodrum FK", logo: "https://upload.wikimedia.org/wikipedia/tr/thumb/7/77/Bodrum_FK_logo.png/180px-Bodrum_FK_logo.png" },
+            { ad: "Hatayspor", logo: "https://upload.wikimedia.org/wikipedia/tr/thumb/f/ff/Hatayspor.png/180px-Hatayspor.png" },
+
+            // AVRUPA DEVLERİ
+            { ad: "Real Madrid", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/5/56/Real_Madrid_CF.svg/180px-Real_Madrid_CF.svg.png" },
+            { ad: "Barcelona", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/4/47/FC_Barcelona_%28crest%29.svg/180px-FC_Barcelona_%28crest%29.svg.png" },
+            { ad: "Atletico Madrid", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/f/f4/Atletico_Madrid_2017_logo.svg/180px-Atletico_Madrid_2017_logo.svg.png" },
+            { ad: "Manchester City", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/e/eb/Manchester_City_FC_badge.svg/180px-Manchester_City_FC_badge.svg.png" },
+            { ad: "Manchester United", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/7/7a/Manchester_United_FC_crest.svg/180px-Manchester_United_FC_crest.svg.png" },
+            { ad: "Liverpool", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/0/0c/Liverpool_FC.svg/180px-Liverpool_FC.svg.png" },
+            { ad: "Arsenal", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/5/53/Arsenal_FC.svg/180px-Arsenal_FC.svg.png" },
+            { ad: "Chelsea", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/c/cc/Chelsea_FC.svg/180px-Chelsea_FC.svg.png" },
+            { ad: "Tottenham", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/b/b4/Tottenham_Hotspur.svg/180px-Tottenham_Hotspur.svg.png" },
+            { ad: "Bayern Münih", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/FC_Bayern_M%C3%BCnchen_logo_%282017%29.svg/180px-FC_Bayern_M%C3%BCnchen_logo_%282017%29.svg.png" },
+            { ad: "Borussia Dortmund", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Borussia_Dortmund_logo.svg/180px-Borussia_Dortmund_logo.svg.png" },
+            { ad: "Bayer Leverkusen", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/5/59/Bayer_04_Leverkusen_logo.svg/180px-Bayer_04_Leverkusen_logo.svg.png" },
+            { ad: "Inter", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/FC_Internazionale_Milano_2021.svg/180px-FC_Internazionale_Milano_2021.svg.png" },
+            { ad: "Milan", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Logo_of_AC_Milan.svg/180px-Logo_of_AC_Milan.svg.png" },
+            { ad: "Juventus", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Juventus_FC_2017_icon_%28black%29.svg/180px-Juventus_FC_2017_icon_%28black%29.svg.png" },
+            { ad: "PSG", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/a/a7/Paris_Saint-Germain_F.C..svg/180px-Paris_Saint-Germain_F.C..svg.png" }
         ];
 
         const mevkiler = [
@@ -341,14 +352,13 @@
             { ad: "Santrafor / Forvet", icon: "🏹" }
         ];
 
-        // KARİYER ROTASI HAVUZU (BEŞİKTAŞ LOGOSU DÜZELTİLMİŞ)
         const kariyerHavuzu = [
             {
                 oyuncu: "Pepe 🇵🇹",
                 kulupler: [
                     { ad: "Porto", logo: "https://crests.football-data.org/503.png" },
-                    { ad: "Real Madrid", logo: "https://crests.football-data.org/86.png" },
-                    { ad: "Beşiktaş", logo: "https://r2.thesportsdb.com/images/media/team/badge/vpxrru1522851493.png" },
+                    { ad: "Real Madrid", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/5/56/Real_Madrid_CF.svg/180px-Real_Madrid_CF.svg.png" },
+                    { ad: "Beşiktaş", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Besiktas_JK_logo.svg/200px-Besiktas_JK_logo.svg.png" },
                     { ad: "Porto", logo: "https://crests.football-data.org/503.png" }
                 ]
             },
@@ -356,54 +366,36 @@
                 oyuncu: "Cristiano Ronaldo 🇵🇹",
                 kulupler: [
                     { ad: "Sporting CP", logo: "https://crests.football-data.org/498.png" },
-                    { ad: "Man United", logo: "https://crests.football-data.org/66.png" },
-                    { ad: "Real Madrid", logo: "https://crests.football-data.org/86.png" },
-                    { ad: "Juventus", logo: "https://crests.football-data.org/109.png" }
+                    { ad: "Man United", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/7/7a/Manchester_United_FC_crest.svg/180px-Manchester_United_FC_crest.svg.png" },
+                    { ad: "Real Madrid", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/5/56/Real_Madrid_CF.svg/180px-Real_Madrid_CF.svg.png" },
+                    { ad: "Juventus", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Juventus_FC_2017_icon_%28black%29.svg/180px-Juventus_FC_2017_icon_%28black%29.svg.png" }
                 ]
             },
             {
                 oyuncu: "Arda Turan 🇹🇷",
                 kulupler: [
-                    { ad: "Galatasaray", logo: "https://r2.thesportsdb.com/images/media/team/badge/7f1l1e1522851483.png" },
-                    { ad: "Atletico Madrid", logo: "https://crests.football-data.org/78.png" },
-                    { ad: "Barcelona", logo: "https://crests.football-data.org/81.png" },
-                    { ad: "Başakşehir", logo: "https://r2.thesportsdb.com/images/media/team/badge/0l28901597843817.png" }
-                ]
-            },
-            {
-                oyuncu: "Zlatan Ibrahimović 🇸🇪",
-                kulupler: [
-                    { ad: "Ajax", logo: "https://crests.football-data.org/678.png" },
-                    { ad: "Juventus", logo: "https://crests.football-data.org/109.png" },
-                    { ad: "Inter", logo: "https://crests.football-data.org/108.png" },
-                    { ad: "Barcelona", logo: "https://crests.football-data.org/81.png" }
+                    { ad: "Galatasaray", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Galatasaray_Sports_Club_Logo.png/180px-Galatasaray_Sports_Club_Logo.png" },
+                    { ad: "Atletico Madrid", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/f/f4/Atletico_Madrid_2017_logo.svg/180px-Atletico_Madrid_2017_logo.svg.png" },
+                    { ad: "Barcelona", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/4/47/FC_Barcelona_%28crest%29.svg/180px-FC_Barcelona_%28crest%29.svg.png" },
+                    { ad: "Başakşehir", logo: "https://upload.wikimedia.org/wikipedia/tr/thumb/c/cd/%C4%B0stanbul_Ba%C5%9fak%C5%9Fehir_FK.png/180px-%C4%B0stanbul_Ba%C5%9fak%C5%9Fehir_FK.png" }
                 ]
             },
             {
                 oyuncu: "Wesley Sneijder 🇳🇱",
                 kulupler: [
                     { ad: "Ajax", logo: "https://crests.football-data.org/678.png" },
-                    { ad: "Real Madrid", logo: "https://crests.football-data.org/86.png" },
-                    { ad: "Inter", logo: "https://crests.football-data.org/108.png" },
-                    { ad: "Galatasaray", logo: "https://r2.thesportsdb.com/images/media/team/badge/7f1l1e1522851483.png" }
-                ]
-            },
-            {
-                oyuncu: "Hakan Çalhanoğlu 🇹🇷",
-                kulupler: [
-                    { ad: "Hamburg", logo: "https://crests.football-data.org/18.png" },
-                    { ad: "Leverkusen", logo: "https://crests.football-data.org/3.png" },
-                    { ad: "Milan", logo: "https://crests.football-data.org/98.png" },
-                    { ad: "Inter", logo: "https://crests.football-data.org/108.png" }
+                    { ad: "Real Madrid", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/5/56/Real_Madrid_CF.svg/180px-Real_Madrid_CF.svg.png" },
+                    { ad: "Inter", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/FC_Internazionale_Milano_2021.svg/180px-FC_Internazionale_Milano_2021.svg.png" },
+                    { ad: "Galatasaray", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Galatasaray_Sports_Club_Logo.png/180px-Galatasaray_Sports_Club_Logo.png" }
                 ]
             },
             {
                 oyuncu: "Mauro Icardi 🇦🇷",
                 kulupler: [
                     { ad: "Sampdoria", logo: "https://crests.football-data.org/584.png" },
-                    { ad: "Inter", logo: "https://crests.football-data.org/108.png" },
-                    { ad: "PSG", logo: "https://crests.football-data.org/524.png" },
-                    { ad: "Galatasaray", logo: "https://r2.thesportsdb.com/images/media/team/badge/7f1l1e1522851483.png" }
+                    { ad: "Inter", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/FC_Internazionale_Milano_2021.svg/180px-FC_Internazionale_Milano_2021.svg.png" },
+                    { ad: "PSG", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/a/a7/Paris_Saint-Germain_F.C..svg/180px-Paris_Saint-Germain_F.C..svg.png" },
+                    { ad: "Galatasaray", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Galatasaray_Sports_Club_Logo.png/180px-Galatasaray_Sports_Club_Logo.png" }
                 ]
             },
             {
@@ -412,52 +404,25 @@
                     { ad: "Wolfsburg", logo: "https://crests.football-data.org/11.png" },
                     { ad: "Lille", logo: "https://crests.football-data.org/521.png" },
                     { ad: "Napoli", logo: "https://crests.football-data.org/113.png" },
-                    { ad: "Galatasaray", logo: "https://r2.thesportsdb.com/images/media/team/badge/7f1l1e1522851483.png" }
-                ]
-            },
-            {
-                oyuncu: "Robin van Persie 🇳🇱",
-                kulupler: [
-                    { ad: "Feyenoord", logo: "https://crests.football-data.org/675.png" },
-                    { ad: "Arsenal", logo: "https://crests.football-data.org/57.png" },
-                    { ad: "Man United", logo: "https://crests.football-data.org/66.png" },
-                    { ad: "Fenerbahçe", logo: "https://r2.thesportsdb.com/images/media/team/badge/f13q9s1522851468.png" }
-                ]
-            },
-            {
-                oyuncu: "Cesc Fàbregas 🇪🇸",
-                kulupler: [
-                    { ad: "Arsenal", logo: "https://crests.football-data.org/57.png" },
-                    { ad: "Barcelona", logo: "https://crests.football-data.org/81.png" },
-                    { ad: "Chelsea", logo: "https://crests.football-data.org/61.png" },
-                    { ad: "Monaco", logo: "https://crests.football-data.org/548.png" }
+                    { ad: "Galatasaray", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Galatasaray_Sports_Club_Logo.png/180px-Galatasaray_Sports_Club_Logo.png" }
                 ]
             },
             {
                 oyuncu: "Mesut Özil 🇩🇪",
                 kulupler: [
-                    { ad: "Werder Bremen", logo: "https://crests.football-data.org/12.png" },
-                    { ad: "Real Madrid", logo: "https://crests.football-data.org/86.png" },
-                    { ad: "Arsenal", logo: "https://crests.football-data.org/57.png" },
-                    { ad: "Fenerbahçe", logo: "https://r2.thesportsdb.com/images/media/team/badge/f13q9s1522851468.png" }
+                    { ad: "Schalke 04", logo: "https://crests.football-data.org/6.png" },
+                    { ad: "Real Madrid", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/5/56/Real_Madrid_CF.svg/180px-Real_Madrid_CF.svg.png" },
+                    { ad: "Arsenal", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/5/53/Arsenal_FC.svg/180px-Arsenal_FC.svg.png" },
+                    { ad: "Fenerbahçe", logo: "https://upload.wikimedia.org/wikipedia/tr/thumb/8/86/Fenerbah%C3%A7e_SK.png/180px-Fenerbah%C3%A7e_SK.png" }
                 ]
             },
             {
                 oyuncu: "Edin Džeko 🇧🇦",
                 kulupler: [
                     { ad: "Wolfsburg", logo: "https://crests.football-data.org/11.png" },
-                    { ad: "Man City", logo: "https://crests.football-data.org/65.png" },
+                    { ad: "Man City", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/e/eb/Manchester_City_FC_badge.svg/180px-Manchester_City_FC_badge.svg.png" },
                     { ad: "Roma", logo: "https://crests.football-data.org/100.png" },
-                    { ad: "Fenerbahçe", logo: "https://r2.thesportsdb.com/images/media/team/badge/f13q9s1522851468.png" }
-                ]
-            },
-            {
-                oyuncu: "Dries Mertens 🇧🇪",
-                kulupler: [
-                    { ad: "Utrecht", logo: "https://crests.football-data.org/676.png" },
-                    { ad: "PSV", logo: "https://crests.football-data.org/674.png" },
-                    { ad: "Napoli", logo: "https://crests.football-data.org/113.png" },
-                    { ad: "Galatasaray", logo: "https://r2.thesportsdb.com/images/media/team/badge/7f1l1e1522851483.png" }
+                    { ad: "Fenerbahçe", logo: "https://upload.wikimedia.org/wikipedia/tr/thumb/8/86/Fenerbah%C3%A7e_SK.png/180px-Fenerbah%C3%A7e_SK.png" }
                 ]
             }
         ];
@@ -516,7 +481,7 @@
 
                 if (mod === 'ulke-kulup') {
                     b1.className = "bg-amber-500 text-black px-3 py-1.5 rounded-xl text-xs font-black shadow-lg transition";
-                    desc.innerText = "1 Ülke + 1 Takım = 1 Oyuncu";
+                    desc.innerText = "1 Ülke + 1 Takım = 1 Oyuncu (Tüm Süper Lig & Avrupa)";
                     tBox1.innerText = "MİLLİYET / ÜLKE";
                     tBox2.innerText = "KULÜP";
                     renderBox(1, ulkeler[0]);
@@ -527,7 +492,7 @@
                     tBox1.innerText = "1. KULÜP";
                     tBox2.innerText = "2. KULÜP";
                     renderBox(1, takimlar[1]);
-                    renderBox(2, takimlar[5]);
+                    renderBox(2, takimlar[19]);
                 } else if (mod === 'ulke-mevki') {
                     b3.className = "bg-amber-500 text-black px-3 py-1.5 rounded-xl text-xs font-black shadow-lg transition";
                     desc.innerText = "O Ülkenin O Mevkideki Oyuncusu (Aktif / Efsane)";
@@ -628,7 +593,6 @@
             playWinSound();
         }
 
-        // 4 KİŞİLİK SKOR YÖNETİMİ
         const scores = { 1: 0, 2: 0, 3: 0, 4: 0 };
         const sets = { 1: 0, 2: 0, 3: 0, 4: 0 };
 
