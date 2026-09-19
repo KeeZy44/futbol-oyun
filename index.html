@@ -1,826 +1,225 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Futbol Bilgi Arenası PRO | Turan Medya</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --bg-image: url('arkaplan.jpg');
-        }
-
-        body { 
-            background-color: #060709; 
-            color: #f3f4f6; 
-            font-family: -apple-system, BlinkMacSystemFont, 'Inter', system-ui, sans-serif;
-            position: relative;
-            min-height: 100vh;
-        }
-
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background-image: var(--bg-image);
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            opacity: 0.22;
-            filter: grayscale(25%) contrast(120%);
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        .glass-card {
-            background: linear-gradient(145deg, rgba(20, 22, 30, 0.88), rgba(10, 11, 16, 0.94));
-            backdrop-filter: blur(14px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.8);
-        }
-        .slot-border {
-            border: 2px solid rgba(245, 158, 11, 0.5);
-            box-shadow: 0 0 25px rgba(245, 158, 11, 0.2);
-        }
-        .neon-glow {
-            text-shadow: 0 0 15px rgba(245, 158, 11, 0.6);
-        }
-        .spin-anim {
-            transform: scale(0.96);
-            filter: blur(0.5px);
-        }
-        .logo-img {
-            max-height: 85px;
-            max-width: 85px;
-            object-fit: contain;
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.6));
-        }
-        .career-logo-img {
-            max-height: 65px;
-            max-width: 65px;
-            object-fit: contain;
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5));
-        }
-    </style>
-</head>
-<body class="min-h-screen flex flex-col justify-between p-3 sm:p-6 select-none">
-
-    <!-- ÜST BAŞLIK & MOD SEÇİCİ -->
-    <header class="max-w-5xl mx-auto w-full flex flex-col sm:flex-row items-center justify-between pb-4 border-b border-white/10 gap-3">
-        <div class="flex items-center gap-3">
-            <span class="text-3xl">⚽</span>
-            <div>
-                <h1 class="text-xl font-black tracking-wider text-amber-500 neon-glow">FUTBOL ARENASI PRO</h1>
-                <p class="text-[11px] text-gray-400" id="modeDescription">1 Ülke + 1 Takım = 1 Oyuncu</p>
-            </div>
-        </div>
-
-        <div class="flex flex-wrap items-center justify-center gap-1.5 bg-black/60 backdrop-blur-md p-1.5 rounded-2xl border border-white/5">
-            <button id="modBtn1" onclick="oyunModuDegistir('ulke-kulup')" class="bg-amber-500 text-black px-3 py-1.5 rounded-xl text-xs font-black shadow-lg transition">
-                1 Ülke - 1 Kulüp
-            </button>
-            <button id="modBtn2" onclick="oyunModuDegistir('capraz-kulup')" class="text-gray-400 hover:text-white px-3 py-1.5 rounded-xl text-xs font-bold transition">
-                Çapraz 2 Kulüp
-            </button>
-            <button id="modBtn3" onclick="oyunModuDegistir('ulke-mevki')" class="text-gray-400 hover:text-white px-3 py-1.5 rounded-xl text-xs font-bold transition">
-                Ülke + Mevki
-            </button>
-            <button id="modBtn4" onclick="oyunModuDegistir('kariyer-rotasi')" class="text-gray-400 hover:text-white px-3 py-1.5 rounded-xl text-xs font-bold transition">
-                ✈️ Kariyer Rotası
-            </button>
-        </div>
-    </header>
-
-    <!-- OYUN ALANI -->
-    <main class="max-w-5xl mx-auto w-full grid grid-cols-1 lg:grid-cols-3 gap-6 my-auto py-4">
-
-        <!-- KURA VE OYUN ALANI -->
-        <div class="lg:col-span-2 flex flex-col items-center justify-center gap-4">
-
-            <!-- 1. STANDART 2'Lİ SLOT KARTLARI -->
-            <div id="standartSlotContainer" class="grid grid-cols-2 gap-3 sm:gap-4 w-full max-w-lg">
-                <div id="card1" class="glass-card slot-border rounded-3xl p-5 flex flex-col items-center justify-center text-center h-60 transition-all duration-200">
-                    <span id="titleBox1" class="text-[10px] uppercase font-black tracking-widest text-amber-500/80 mb-2">MİLLİYET / ÜLKE</span>
-                    <div class="h-24 flex items-center justify-center">
-                        <img id="imgBox1" src="https://flagcdn.com/w160/tr.png" class="logo-img rounded-md">
-                        <span id="iconBox1" class="text-5xl hidden">🇹🇷</span>
-                    </div>
-                    <h3 id="textBox1" class="text-base sm:text-lg font-black text-white mt-2">Türkiye</h3>
-                </div>
-
-                <div id="card2" class="glass-card slot-border rounded-3xl p-5 flex flex-col items-center justify-center text-center h-60 transition-all duration-200">
-                    <span id="titleBox2" class="text-[10px] uppercase font-black tracking-widest text-amber-500/80 mb-2">KULÜP</span>
-                    <div class="h-24 flex items-center justify-center">
-                        <img id="imgBox2" src="superlig/fenerbahce.football-logos.cc.png" class="logo-img">
-                        <span id="iconBox2" class="text-5xl hidden">⚽</span>
-                    </div>
-                    <h3 id="textBox2" class="text-base sm:text-lg font-black text-white mt-2">Fenerbahçe</h3>
-                </div>
-            </div>
-
-            <!-- 2. KARİYER ROTASI KARTLARI -->
-            <div id="careerContainer" class="w-full flex-col items-center gap-4 hidden">
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 w-full">
-                    <div class="glass-card slot-border rounded-2xl p-3 flex flex-col items-center justify-center text-center h-44">
-                        <span class="text-[9px] uppercase font-bold text-gray-400 mb-1">1. Kulüp</span>
-                        <div class="h-16 flex items-center justify-center">
-                            <img id="cImg1" src="" class="career-logo-img">
-                        </div>
-                        <h4 id="cText1" class="text-xs font-black text-white mt-1">Kulüp 1</h4>
-                    </div>
-                    <div class="glass-card slot-border rounded-2xl p-3 flex flex-col items-center justify-center text-center h-44">
-                        <span class="text-[9px] uppercase font-bold text-gray-400 mb-1">2. Kulüp</span>
-                        <div class="h-16 flex items-center justify-center">
-                            <img id="cImg2" src="" class="career-logo-img">
-                        </div>
-                        <h4 id="cText2" class="text-xs font-black text-white mt-1">Kulüp 2</h4>
-                    </div>
-                    <div class="glass-card slot-border rounded-2xl p-3 flex flex-col items-center justify-center text-center h-44">
-                        <span class="text-[9px] uppercase font-bold text-gray-400 mb-1">3. Kulüp</span>
-                        <div class="h-16 flex items-center justify-center">
-                            <img id="cImg3" src="" class="career-logo-img">
-                        </div>
-                        <h4 id="cText3" class="text-xs font-black text-white mt-1">Kulüp 3</h4>
-                    </div>
-                    <div class="glass-card slot-border rounded-2xl p-3 flex flex-col items-center justify-center text-center h-44">
-                        <span class="text-[9px] uppercase font-bold text-gray-400 mb-1">4. Kulüp</span>
-                        <div class="h-16 flex items-center justify-center">
-                            <img id="cImg4" src="" class="career-logo-img">
-                        </div>
-                        <h4 id="cText4" class="text-xs font-black text-white mt-1">Kulüp 4</h4>
-                    </div>
-                </div>
-
-                <div class="glass-card rounded-2xl px-6 py-4 w-full text-center border border-amber-500/30">
-                    <div class="flex items-center justify-between px-2 text-[10px] text-gray-400 uppercase font-bold">
-                        <span>BU OYUNCU KİM?</span>
-                        <span id="poolCounter" class="text-amber-500 font-black tracking-wide">Kalan: --</span>
-                    </div>
-                    <h2 id="careerPlayerReveal" class="text-2xl font-black text-amber-400 mt-1 neon-glow tracking-wide">❓❓❓ (Tahmin Edin)</h2>
-                </div>
-            </div>
-
-            <!-- BUTONLAR -->
-            <div class="w-full max-w-lg flex flex-col gap-2">
-                <button id="drawBtn" onclick="kuraCek()" class="w-full bg-gradient-to-r from-amber-500 to-amber-600 active:scale-95 text-black text-base font-black py-4 rounded-2xl shadow-xl shadow-amber-500/25 transition-all flex items-center justify-center gap-3 cursor-pointer">
-                    <i class="fa-solid fa-dice text-xl"></i>
-                    <span>YENİ KURA ÇEK (SPACE)</span>
-                </button>
-                <button id="revealCareerBtn" onclick="oyuncuyuGoster()" class="w-full bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white text-sm font-black py-3 rounded-2xl shadow-lg shadow-emerald-600/20 transition-all flex items-center justify-center gap-2 hidden cursor-pointer">
-                    <i class="fa-solid fa-eye text-base"></i>
-                    <span>OYUNCUYU GÖSTER (CEVABI AÇ)</span>
-                </button>
-            </div>
-        </div>
-
-        <!-- 4 KİŞİLİK SKOR PANELİ -->
-        <div class="glass-card rounded-3xl p-4 sm:p-5 flex flex-col justify-between border border-white/5">
-            <div>
-                <div class="flex items-center justify-between pb-3 mb-3 border-b border-white/10">
-                    <h3 class="text-xs font-black text-gray-300 uppercase tracking-wider">Yarışmacılar (İlk 3 Alan)</h3>
-                    <button onclick="skorSifirla()" class="text-[10px] text-gray-500 hover:text-rose-400 font-bold transition">Sıfırla</button>
-                </div>
-
-                <div class="grid grid-cols-2 gap-2.5">
-                    <div class="bg-black/50 p-2.5 rounded-2xl border border-white/5 flex flex-col items-center">
-                        <input type="text" id="p1Name" value="Ahmet" class="bg-transparent text-xs font-black text-center text-amber-400 outline-none w-full mb-1">
-                        <span id="p1Score" class="text-2xl font-black text-white my-0.5">0</span>
-                        <div class="flex gap-1 w-full mt-1">
-                            <button onclick="skorDegis(1, -1)" class="w-1/3 bg-white/5 hover:bg-white/10 text-gray-400 font-bold py-1 rounded-lg text-xs">-</button>
-                            <button onclick="skorDegis(1, 1)" class="w-2/3 bg-amber-500/20 active:bg-amber-500 active:text-black text-amber-400 font-black py-1 rounded-lg text-xs transition border border-amber-500/30">+1</button>
-                        </div>
-                        <span class="text-[10px] text-gray-500 font-bold mt-1.5">Set: <b id="p1Sets" class="text-white">0</b></span>
-                    </div>
-
-                    <div class="bg-black/50 p-2.5 rounded-2xl border border-white/5 flex flex-col items-center">
-                        <input type="text" id="p2Name" value="Mehmet" class="bg-transparent text-xs font-black text-center text-amber-400 outline-none w-full mb-1">
-                        <span id="p2Score" class="text-2xl font-black text-white my-0.5">0</span>
-                        <div class="flex gap-1 w-full mt-1">
-                            <button onclick="skorDegis(2, -1)" class="w-1/3 bg-white/5 hover:bg-white/10 text-gray-400 font-bold py-1 rounded-lg text-xs">-</button>
-                            <button onclick="skorDegis(2, 1)" class="w-2/3 bg-amber-500/20 active:bg-amber-500 active:text-black text-amber-400 font-black py-1 rounded-lg text-xs transition border border-amber-500/30">+1</button>
-                        </div>
-                        <span class="text-[10px] text-gray-500 font-bold mt-1.5">Set: <b id="p2Sets" class="text-white">0</b></span>
-                    </div>
-
-                    <div class="bg-black/50 p-2.5 rounded-2xl border border-white/5 flex flex-col items-center">
-                        <input type="text" id="p3Name" value="Can" class="bg-transparent text-xs font-black text-center text-sky-400 outline-none w-full mb-1">
-                        <span id="p3Score" class="text-2xl font-black text-white my-0.5">0</span>
-                        <div class="flex gap-1 w-full mt-1">
-                            <button onclick="skorDegis(3, -1)" class="w-1/3 bg-white/5 hover:bg-white/10 text-gray-400 font-bold py-1 rounded-lg text-xs">-</button>
-                            <button onclick="skorDegis(3, 1)" class="w-2/3 bg-sky-500/20 active:bg-sky-500 active:text-black text-sky-400 font-black py-1 rounded-lg text-xs transition border border-sky-500/30">+1</button>
-                        </div>
-                        <span class="text-[10px] text-gray-500 font-bold mt-1.5">Set: <b id="p3Sets" class="text-white">0</b></span>
-                    </div>
-
-                    <div class="bg-black/50 p-2.5 rounded-2xl border border-white/5 flex flex-col items-center">
-                        <input type="text" id="p4Name" value="Burak" class="bg-transparent text-xs font-black text-center text-rose-400 outline-none w-full mb-1">
-                        <span id="p4Score" class="text-2xl font-black text-white my-0.5">0</span>
-                        <div class="flex gap-1 w-full mt-1">
-                            <button onclick="skorDegis(4, -1)" class="w-1/3 bg-white/5 hover:bg-white/10 text-gray-400 font-bold py-1 rounded-lg text-xs">-</button>
-                            <button onclick="skorDegis(4, 1)" class="w-2/3 bg-rose-500/20 active:bg-rose-500 active:text-black text-rose-400 font-black py-1 rounded-lg text-xs transition border border-rose-500/30">+1</button>
-                        </div>
-                        <span class="text-[10px] text-gray-500 font-bold mt-1.5">Set: <b id="p4Sets" class="text-white">0</b></span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="text-[10px] text-gray-500 text-center mt-3">
-                Klavye: 1, 2, 3, 4 ile puan ver | Space ile kura çek
-            </div>
-        </div>
-
-    </main>
-
-    <footer class="text-center text-[11px] text-gray-600 py-2">
-        Toptan Muhabbetler Formatı — Futbol Bilgi Ligi v30.0 (Tek Dosya & Garantili Sistem)
-    </footer>
-
-    <script>
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        function playTickSound() {
-            try {
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.type = 'triangle';
-                osc.frequency.setValueAtTime(450, audioCtx.currentTime);
-                gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.05);
-            } catch(e) {}
-        }
-
-        function playWinSound() {
-            try {
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(587.33, audioCtx.currentTime);
-                osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.1);
-                gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35);
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.35);
-            } catch(e) {}
-        }
-
-        const ulkeler = [
-            { ad: "Türkiye", logo: "https://flagcdn.com/w160/tr.png" },
-            { ad: "Brezilya", logo: "https://flagcdn.com/w160/br.png" },
-            { ad: "Arjantin", logo: "https://flagcdn.com/w160/ar.png" },
-            { ad: "Portekiz", logo: "https://flagcdn.com/w160/pt.png" },
-            { ad: "Fransa", logo: "https://flagcdn.com/w160/fr.png" },
-            { ad: "Almanya", logo: "https://flagcdn.com/w160/de.png" },
-            { ad: "İspanya", logo: "https://flagcdn.com/w160/es.png" },
-            { ad: "İtalya", logo: "https://flagcdn.com/w160/it.png" },
-            { ad: "İngiltere", logo: "https://flagcdn.com/w160/gb-eng.png" },
-            { ad: "Hollanda", logo: "https://flagcdn.com/w160/nl.png" },
-            { ad: "Belçika", logo: "https://flagcdn.com/w160/be.png" },
-            { ad: "Hırvatistan", logo: "https://flagcdn.com/w160/hr.png" },
-            { ad: "Uruguay", logo: "https://flagcdn.com/w160/uy.png" },
-            { ad: "Kolombiya", logo: "https://flagcdn.com/w160/co.png" },
-            { ad: "Nijerya", logo: "https://flagcdn.com/w160/ng.png" },
-            { ad: "Senegal", logo: "https://flagcdn.com/w160/sn.png" },
-            { ad: "Fas", logo: "https://flagcdn.com/w160/ma.png" },
-            { ad: "Sırbistan", logo: "https://flagcdn.com/w160/rs.png" },
-            { ad: "İsveç", logo: "https://flagcdn.com/w160/se.png" },
-            { ad: "Norveç", logo: "https://flagcdn.com/w160/no.png" },
-            { ad: "Danimarka", logo: "https://flagcdn.com/w160/dk.png" },
-            { ad: "Polonya", logo: "https://flagcdn.com/w160/pl.png" },
-            { ad: "İsviçre", logo: "https://flagcdn.com/w160/ch.png" },
-            { ad: "Japonya", logo: "https://flagcdn.com/w160/jp.png" }
-        ];
-
-        const takimlar = [
-            { ad: "Galatasaray", logo: "superlig/galatasaray.football-logos.cc.png" },
-            { ad: "Fenerbahçe", logo: "superlig/fenerbahce.football-logos.cc.png" },
-            { ad: "Beşiktaş", logo: "superlig/besiktas.football-logos.cc.png" },
-            { ad: "Trabzonspor", logo: "superlig/trabzonspor.football-logos.cc.png" },
-            { ad: "Başakşehir", logo: "superlig/basaksehir.football-logos.cc.png" },
-            { ad: "Konyaspor", logo: "superlig/konyaspor.football-logos.cc.png" },
-            { ad: "Samsunspor", logo: "superlig/samsunspor.football-logos.cc.png" },
-            { ad: "Göztepe", logo: "superlig/goztepe-izmir.football-logos.cc.png" },
-            { ad: "Eyüpspor", logo: "superlig/eyupspor.football-logos.cc.png" },
-            { ad: "Kasımpaşa", logo: "superlig/kasimpasa.football-logos.cc.png" },
-            { ad: "Çaykur Rizespor", logo: "superlig/rizespor.football-logos.cc.png" },
-            { ad: "Alanyaspor", logo: "superlig/alanyaspor.football-logos.cc.png" },
-            { ad: "Gaziantep FK", logo: "superlig/gaziantep.football-logos.cc.png" },
-            { ad: "Amed SFK", logo: "superlig/amed.football-logos.cc.png" },
-            { ad: "Kocaelispor", logo: "superlig/kocaelispor.football-logos.cc.png" },
-            { ad: "Gençlerbirliği", logo: "superlig/genclerbirligi.football-logos.cc.png" },
-            { ad: "Çorum FK", logo: "superlig/corum.football-logos.cc.png" },
-            { ad: "Erzurumspor", logo: "superlig/erzurumspor.football-logos.cc.png" },
-
-            { ad: "Arsenal", logo: "premierlig/arsenal.football-logos.cc.png" },
-            { ad: "Chelsea", logo: "premierlig/chelsea.football-logos.cc.png" },
-            { ad: "Liverpool", logo: "premierlig/liverpool.football-logos.cc.png" },
-            { ad: "Manchester City", logo: "premierlig/manchester-city.football-logos.cc.png" },
-            { ad: "Manchester United", logo: "premierlig/manchester-united.football-logos.cc.png" },
-            { ad: "Tottenham", logo: "premierlig/tottenham.football-logos.cc.png" },
-            { ad: "Aston Villa", logo: "premierlig/aston-villa.football-logos.cc.png" },
-            { ad: "Newcastle", logo: "premierlig/newcastle.football-logos.cc.png" },
-            { ad: "Brighton", logo: "premierlig/brighton.football-logos.cc.png" },
-
-            { ad: "Real Madrid", logo: "laliga/real-madrid.football-logos.cc.png" },
-            { ad: "Barcelona", logo: "laliga/barcelona.football-logos.cc.png" },
-            { ad: "Atletico Madrid", logo: "laliga/atletico-madrid.football-logos.cc.png" },
-            { ad: "Sevilla", logo: "laliga/sevilla.football-logos.cc.png" },
-            { ad: "Valencia", logo: "laliga/valencia.football-logos.cc.png" },
-            { ad: "Villarreal", logo: "laliga/villarreal.football-logos.cc.png" },
-            { ad: "Athletic Bilbao", logo: "laliga/athletic-club.football-logos.cc.png" },
-            { ad: "Real Sociedad", logo: "laliga/real-sociedad.football-logos.cc.png" },
-
-            { ad: "Bayern Münih", logo: "Bundesliga/bayern-munchen.football-logos.cc.png" },
-            { ad: "Borussia Dortmund", logo: "Bundesliga/borussia-dortmund.football-logos.cc.png" },
-            { ad: "Bayer Leverkusen", logo: "Bundesliga/bayer-leverkusen.football-logos.cc.png" },
-            { ad: "Schalke 04", logo: "Bundesliga/schalke-04.football-logos.cc.png" },
-            { ad: "RB Leipzig", logo: "Bundesliga/rb-leipzig.football-logos.cc.png" },
-            { ad: "Eintracht Frankfurt", logo: "Bundesliga/eintracht-frankfurt.football-logos.cc.png" },
-
-            { ad: "Inter", logo: "Serie%20A/inter.football-logos.cc.png" },
-            { ad: "Milan", logo: "Serie%20A/milan.football-logos.cc.png" },
-            { ad: "Juventus", logo: "Serie%20A/juventus.football-logos.cc.png" },
-            { ad: "Napoli", logo: "Serie%20A/napoli.football-logos.cc.png" },
-            { ad: "Roma", logo: "Serie%20A/roma.football-logos.cc.png" },
-            { ad: "Lazio", logo: "Serie%20A/lazio.football-logos.cc.png" },
-            { ad: "Atalanta", logo: "Serie%20A/atalanta.football-logos.cc.png" },
-            { ad: "Fiorentina", logo: "Serie%20A/fiorentina.football-logos.cc.png" },
-
-            { ad: "PSG", logo: "Ligue%201/paris-saint-germain.football-logos.cc.png" },
-            { ad: "Monaco", logo: "Ligue%201/as-monaco.football-logos.cc.png" },
-            { ad: "Marsilya", logo: "Ligue%201/marseille.football-logos.cc.png" },
-            { ad: "Lyon", logo: "Ligue%201/lyon.football-logos.cc.png" },
-            { ad: "Lille", logo: "Ligue%201/lille.football-logos.cc.png" },
-
-            { ad: "Al-Nassr", logo: "Saudi%20Pro%20League/al-nassr.football-logos.cc.png" },
-            { ad: "Al-Hilal", logo: "Saudi%20Pro%20League/al-hilal.football-logos.cc.png" },
-            { ad: "Al-Ittihad", logo: "Saudi%20Pro%20League/al-ittihad.football-logos.cc.png" },
-            { ad: "Al-Ahli", logo: "Saudi%20Pro%20League/al-ahli.football-logos.cc.png" }
-        ];
-
-        const mevkiler = [
-            { ad: "Kaleci", icon: "🧤" },
-            { ad: "Stoper", icon: "🛡️" },
-            { ad: "Sol Bek", icon: "🏃‍♂️" },
-            { ad: "Sağ Bek", icon: "🏃‍♂️" },
-            { ad: "Ön Libero / DOS", icon: "⚓" },
-            { ad: "Merkez Orta Saha", icon: "🧠" },
-            { ad: "On Numara (10)", icon: "🎯" },
-            { ad: "Sol Kanat", icon: "⚡" },
-            { ad: "Sağ Kanat", icon: "⚡" },
-            { ad: "Santrafor / Forvet", icon: "🏹" }
-        ];
-
-        const C = {
-            GS: "superlig/galatasaray.football-logos.cc.png",
-            FB: "superlig/fenerbahce.football-logos.cc.png",
-            BJK: "superlig/besiktas.football-logos.cc.png",
-            TS: "superlig/trabzonspor.football-logos.cc.png",
-            IBFK: "superlig/basaksehir.football-logos.cc.png",
-            ADS: "https://ssl.gstatic.com/onebox/media/sports/logos/optimized/3-uB1F2K7aX_487nZ592qw_500x500.png",
-            GEN: "superlig/genclerbirligi.football-logos.cc.png",
-            RIZ: "superlig/rizespor.football-logos.cc.png",
-            ALN: "superlig/alanyaspor.football-logos.cc.png",
-            GFK: "superlig/gaziantep.football-logos.cc.png",
-
-            RM: "laliga/real-madrid.football-logos.cc.png",
-            BAR: "laliga/barcelona.football-logos.cc.png",
-            ATM: "laliga/atletico-madrid.football-logos.cc.png",
-            SEV: "laliga/sevilla.football-logos.cc.png",
-            VAL: "laliga/valencia.football-logos.cc.png",
-            VIL: "laliga/villarreal.football-logos.cc.png",
-            BIL: "laliga/athletic-club.football-logos.cc.png",
-            RSO: "laliga/real-sociedad.football-logos.cc.png",
-
-            ARS: "premierlig/arsenal.football-logos.cc.png",
-            CHE: "premierlig/chelsea.football-logos.cc.png",
-            LIV: "premierlig/liverpool.football-logos.cc.png",
-            MCI: "premierlig/manchester-city.football-logos.cc.png",
-            MUN: "premierlig/manchester-united.football-logos.cc.png",
-            TOT: "premierlig/tottenham.football-logos.cc.png",
-            AVL: "premierlig/aston-villa.football-logos.cc.png",
-            NEW: "premierlig/newcastle.football-logos.cc.png",
-            BHA: "premierlig/brighton.football-logos.cc.png",
-
-            BAY: "Bundesliga/bayern-munchen.football-logos.cc.png",
-            BVB: "Bundesliga/borussia-dortmund.football-logos.cc.png",
-            B04: "Bundesliga/bayer-leverkusen.football-logos.cc.png",
-            S04: "Bundesliga/schalke-04.football-logos.cc.png",
-            RBL: "Bundesliga/rb-leipzig.football-logos.cc.png",
-            SGE: "Bundesliga/eintracht-frankfurt.football-logos.cc.png",
-            WOB: "Bundesliga/vfl-wolfsburg.football-logos.cc.png",
-
-            INT: "Serie%20A/inter.football-logos.cc.png",
-            MIL: "Serie%20A/milan.football-logos.cc.png",
-            JUV: "Serie%20A/juventus.football-logos.cc.png",
-            NAP: "Serie%20A/napoli.football-logos.cc.png",
-            ROM: "Serie%20A/roma.football-logos.cc.png",
-            LAZ: "Serie%20A/lazio.football-logos.cc.png",
-            ATA: "Serie%20A/atalanta.football-logos.cc.png",
-            FIO: "Serie%20A/fiorentina.football-logos.cc.png",
-
-            PSG: "Ligue%201/paris-saint-germain.football-logos.cc.png",
-            ASM: "Ligue%201/as-monaco.football-logos.cc.png",
-            OM: "Ligue%201/marseille.football-logos.cc.png",
-            OL: "Ligue%201/lyon.football-logos.cc.png",
-            LOSC: "Ligue%201/lille.football-logos.cc.png",
-
-            NAS: "Saudi%20Pro%20League/al-nassr.football-logos.cc.png",
-            HIL: "Saudi%20Pro%20League/al-hilal.football-logos.cc.png",
-            ITT: "Saudi%20Pro%20League/al-ittihad.football-logos.cc.png",
-            AHL: "Saudi%20Pro%20League/al-ahli.football-logos.cc.png",
-
-            POR: "https://crests.football-data.org/503.png",
-            BEN: "https://crests.football-data.org/1903.png",
-            SCP: "https://crests.football-data.org/498.png",
-            AJA: "https://crests.football-data.org/678.png",
-            PSV: "https://crests.football-data.org/674.png",
-            FEY: "https://crests.football-data.org/675.png",
-            TR: "https://flagcdn.com/w160/tr.png",
-            BR: "https://flagcdn.com/w160/br.png",
-            AR: "https://flagcdn.com/w160/ar.png",
-            RU: "https://flagcdn.com/w160/ru.png"
-        };
-
-        const anaKariyerHavuzu = [
-            { o: "Mauro Icardi 🇦🇷", k: [["Sampdoria", C.INT], ["Inter", C.INT], ["PSG", C.PSG], ["Galatasaray", C.GS]] },
-            { o: "Victor Osimhen 🇳🇬", k: [["Wolfsburg", C.WOB], ["Charleroi", C.LOSC], ["Napoli", C.NAP], ["Galatasaray", C.GS]] },
-            { o: "Edin Džeko 🇧🇦", k: [["Wolfsburg", C.WOB], ["Man City", C.MCI], ["Roma", C.ROM], ["Fenerbahçe", C.FB]] },
-            { o: "Ciro Immobile 🇮🇹", k: [["Dortmund", C.BVB], ["Sevilla", C.SEV], ["Lazio", C.LAZ], ["Beşiktaş", C.BJK]] },
-            { o: "Rafa Silva 🇵🇹", k: [["Feirense", C.POR], ["Braga", C.POR], ["Benfica", C.BEN], ["Beşiktaş", C.BJK]] },
-            { o: "Michy Batshuayi 🇧🇪", k: [["Chelsea", C.CHE], ["Beşiktaş", C.BJK], ["Fenerbahçe", C.FB], ["Galatasaray", C.GS]] },
-            { o: "Fred 🇧🇷", k: [["Internacional", C.BR], ["Shakhtar", C.AJA], ["Man United", C.MUN], ["Fenerbahçe", C.FB]] },
-            { o: "Arda Güler 🇹🇷", k: [["Gençlerbirliği", C.GEN], ["Fenerbahçe", C.FB], ["Fenerbahçe", C.FB], ["Real Madrid", C.RM]] },
-            { o: "Kerem Aktürkoğlu 🇹🇷", k: [["Başakşehir", C.IBFK], ["24 Erzincan", C.TR], ["Galatasaray", C.GS], ["Benfica", C.BEN]] },
-            { o: "Ferdi Kadıoğlu 🇹🇷", k: [["NEC Nijmegen", C.PSV], ["Fenerbahçe", C.FB], ["Fenerbahçe", C.FB], ["Brighton", C.BHA]] },
-            { o: "Dries Mertens 🇧🇪", k: [["Utrecht", C.PSV], ["PSV", C.PSV], ["Napoli", C.NAP], ["Galatasaray", C.GS]] },
-            { o: "Hakim Ziyech 🇲🇦", k: [["Heerenveen", C.AJA], ["Ajax", C.AJA], ["Chelsea", C.CHE], ["Galatasaray", C.GS]] },
-            { o: "Dušan Tadić 🇷🇸", k: [["Twente", C.AJA], ["Southampton", C.ARS], ["Ajax", C.AJA], ["Fenerbahçe", C.FB]] },
-            { o: "Lucas Torreira 🇺🇾", k: [["Sampdoria", C.INT], ["Arsenal", C.ARS], ["Atl. Madrid", C.ATM], ["Galatasaray", C.GS]] },
-            { o: "Mesut Özil 🇩🇪", k: [["Schalke 04", C.S04], ["Real Madrid", C.RM], ["Arsenal", C.ARS], ["Fenerbahçe", C.FB]] },
-            { o: "Arda Turan 🇹🇷", k: [["Galatasaray", C.GS], ["Atl. Madrid", C.ATM], ["Barcelona", C.BAR], ["Başakşehir", C.IBFK]] },
-            { o: "Wesley Sneijder 🇳🇱", k: [["Ajax", C.AJA], ["Real Madrid", C.RM], ["Inter", C.INT], ["Galatasaray", C.GS]] },
-            { o: "Didier Drogba 🇨🇮", k: [["Marsilya", C.OM], ["Chelsea", C.CHE], ["Galatasaray", C.GS], ["Chelsea", C.CHE]] },
-            { o: "Robin van Persie 🇳🇱", k: [["Feyenoord", C.FEY], ["Arsenal", C.ARS], ["Man United", C.MUN], ["Fenerbahçe", C.FB]] },
-            { o: "Ricardo Quaresma 🇵🇹", k: [["Sporting CP", C.SCP], ["Barcelona", C.BAR], ["Inter", C.INT], ["Beşiktaş", C.BJK]] },
-            { o: "Pepe 🇵🇹", k: [["Porto", C.POR], ["Real Madrid", C.RM], ["Beşiktaş", C.BJK], ["Porto", C.POR]] },
-            { o: "Burak Yılmaz 🇹🇷", k: [["Beşiktaş", C.BJK], ["Fenerbahçe", C.FB], ["Trabzonspor", C.TS], ["Galatasaray", C.GS]] },
-            { o: "Caner Erkin 🇹🇷", k: [["CSKA Moskova", C.RU], ["Galatasaray", C.GS], ["Fenerbahçe", C.FB], ["Beşiktaş", C.BJK]] },
-            { o: "Alex de Souza 🇧🇷", k: [["Palmeiras", C.BR], ["Flamengo", C.BR], ["Parma", C.MIL], ["Fenerbahçe", C.FB]] },
-            { o: "Gheorghe Hagi 🇷🇴", k: [["Steaua Bükreş", C.TR], ["Real Madrid", C.RM], ["Brescia", C.INT], ["Galatasaray", C.GS]] },
-            { o: "Mario Balotelli 🇮🇹", k: [["Inter", C.INT], ["Man City", C.MCI], ["Milan", C.MIL], ["Adana Demir", C.ADS]] },
-            { o: "José Sosa 🇦🇷", k: [["Bayern Münih", C.BAY], ["Atl. Madrid", C.ATM], ["Beşiktaş", C.BJK], ["Trabzonspor", C.TS]] },
-            { o: "Talisca 🇧🇷", k: [["Bahia", C.BR], ["Benfica", C.BEN], ["Beşiktaş", C.BJK], ["Al-Nassr", C.NAS]] },
-            { o: "Vincent Aboubakar 🇨🇲", k: [["Lorient", C.LOSC], ["Porto", C.POR], ["Beşiktaş", C.BJK], ["Al-Nassr", C.NAS]] },
-            { o: "Felipe Melo 🇧🇷", k: [["Fiorentina", C.FIO], ["Juventus", C.JUV], ["Galatasaray", C.GS], ["Inter", C.INT]] },
-            { o: "Nani 🇵🇹", k: [["Sporting CP", C.SCP], ["Man United", C.MUN], ["Fenerbahçe", C.FB], ["Valencia", C.VAL]] },
-            { o: "Demba Ba 🇸🇳", k: [["Hoffenheim", C.BVB], ["Newcastle", C.NEW], ["Chelsea", C.CHE], ["Beşiktaş", C.BJK]] },
-            { o: "Radamel Falcao 🇨🇴", k: [["Porto", C.POR], ["Atl. Madrid", C.ATM], ["Monaco", C.ASM], ["Galatasaray", C.GS]] },
-            { o: "Nicolas Anelka 🇫🇷", k: [["Arsenal", C.ARS], ["Real Madrid", C.RM], ["Man City", C.MCI], ["Fenerbahçe", C.FB]] },
-            { o: "Milan Baroš 🇨🇿", k: [["Liverpool", C.LIV], ["Aston Villa", C.AVL], ["Lyon", C.OL], ["Galatasaray", C.GS]] },
-            { o: "Emre Belözoğlu 🇹🇷", k: [["Galatasaray", C.GS], ["Inter", C.INT], ["Newcastle", C.NEW], ["Fenerbahçe", C.FB]] },
-            { o: "Gökhan Töre 🇹🇷", k: [["Hamburg", C.BVB], ["Rubin Kazan", C.RU], ["Beşiktaş", C.BJK], ["West Ham", C.ARS]] },
-            { o: "Loris Karius 🇩🇪", k: [["Mainz", C.S04], ["Liverpool", C.LIV], ["Beşiktaş", C.BJK], ["Newcastle", C.NEW]] },
-            { o: "Mamadou Niang 🇸🇳", k: [["Troyes", C.OM], ["Marsilya", C.OM], ["Fenerbahçe", C.FB], ["Beşiktaş", C.BJK]] },
-            { o: "Elvir Baljić 🇧🇦", k: [["Bursaspor", C.TR], ["Fenerbahçe", C.FB], ["Real Madrid", C.RM], ["Galatasaray", C.GS]] },
-            { o: "Kevin-Prince Boateng 🇬🇭", k: [["Tottenham", C.TOT], ["Milan", C.MIL], ["Barcelona", C.BAR], ["Beşiktaş", C.BJK]] },
-            { o: "Hugo Rodallega 🇨🇴", k: [["Wigan", C.CHE], ["Fulham", C.CHE], ["Akhisar", C.TR], ["Trabzonspor", C.TS]] },
-            { o: "Daniel Güiza 🇪🇸", k: [["Getafe", C.VAL], ["Mallorca", C.VAL], ["Fenerbahçe", C.FB], ["Getafe", C.VAL]] },
-            { o: "Simon Kjær 🇩🇰", k: [["Wolfsburg", C.WOB], ["Lille", C.LOSC], ["Fenerbahçe", C.FB], ["Milan", C.MIL]] },
-            { o: "Luiz Gustavo 🇧🇷", k: [["Hoffenheim", C.BVB], ["Bayern Münih", C.BAY], ["Marsilya", C.OM], ["Fenerbahçe", C.FB]] },
-            { o: "Bafétimbi Gomis 🇫🇷", k: [["Saint-Etienne", C.OL], ["Lyon", C.OL], ["Marsilya", C.OM], ["Galatasaray", C.GS]] },
-            { o: "Miralem Pjanić 🇧🇦", k: [["Lyon", C.OL], ["Roma", C.ROM], ["Juventus", C.JUV], ["Beşiktaş", C.BJK]] },
-            { o: "Goran Pandev 🇲🇰", k: [["Lazio", C.LAZ], ["Inter", C.INT], ["Napoli", C.NAP], ["Galatasaray", C.GS]] },
-            { o: "Steven Nzonzi 🇫🇷", k: [["Stoke City", C.CHE], ["Sevilla", C.SEV], ["Roma", C.ROM], ["Galatasaray", C.GS]] },
-            { o: "Alex Telles 🇧🇷", k: [["Gremio", C.BR], ["Galatasaray", C.GS], ["Porto", C.POR], ["Man United", C.MUN]] },
-            { o: "Marcao 🇧🇷", k: [["Chaves", C.POR], ["Galatasaray", C.GS], ["Galatasaray", C.GS], ["Sevilla", C.SEV]] },
-            { o: "Kim Min-jae 🇰🇷", k: [["Beijing Guoan", C.FB], ["Fenerbahçe", C.FB], ["Napoli", C.NAP], ["Bayern Münih", C.BAY]] },
-            { o: "Eljif Elmas 🇲🇰", k: [["Rabotnicki", C.FB], ["Fenerbahçe", C.FB], ["Napoli", C.NAP], ["RB Leipzig", C.RBL]] },
-            { o: "Vedat Muriqi 🇽🇰", k: [["Giresunspor", C.TR], ["Ç. Rizespor", C.RIZ], ["Fenerbahçe", C.FB], ["Lazio", C.LAZ]] },
-            { o: "Sörloth 🇳🇴", k: [["Crystal Palace", C.TOT], ["Trabzonspor", C.TS], ["RB Leipzig", C.RBL], ["Atl. Madrid", C.ATM]] },
-            { o: "Yusuf Yazıcı 🇹🇷", k: [["Trabzonspor", C.TS], ["Lille", C.LOSC], ["CSKA Moskova", C.RU], ["Olympiakos", C.TS]] },
-            { o: "Cenk Tosun 🇹🇷", k: [["Gaziantepspor", C.GFK], ["Beşiktaş", C.BJK], ["Everton", C.LIV], ["Fenerbahçe", C.FB]] },
-            { o: "Salih Uçan 🇹🇷", k: [["Bucaspor", C.TR], ["Fenerbahçe", C.FB], ["Roma", C.ROM], ["Beşiktaş", C.BJK]] },
-            { o: "Ozan Kabak 🇹🇷", k: [["Galatasaray", C.GS], ["Stuttgart", C.BVB], ["Schalke 04", C.S04], ["Liverpool", C.LIV]] },
-            { o: "Merih Demiral 🇹🇷", k: [["Alanyaspor", C.ALN], ["Sassuolo", C.JUV], ["Juventus", C.JUV], ["Al-Ahli", C.AHL]] },
-            { o: "Çağlar Söyüncü 🇹🇷", k: [["Altınordu", C.TR], ["Freiburg", C.BVB], ["Leicester", C.CHE], ["Atl. Madrid", C.ATM]] },
-            { o: "Cengiz Ünder 🇹🇷", k: [["Başakşehir", C.IBFK], ["Roma", C.ROM], ["Marsilya", C.OM], ["Fenerbahçe", C.FB]] },
-
-            { o: "Kylian Mbappé 🇫🇷", k: [["Monaco", C.ASM], ["PSG", C.PSG], ["PSG", C.PSG], ["Real Madrid", C.RM]] },
-            { o: "Cristiano Ronaldo 🇵🇹", k: [["Sporting CP", C.SCP], ["Man United", C.MUN], ["Real Madrid", C.RM], ["Al-Nassr", C.NAS]] },
-            { o: "Lionel Messi 🇦🇷", k: [["Newell's", C.AR], ["Barcelona", C.BAR], ["PSG", C.PSG], ["Inter Miami", C.AR]] },
-            { o: "Neymar Jr 🇧🇷", k: [["Santos", C.BR], ["Barcelona", C.BAR], ["PSG", C.PSG], ["Al-Hilal", C.HIL]] },
-            { o: "Karim Benzema 🇫🇷", k: [["Lyon", C.OL], ["Real Madrid", C.RM], ["Real Madrid", C.RM], ["Al-Ittihad", C.ITT]] },
-            { o: "Jude Bellingham 🏴󠁧󠁢󠁥󠁮󠁧󠁿", k: [["Birmingham", C.ARS], ["Dortmund", C.BVB], ["Dortmund", C.BVB], ["Real Madrid", C.RM]] },
-            { o: "Erling Haaland 🇳🇴", k: [["Molde", C.MCI], ["Salzburg", C.BVB], ["Dortmund", C.BVB], ["Man City", C.MCI]] },
-            { o: "Robert Lewandowski 🇵🇱", k: [["Lech Poznan", C.BVB], ["Dortmund", C.BVB], ["Bayern Münih", C.BAY], ["Barcelona", C.BAR]] },
-            { o: "Zlatan Ibrahimović 🇸🇪", k: [["Ajax", C.AJA], ["Juventus", C.JUV], ["Inter", C.INT], ["Milan", C.MIL]] },
-            { o: "Luis Suárez 🇺🇾", k: [["Ajax", C.AJA], ["Liverpool", C.LIV], ["Barcelona", C.BAR], ["Atl. Madrid", C.ATM]] },
-            { o: "Gareth Bale 🏴󠁧󠁢󠁷󠁬󠁳󠁿", k: [["Southampton", C.ARS], ["Tottenham", C.TOT], ["Real Madrid", C.RM], ["Tottenham", C.TOT]] },
-            { o: "Eden Hazard 🇧🇪", k: [["Lille", C.LOSC], ["Chelsea", C.CHE], ["Real Madrid", C.RM], ["Real Madrid", C.RM]] },
-            { o: "Luka Modrić 🇭🇷", k: [["Dinamo Zagreb", C.TOT], ["Tottenham", C.TOT], ["Real Madrid", C.RM], ["Real Madrid", C.RM]] },
-            { o: "Toni Kroos 🇩🇪", k: [["Hansa Rostock", C.BAY], ["Leverkusen", C.B04], ["Bayern Münih", C.BAY], ["Real Madrid", C.RM]] },
-            { o: "Sergio Ramos 🇪🇸", k: [["Sevilla", C.SEV], ["Real Madrid", C.RM], ["PSG", C.PSG], ["Sevilla", C.SEV]] },
-            { o: "Thiago Silva 🇧🇷", k: [["Fluminense", C.BR], ["Milan", C.MIL], ["PSG", C.PSG], ["Chelsea", C.CHE]] },
-            { o: "Álvaro Morata 🇪🇸", k: [["Real Madrid", C.RM], ["Juventus", C.JUV], ["Chelsea", C.CHE], ["Milan", C.MIL]] },
-            { o: "Romelu Lukaku 🇧🇪", k: [["Chelsea", C.CHE], ["Man United", C.MUN], ["Inter", C.INT], ["Napoli", C.NAP]] },
-            { o: "João Félix 🇵🇹", k: [["Benfica", C.BEN], ["Atl. Madrid", C.ATM], ["Barcelona", C.BAR], ["Chelsea", C.CHE]] },
-            { o: "Sadio Mané 🇸🇳", k: [["Metz", C.LOSC], ["Southampton", C.ARS], ["Liverpool", C.LIV], ["Al-Nassr", C.NAS]] },
-            { o: "Alexis Sánchez 🇨🇱", k: [["Udinese", C.MIL], ["Barcelona", C.BAR], ["Arsenal", C.ARS], ["Inter", C.INT]] },
-            { o: "Angel Di María 🇦🇷", k: [["Benfica", C.BEN], ["Real Madrid", C.RM], ["Man United", C.MUN], ["PSG", C.PSG]] },
-            { o: "Cesc Fàbregas 🇪🇸", k: [["Arsenal", C.ARS], ["Barcelona", C.BAR], ["Chelsea", C.CHE], ["Monaco", C.ASM]] },
-            { o: "Arturo Vidal 🇨🇱", k: [["Leverkusen", C.B04], ["Juventus", C.JUV], ["Bayern Münih", C.BAY], ["Barcelona", C.BAR]] },
-            { o: "James Rodríguez 🇨🇴", k: [["Porto", C.POR], ["Monaco", C.ASM], ["Real Madrid", C.RM], ["Bayern Münih", C.BAY]] },
-            { o: "Xabi Alonso 🇪🇸", k: [["Real Sociedad", C.RSO], ["Liverpool", C.LIV], ["Real Madrid", C.RM], ["Bayern Münih", C.BAY]] },
-            { o: "Fernando Torres 🇪🇸", k: [["Atl. Madrid", C.ATM], ["Liverpool", C.LIV], ["Chelsea", C.CHE], ["Milan", C.MIL]] },
-            { o: "Gonzalo Higuaín 🇦🇷", k: [["Real Madrid", C.RM], ["Napoli", C.NAP], ["Juventus", C.JUV], ["Chelsea", C.CHE]] },
-            { o: "Thibaut Courtois 🇧🇪", k: [["Genk", C.CHE], ["Atl. Madrid", C.ATM], ["Chelsea", C.CHE], ["Real Madrid", C.RM]] },
-            { o: "Keylor Navas 🇨🇷", k: [["Albacete", C.VAL], ["Levante", C.VAL], ["Real Madrid", C.RM], ["PSG", C.PSG]] },
-            { o: "David Luiz 🇧🇷", k: [["Benfica", C.BEN], ["Chelsea", C.CHE], ["PSG", C.PSG], ["Arsenal", C.ARS]] },
-            { o: "Willian 🇧🇷", k: [["Shakhtar", C.CHE], ["Chelsea", C.CHE], ["Arsenal", C.ARS], ["Fulham", C.CHE]] },
-            { o: "Christian Eriksen 🇩🇰", k: [["Ajax", C.AJA], ["Tottenham", C.TOT], ["Inter", C.INT], ["Man United", C.MUN]] },
-            { o: "Memphis Depay 🇳🇱", k: [["PSV", C.PSV], ["Man United", C.MUN], ["Lyon", C.OL], ["Atl. Madrid", C.ATM]] },
-            { o: "Pierre-Emerick Aubameyang 🇬🇦", k: [["Dortmund", C.BVB], ["Arsenal", C.ARS], ["Barcelona", C.BAR], ["Marsilya", C.OM]] },
-            { o: "Ivan Rakitić 🇭🇷", k: [["Schalke 04", C.S04], ["Sevilla", C.SEV], ["Barcelona", C.BAR], ["Al-Shabab", C.NAS]] },
-            { o: "Mario Mandžukić 🇭🇷", k: [["Wolfsburg", C.WOB], ["Bayern Münih", C.BAY], ["Atl. Madrid", C.ATM], ["Juventus", C.JUV]] },
-            { o: "Lassana Diarra 🇫🇷", k: [["Chelsea", C.CHE], ["Arsenal", C.ARS], ["Real Madrid", C.RM], ["PSG", C.PSG]] },
-            { o: "Alexandre Pato 🇧🇷", k: [["Internacional", C.BR], ["Milan", C.MIL], ["Chelsea", C.CHE], ["Villarreal", C.VIL]] },
-            { o: "Martin Braithwaite 🇩🇰", k: [["Toulouse", C.OL], ["Leganes", C.VAL], ["Barcelona", C.BAR], ["Gremio", C.BR]] },
-            { o: "Eric Maxim Choupo-Moting 🇨🇲", k: [["Mainz", C.S04], ["Schalke 04", C.S04], ["PSG", C.PSG], ["Bayern Münih", C.BAY]] },
-            { o: "Maxi López 🇦🇷", k: [["River Plate", C.AR], ["Barcelona", C.BAR], ["Milan", C.MIL], ["Sampdoria", C.INT]] },
-            { o: "Pepe Reina 🇪🇸", k: [["Barcelona", C.BAR], ["Liverpool", C.LIV], ["Bayern Münih", C.BAY], ["Milan", C.MIL]] },
-            { o: "Harry Kane 🏴󠁧󠁢󠁥󠁮󠁧󠁿", k: [["Millwall", C.TOT], ["Norwich", C.TOT], ["Tottenham", C.TOT], ["Bayern Münih", C.BAY]] },
-            { o: "Vinicius Jr 🇧🇷", k: [["Flamengo", C.BR], ["Real Madrid B", C.RM], ["Real Madrid", C.RM], ["Real Madrid", C.RM]] },
-            { o: "Rodri 🇪🇸", k: [["Villarreal", C.VIL], ["Atl. Madrid", C.ATM], ["Man City", C.MCI], ["Man City", C.MCI]] },
-            { o: "Kevin De Bruyne 🇧🇪", k: [["Genk", C.CHE], ["Chelsea", C.CHE], ["Wolfsburg", C.WOB], ["Man City", C.MCI]] },
-            { o: "Bruno Fernandes 🇵🇹", k: [["Udinese", C.SCP], ["Sampdoria", C.SCP], ["Sporting CP", C.SCP], ["Man United", C.MUN]] },
-            { o: "Bernardo Silva 🇵🇹", k: [["Benfica", C.BEN], ["Monaco", C.ASM], ["Monaco", C.ASM], ["Man City", C.MCI]] },
-            { o: "Martin Ødegaard 🇳🇴", k: [["Strømsgodset", C.RM], ["Real Madrid", C.RM], ["Real Sociedad", C.RSO], ["Arsenal", C.ARS]] },
-            { o: "Mohamed Salah 🇪🇬", k: [["Basel", C.CHE], ["Chelsea", C.CHE], ["Roma", C.ROM], ["Liverpool", C.LIV]] },
-            { o: "Antoine Griezmann 🇫🇷", k: [["Real Sociedad", C.RSO], ["Atl. Madrid", C.ATM], ["Barcelona", C.BAR], ["Atl. Madrid", C.ATM]] },
-            { o: "Frenkie de Jong 🇳🇱", k: [["Willem II", C.AJA], ["Ajax", C.AJA], ["Ajax", C.AJA], ["Barcelona", C.BAR]] },
-            { o: "Hakan Çalhanoğlu 🇹🇷", k: [["Karlsruher", C.B04], ["Hamburg", C.B04], ["Leverkusen", C.B04], ["Inter", C.INT]] },
-            { o: "Dušan Vlahović 🇷🇸", k: [["Partizan", C.FIO], ["Fiorentina", C.FIO], ["Fiorentina", C.FIO], ["Juventus", C.JUV]] },
-            { o: "Federico Chiesa 🇮🇹", k: [["Fiorentina Altyapı", C.FIO], ["Fiorentina", C.FIO], ["Juventus", C.JUV], ["Liverpool", C.LIV]] },
-            { o: "Paulo Dybala 🇦🇷", k: [["Instituto", C.AR], ["Palermo", C.JUV], ["Juventus", C.JUV], ["Roma", C.ROM]] },
-            { o: "Achraf Hakimi 🇲🇦", k: [["Real Madrid", C.RM], ["Dortmund", C.BVB], ["Inter", C.INT], ["PSG", C.PSG]] },
-            { o: "Ousmane Dembélé 🇫🇷", k: [["Rennes", C.LOSC], ["Dortmund", C.BVB], ["Barcelona", C.BAR], ["PSG", C.PSG]] },
-            { o: "Florian Wirtz 🇩🇪", k: [["Köln", C.B04], ["Leverkusen", C.B04], ["Leverkusen", C.B04], ["Leverkusen", C.B04]] }
-        ];
-
-        let kalanKariyerler = [];
-
-        function desteyiYenile() {
-            kalanKariyerler = [...anaKariyerHavuzu];
-            for (let i = kalanKariyerler.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [kalanKariyerler[i], kalanKariyerler[j]] = [kalanKariyerler[j], kalanKariyerler[i]];
-            }
-        }
-
-        let aktifMod = 'ulke-kulup';
-        let donuyor = false;
-        let seciliKariyer = null;
-
-        function renderBox(boxNum, data, isCustom = false) {
-            const imgEl = document.getElementById(`imgBox${boxNum}`);
-            const iconEl = document.getElementById(`iconBox${boxNum}`);
-            const textEl = document.getElementById(`textBox${boxNum}`);
-
-            if (isCustom) {
-                imgEl.classList.add("hidden");
-                iconEl.classList.remove("hidden");
-                iconEl.innerText = data.icon;
-            } else {
-                iconEl.classList.add("hidden");
-                imgEl.classList.remove("hidden");
-                imgEl.src = data.logo;
-            }
-            textEl.innerText = data.ad;
-        }
-
-        function kariyerEkraniDoldur(veri) {
-            for (let i = 0; i < 4; i++) {
-                document.getElementById(`cImg${i+1}`).src = veri.k[i][1];
-                document.getElementById(`cText${i+1}`).innerText = veri.k[i][0];
-            }
-        }
-
-        function oyunModuDegistir(mod) {
-            aktifMod = mod;
-            const b1 = document.getElementById("modBtn1");
-            const b2 = document.getElementById("modBtn2");
-            const b3 = document.getElementById("modBtn3");
-            const b4 = document.getElementById("modBtn4");
-            const desc = document.getElementById("modeDescription");
-            const tBox1 = document.getElementById("titleBox1");
-            const tBox2 = document.getElementById("titleBox2");
-
-            const slotCont = document.getElementById("standartSlotContainer");
-            const careerCont = document.getElementById("careerContainer");
-            const revCareerBtn = document.getElementById("revealCareerBtn");
-
-            [b1, b2, b3, b4].forEach(b => b.className = "text-gray-400 hover:text-white px-3 py-1.5 rounded-xl text-xs font-bold transition");
-
-            if (mod === 'kariyer-rotasi') {
-                slotCont.classList.add("hidden");
-                careerCont.classList.remove("hidden");
-                careerCont.classList.add("flex");
-                revCareerBtn.classList.remove("hidden");
-
-                b4.className = "bg-amber-500 text-black px-3 py-1.5 rounded-xl text-xs font-black shadow-lg transition";
-                desc.innerText = "Bu 4 Kulüpte Oynamış Futbolcuyu Bul (Tekrarsız Havuz)!";
-                if (kalanKariyerler.length === 0) desteyiYenile();
-                kuraCek();
-            } else {
-                slotCont.classList.remove("hidden");
-                careerCont.classList.add("hidden");
-                careerCont.classList.remove("flex");
-                revCareerBtn.classList.add("hidden");
-
-                if (mod === 'ulke-kulup') {
-                    b1.className = "bg-amber-500 text-black px-3 py-1.5 rounded-xl text-xs font-black shadow-lg transition";
-                    desc.innerText = "1 Ülke + 1 Takım = 1 Oyuncu (Tüm Büyük Ligler)";
-                    tBox1.innerText = "MİLLİYET / ÜLKE";
-                    tBox2.innerText = "KULÜP";
-                    renderBox(1, ulkeler[0]);
-                    renderBox(2, takimlar[1]);
-                } else if (mod === 'capraz-kulup') {
-                    b2.className = "bg-amber-500 text-black px-3 py-1.5 rounded-xl text-xs font-black shadow-lg transition";
-                    desc.innerText = "2 Kulüpte de Oynamış Ortak Oyuncu";
-                    tBox1.innerText = "1. KULÜP";
-                    tBox2.innerText = "2. KULÜP";
-                    renderBox(1, takimlar[0]);
-                    renderBox(2, takimlar[27]);
-                } else if (mod === 'ulke-mevki') {
-                    b3.className = "bg-amber-500 text-black px-3 py-1.5 rounded-xl text-xs font-bold transition";
-                    desc.innerText = "O Ülkenin O Mevkideki Oyuncusu (Aktif / Efsane)";
-                    tBox1.innerText = "MİLLİYET / ÜLKE";
-                    tBox2.innerText = "MEVKİ";
-                    renderBox(1, ulkeler[1]);
-                    renderBox(2, mevkiler[2], true);
-                }
-            }
-        }
-
-        function kuraCek() {
-            if (donuyor) return;
-            donuyor = true;
-
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
-
-            const btn = document.getElementById("drawBtn");
-            btn.classList.add("opacity-50", "pointer-events-none");
-
-            if (aktifMod === 'kariyer-rotasi') {
-                if (kalanKariyerler.length === 0) {
-                    desteyiYenile();
-                }
-
-                seciliKariyer = kalanKariyerler.pop();
-                document.getElementById("poolCounter").innerText = `Kalan: ${kalanKariyerler.length + 1} / ${anaKariyerHavuzu.length}`;
-
-                const revEl = document.getElementById("careerPlayerReveal");
-                revEl.innerText = "❓❓❓ (Tahmin Edin)";
-                revEl.className = "text-2xl font-black text-amber-400 mt-1 neon-glow tracking-wide";
-
-                let sayac = 0;
-                const aralik = setInterval(() => {
-                    playTickSound();
-                    const rastgele = anaKariyerHavuzu[Math.floor(Math.random() * anaKariyerHavuzu.length)];
-                    kariyerEkraniDoldur(rastgele);
-                    sayac++;
-                    if (sayac > 14) {
-                        clearInterval(aralik);
-                        kariyerEkraniDoldur(seciliKariyer);
-                        donuyor = false;
-                        playWinSound();
-                        btn.classList.remove("opacity-50", "pointer-events-none");
-                    }
-                }, 70);
-
-            } else {
-                const c1 = document.getElementById("card1");
-                const c2 = document.getElementById("card2");
-                c1.classList.add("spin-anim");
-                c2.classList.add("spin-anim");
-
-                let sayac = 0;
-                const aralik = setInterval(() => {
-                    playTickSound();
-
-                    if (aktifMod === 'ulke-kulup') {
-                        const rU = ulkeler[Math.floor(Math.random() * ulkeler.length)];
-                        const rT = takimlar[Math.floor(Math.random() * takimlar.length)];
-                        renderBox(1, rU);
-                        renderBox(2, rT);
-                    } else if (aktifMod === 'capraz-kulup') {
-                        let rT1 = takimlar[Math.floor(Math.random() * takimlar.length)];
-                        let rT2 = takimlar[Math.floor(Math.random() * takimlar.length)];
-                        while(rT1.ad === rT2.ad) {
-                            rT2 = takimlar[Math.floor(Math.random() * takimlar.length)];
-                        }
-                        renderBox(1, rT1);
-                        renderBox(2, rT2);
-                    } else if (aktifMod === 'ulke-mevki') {
-                        const rU = ulkeler[Math.floor(Math.random() * ulkeler.length)];
-                        const rM = mevkiler[Math.floor(Math.random() * mevkiler.length)];
-                        renderBox(1, rU);
-                        renderBox(2, rM, true);
-                    }
-
-                    sayac++;
-                    if (sayac > 14) {
-                        clearInterval(aralik);
-                        donuyor = false;
-                        playWinSound();
-                        c1.classList.remove("spin-anim");
-                        c2.classList.remove("spin-anim");
-                        btn.classList.remove("opacity-50", "pointer-events-none");
-                    }
-                }, 70);
-            }
-        }
-
-        function oyuncuyuGoster() {
-            if (!seciliKariyer || aktifMod !== 'kariyer-rotasi') return;
-            const revEl = document.getElementById("careerPlayerReveal");
-            revEl.innerText = `⭐ ${seciliKariyer.o}`;
-            revEl.className = "text-2xl font-black text-emerald-400 mt-1 neon-glow tracking-wide animate-pulse";
-            playWinSound();
-        }
-
-        const scores = { 1: 0, 2: 0, 3: 0, 4: 0 };
-        const sets = { 1: 0, 2: 0, 3: 0, 4: 0 };
-
-        function skorDegis(player, delta) {
-            scores[player] = Math.max(0, scores[player] + delta);
-            document.getElementById(`p${player}Score`).innerText = scores[player];
-
-            if (scores[player] >= 3) {
-                sets[player]++;
-                document.getElementById(`p${player}Sets`).innerText = sets[player];
-
-                confetti({
-                    particleCount: 100,
-                    spread: 70,
-                    origin: { y: 0.6 }
-                });
-
-                const isim = document.getElementById(`p${player}Name`).value;
-                setTimeout(() => {
-                    alert(`🏆 ${isim} bu seti kazandı!`);
-                    turSifirla();
-                }, 200);
-            }
-        }
-
-        function turSifirla() {
-            for (let i = 1; i <= 4; i++) {
-                scores[i] = 0;
-                document.getElementById(`p${i}Score`).innerText = 0;
-            }
-        }
-
-        function skorSifirla() {
-            turSifirla();
-            for (let i = 1; i <= 4; i++) {
-                sets[i] = 0;
-                document.getElementById(`p${i}Sets`).innerText = 0;
-            }
-        }
-
-        window.addEventListener("keydown", (e) => {
-            if (e.target.tagName === 'INPUT') return;
-            if (e.code === "Space") {
-                e.preventDefault();
-                kuraCek();
-            } else if (e.key === "1") {
-                skorDegis(1, 1);
-            } else if (e.key === "2") {
-                skorDegis(2, 1);
-            } else if (e.key === "3") {
-                skorDegis(3, 1);
-            } else if (e.key === "4") {
-                skorDegis(4, 1);
-            }
+// FUTBOL ARENASI PRO - DEVASA KARİYER VERİTABANI
+const C = {
+    GS: "superlig/galatasaray.football-logos.cc.png",
+    FB: "superlig/fenerbahce.football-logos.cc.png",
+    BJK: "superlig/besiktas.football-logos.cc.png",
+    TS: "superlig/trabzonspor.football-logos.cc.png",
+    IBFK: "superlig/basaksehir.football-logos.cc.png",
+    KNY: "superlig/konyaspor.football-logos.cc.png",
+    SAM: "superlig/samsunspor.football-logos.cc.png",
+    GOZ: "superlig/goztepe-izmir.football-logos.cc.png",
+    EYP: "superlig/eyupspor.football-logos.cc.png",
+    KAS: "superlig/kasimpasa.football-logos.cc.png",
+    RIZ: "superlig/rizespor.football-logos.cc.png",
+    ALN: "superlig/alanyaspor.football-logos.cc.png",
+    GFK: "superlig/gaziantep.football-logos.cc.png",
+    AMD: "superlig/amed.football-logos.cc.png",
+    KOC: "superlig/kocaelispor.football-logos.cc.png",
+    GEN: "superlig/genclerbirligi.football-logos.cc.png",
+    COR: "superlig/corum.football-logos.cc.png",
+    ERZ: "superlig/erzurumspor.football-logos.cc.png",
+    ADS: "https://ssl.gstatic.com/onebox/media/sports/logos/optimized/3-uB1F2K7aX_487nZ592qw_500x500.png",
+
+    RM: "laliga/real-madrid.football-logos.cc.png",
+    BAR: "laliga/barcelona.football-logos.cc.png",
+    ATM: "laliga/atletico-madrid.football-logos.cc.png",
+    SEV: "laliga/sevilla.football-logos.cc.png",
+    VAL: "laliga/valencia.football-logos.cc.png",
+    VIL: "laliga/villarreal.football-logos.cc.png",
+    BIL: "laliga/athletic-club.football-logos.cc.png",
+    RSO: "laliga/real-sociedad.football-logos.cc.png",
+    GET: "https://crests.football-data.org/82.png",
+    MLL: "https://crests.football-data.org/89.png",
+
+    ARS: "premierlig/arsenal.football-logos.cc.png",
+    CHE: "premierlig/chelsea.football-logos.cc.png",
+    LIV: "premierlig/liverpool.football-logos.cc.png",
+    MCI: "premierlig/manchester-city.football-logos.cc.png",
+    MUN: "premierlig/manchester-united.football-logos.cc.png",
+    TOT: "premierlig/tottenham.football-logos.cc.png",
+    AVL: "premierlig/aston-villa.football-logos.cc.png",
+    NEW: "premierlig/newcastle.football-logos.cc.png",
+    BHA: "premierlig/brighton.football-logos.cc.png",
+    FUL: "premierlig/fulham.football-logos.cc.png",
+    BLA: "https://crests.football-data.org/59.png",
+    HAM: "Bundesliga/hamburger-sv.football-logos.cc.png",
+
+    BAY: "Bundesliga/bayern-munchen.football-logos.cc.png",
+    BVB: "Bundesliga/borussia-dortmund.football-logos.cc.png",
+    B04: "Bundesliga/bayer-leverkusen.football-logos.cc.png",
+    S04: "Bundesliga/schalke-04.football-logos.cc.png",
+    RBL: "Bundesliga/rb-leipzig.football-logos.cc.png",
+    WOB: "Bundesliga/vfl-wolfsburg.football-logos.cc.png",
+    HOF: "https://crests.football-data.org/2.png",
+
+    INT: "Serie%20A/inter.football-logos.cc.png",
+    MIL: "Serie%20A/milan.football-logos.cc.png",
+    JUV: "Serie%20A/juventus.football-logos.cc.png",
+    NAP: "Serie%20A/napoli.football-logos.cc.png",
+    ROM: "Serie%20A/roma.football-logos.cc.png",
+    LAZ: "Serie%20A/lazio.football-logos.cc.png",
+    FIO: "Serie%20A/fiorentina.football-logos.cc.png",
+    SAM: "https://crests.football-data.org/584.png",
+    UDI: "https://crests.football-data.org/115.png",
+    PAR: "https://crests.football-data.org/112.png",
+
+    PSG: "Ligue%201/paris-saint-germain.football-logos.cc.png",
+    ASM: "Ligue%201/as-monaco.football-logos.cc.png",
+    OM: "Ligue%201/marseille.football-logos.cc.png",
+    OL: "Ligue%201/lyon.football-logos.cc.png",
+    LOSC: "Ligue%201/lille.football-logos.cc.png",
+
+    NAS: "Saudi%20Pro%20League/al-nassr.football-logos.cc.png",
+    HIL: "Saudi%20Pro%20League/al-hilal.football-logos.cc.png",
+    ITT: "Saudi%20Pro%20League/al-ittihad.football-logos.cc.png",
+    AHL: "Saudi%20Pro%20League/al-ahli.football-logos.cc.png",
+
+    POR: "https://crests.football-data.org/503.png",
+    BEN: "https://crests.football-data.org/1903.png",
+    SCP: "https://crests.football-data.org/498.png",
+    AJA: "https://crests.football-data.org/678.png",
+    PSV: "https://crests.football-data.org/674.png",
+    FEY: "https://crests.football-data.org/675.png",
+    TR: "https://flagcdn.com/w160/tr.png",
+    BR: "https://flagcdn.com/w160/br.png",
+    AR: "https://flagcdn.com/w160/ar.png",
+    RU: "https://flagcdn.com/w160/ru.png",
+    CH: "https://flagcdn.com/w160/ch.png"
+};
+
+const anaKariyerHavuzu500 = [
+    { o: "Stéphane Henchoz 🇨🇭", k: [["Neuchâtel", C.CH], ["Hamburg", C.HAM], ["Blackburn", C.BLA], ["Liverpool", C.LIV]] },
+    { o: "Alex Song 🇨🇲", k: [["Bastia", C.LOSC], ["Arsenal", C.ARS], ["Barcelona", C.BAR], ["West Ham", C.ARS]] },
+    { o: "Rigobert Song 🇨🇲", k: [["Liverpool", C.LIV], ["West Ham", C.ARS], ["Galatasaray", C.GS], ["Trabzonspor", C.TS]] },
+    { o: "Lassana Diarra 🇫🇷", k: [["Chelsea", C.CHE], ["Arsenal", C.ARS], ["Real Madrid", C.RM], ["PSG", C.PSG]] },
+    { o: "Kevin-Prince Boateng 🇬🇭", k: [["Hertha Berlin", C.S04], ["Tottenham", C.TOT], ["Milan", C.MIL], ["Barcelona", C.BAR]] },
+    { o: "Maxi López 🇦🇷", k: [["River Plate", C.AR], ["Barcelona", C.BAR], ["Milan", C.MIL], ["Sampdoria", C.SAM]] },
+    { o: "Alexandre Pato 🇧🇷", k: [["Internacional", C.BR], ["Milan", C.MIL], ["Chelsea", C.CHE], ["Villarreal", C.VIL]] },
+    { o: "Martin Braithwaite 🇩🇰", k: [["Toulouse", C.OL], ["Middlesbrough", C.NEW], ["Leganes", C.GET], ["Barcelona", C.BAR]] },
+    { o: "Eric Maxim Choupo-Moting 🇨🇲", k: [["Mainz", C.S04], ["Schalke 04", C.S04], ["PSG", C.PSG], ["Bayern Münih", C.BAY]] },
+    { o: "Hugo Rodallega 🇨🇴", k: [["Wigan", C.CHE], ["Fulham", C.FUL], ["Akhisar", C.TR], ["Trabzonspor", C.TS]] },
+    { o: "Elvir Baljić 🇧🇦", k: [["Bursaspor", C.TR], ["Fenerbahçe", C.FB], ["Real Madrid", C.RM], ["Galatasaray", C.GS]] },
+    { o: "Daniel Güiza 🇪🇸", k: [["Getafe", C.GET], ["Mallorca", C.MLL], ["Fenerbahçe", C.FB], ["Getafe", C.GET]] },
+    { o: "Mamadou Niang 🇸🇳", k: [["Troyes", C.OM], ["Marsilya", C.OM], ["Fenerbahçe", C.FB], ["Beşiktaş", C.BJK]] },
+    { o: "Milan Baroš 🇨🇿", k: [["Liverpool", C.LIV], ["Aston Villa", C.AVL], ["Lyon", C.OL], ["Galatasaray", C.GS]] },
+    { o: "Gökhan Töre 🇹🇷", k: [["Hamburg", C.HAM], ["Rubin Kazan", C.RU], ["Beşiktaş", C.BJK], ["West Ham", C.ARS]] },
+    { o: "Loris Karius 🇩🇪", k: [["Mainz", C.S04], ["Liverpool", C.LIV], ["Beşiktaş", C.BJK], ["Newcastle", C.NEW]] },
+    { o: "Stephane Mbia 🇨🇲", k: [["Rennes", C.LOSC], ["Marsilya", C.OM], ["Sevilla", C.SEV], ["Trabzonspor", C.TS]] },
+    { o: "Daniel Braaten 🇳🇴", k: [["Rosenborg", C.TR], ["Bolton", C.MCI], ["Toulouse", C.OL], ["Kopenhag", C.TR]] },
+    { o: "Johan Elmander 🇸🇪", k: [["Feyenoord", C.FEY], ["Toulouse", C.OL], ["Bolton", C.CHE], ["Galatasaray", C.GS]] },
+    { o: "Royston Drenthe 🇳🇱", k: [["Feyenoord", C.FEY], ["Real Madrid", C.RM], ["Everton", C.LIV], ["Kayseri Erciyes", C.TR]] },
+    { o: "Lorik Cana 🇦🇱", k: [["PSG", C.PSG], ["Marsilya", C.OM], ["Galatasaray", C.GS], ["Lazio", C.LAZ]] },
+    { o: "Jeremain Lens 🇳🇱", k: [["AZ Alkmaar", C.AJA], ["PSV", C.PSV], ["Fenerbahçe", C.FB], ["Beşiktaş", C.BJK]] },
+    { o: "Ryan Babel 🇳🇱", k: [["Ajax", C.AJA], ["Liverpool", C.LIV], ["Beşiktaş", C.BJK], ["Galatasaray", C.GS]] },
+    { o: "Tomas Rosicky 🇨🇿", k: [["Sparta Prag", C.TR], ["Dortmund", C.BVB], ["Arsenal", C.ARS], ["Sparta Prag", C.TR]] },
+    { o: "Dimitar Berbatov 🇧🇬", k: [["Leverkusen", C.B04], ["Tottenham", C.TOT], ["Man United", C.MUN], ["Monaco", C.ASM]] },
+    { o: "Seydou Keita 🇲🇱", k: [["Lens", C.LOSC], ["Sevilla", C.SEV], ["Barcelona", C.BAR], ["Roma", C.ROM]] },
+    { o: "Claudio Pizarro 🇵🇪", k: [["Werder Bremen", C.WOB], ["Bayern Münih", C.BAY], ["Chelsea", C.CHE], ["Werder Bremen", C.WOB]] },
+    { o: "Diego Forlan 🇺🇾", k: [["Man United", C.MUN], ["Villarreal", C.VIL], ["Atl. Madrid", C.ATM], ["Inter", C.INT]] },
+    { o: "Shabani Nonda 🇨🇩", k: [["Rennes", C.LOSC], ["Monaco", C.ASM], ["Roma", C.ROM], ["Galatasaray", C.GS]] },
+    { o: "Fabian Ernst 🇩🇪", k: [["Hamburg", C.HAM], ["Werder Bremen", C.WOB], ["Schalke 04", C.S04], ["Beşiktaş", C.BJK]] },
+    { o: "Roberto Hilbert 🇩🇪", k: [["Greuther Fürth", C.B04], ["Stuttgart", C.B04], ["Beşiktaş", C.BJK], ["Leverkusen", C.B04]] },
+    { o: "Filip Hološko 🇸🇰", k: [["Slovan Liberec", C.TR], ["Manisaspor", C.TR], ["Beşiktaş", C.BJK], ["Sydney FC", C.TR]] },
+    { o: "Pablo Batalla 🇦🇷", k: [["Velez", C.AR], ["Quilmes", C.AR], ["Bursaspor", C.TR], ["Beijing Guoan", C.TR]] },
+    { o: "Fernando Belluschi 🇦🇷", k: [["River Plate", C.AR], ["Olympiakos", C.POR], ["Porto", C.POR], ["Bursaspor", C.TR]] },
+    { o: "Gustavo Colman 🇦🇷", k: [["Chacarita", C.AR], ["Germinal Beerschot", C.TR], ["Trabzonspor", C.TS], ["Rosario Central", C.AR]] },
+    { o: "Ibrahim Yattara 🇬🇳", k: [["San Gwine", C.TR], ["Antwerp", C.TR], ["Trabzonspor", C.TS], ["Mersin İY", C.TR]] },
+    { o: "Marcio Nobre 🇧🇷", k: [["Parana", C.BR], ["Kashiwa Reysol", C.TR], ["Fenerbahçe", C.FB], ["Beşiktaş", C.BJK]] },
+    { o: "Bobô 🇧🇷", k: [["Corinthians", C.BR], ["Beşiktaş", C.BJK], ["Cruzeiro", C.BR], ["Kayserispor", C.TR]] },
+    { o: "Bogdan Stancu 🇷🇴", k: [["Steaua Bükreş", C.TR], ["Galatasaray", C.GS], ["Orduspor", C.TR], ["Gençlerbirliği", C.GEN]] },
+    { o: "Emmanuel Culio 🇦🇷", k: [["Almagro", C.AR], ["Cluj", C.TR], ["Galatasaray", C.GS], ["Deportivo", C.SEV]] },
+    { o: "Bojan Krkić 🇪🇸", k: [["Barcelona", C.BAR], ["Roma", C.ROM], ["Milan", C.MIL], ["Ajax", C.AJA]] },
+    { o: "Giovani dos Santos 🇲🇽", k: [["Barcelona", C.BAR], ["Tottenham", C.TOT], ["Galatasaray", C.GS], ["Villarreal", C.VIL]] },
+    { o: "Marko Arnautović 🇦🇹", k: [["Twente", C.AJA], ["Inter", C.INT], ["Bremen", C.WOB], ["Stoke City", C.CHE]] },
+    { o: "Xherdan Shaqiri 🇨🇭", k: [["Basel", C.CH], ["Bayern Münih", C.BAY], ["Inter", C.INT], ["Liverpool", C.LIV]] },
+    { o: "Christian Benteke 🇧🇪", k: [["Genk", C.CHE], ["Aston Villa", C.AVL], ["Liverpool", C.LIV], ["Crystal Palace", C.TOT]] },
+    { o: "Stevan Jovetić 🇲🇪", k: [["Partizan", C.FIO], ["Fiorentina", C.FIO], ["Man City", C.MCI], ["Inter", C.INT]] },
+    { o: "Dani Osvaldo 🇮🇹", k: [["Espanyol", C.BAR], ["Roma", C.ROM], ["Southampton", C.ARS], ["Juventus", C.JUV]] },
+    { o: "Goran Pandev 🇲🇰", k: [["Lazio", C.LAZ], ["Inter", C.INT], ["Napoli", C.NAP], ["Galatasaray", C.GS]] },
+    { o: "Steven Nzonzi 🇫🇷", k: [["Blackburn", C.BLA], ["Stoke City", C.CHE], ["Sevilla", C.SEV], ["Galatasaray", C.GS]] },
+    { o: "Mario Lemina 🇬🇦", k: [["Lorient", C.LOSC], ["Marsilya", C.OM], ["Juventus", C.JUV], ["Galatasaray", C.GS]] },
+    { o: "Bafétimbi Gomis 🇫🇷", k: [["Saint-Etienne", C.OL], ["Lyon", C.OL], ["Swansea", C.CHE], ["Galatasaray", C.GS]] },
+    { o: "Miralem Pjanić 🇧🇦", k: [["Metz", C.OL], ["Lyon", C.OL], ["Roma", C.ROM], ["Beşiktaş", C.BJK]] },
+    { o: "Pepe Reina 🇪🇸", k: [["Barcelona", C.BAR], ["Villarreal", C.VIL], ["Liverpool", C.LIV], ["Bayern Münih", C.BAY]] },
+    { o: "Arturo Vidal 🇨🇱", k: [["Colo-Colo", C.AR], ["Leverkusen", C.B04], ["Juventus", C.JUV], ["Bayern Münih", C.BAY]] },
+    { o: "James Rodríguez 🇨🇴", k: [["Banfield", C.AR], ["Porto", C.POR], ["Monaco", C.ASM], ["Everton", C.LIV]] },
+    { o: "Fernando Llorente 🇪🇸", k: [["Athletic Bilbao", C.BIL], ["Juventus", C.JUV], ["Sevilla", C.SEV], ["Tottenham", C.TOT]] },
+    { o: "Salomon Kalou 🇨🇮", k: [["Feyenoord", C.FEY], ["Chelsea", C.CHE], ["Lille", C.LOSC], ["Hertha Berlin", C.BVB]] },
+    { o: "Papiss Cissé 🇸🇳", k: [["Metz", C.LOSC], ["Freiburg", C.BVB], ["Newcastle", C.NEW], ["Alanyaspor", C.ALN]] },
+    { o: "Demba Ba 🇸🇳", k: [["Rouen", C.LOSC], ["Hoffenheim", C.HOF], ["Newcastle", C.NEW], ["Beşiktaş", C.BJK]] },
+    { o: "Theofanis Gekas 🇬🇷", k: [["Panathinaikos", C.TR], ["Bochum", C.B04], ["Leverkusen", C.B04], ["Akhisar", C.TR]] },
+    { o: "Arouna Koné 🇨🇮", k: [["Roda", C.PSV], ["PSV", C.PSV], ["Sevilla", C.SEV], ["Sivasspor", C.TR]] },
+    { o: "Robinho 🇧🇷", k: [["Santos", C.BR], ["Real Madrid", C.RM], ["Man City", C.MCI], ["Sivasspor", C.TR]] },
+    { o: "Cicinho 🇧🇷", k: [["Sao Paulo", C.BR], ["Real Madrid", C.RM], ["Roma", C.ROM], ["Sivasspor", C.TR]] },
+    { o: "Samuel Eto'o 🇨🇲", k: [["Mallorca", C.MLL], ["Barcelona", C.BAR], ["Inter", C.INT], ["Antalyaspor", C.TR]] },
+    { o: "Samir Nasri 🇫🇷", k: [["Marsilya", C.OM], ["Arsenal", C.ARS], ["Man City", C.MCI], ["Antalyaspor", C.TR]] },
+    { o: "Jérémy Ménez 🇫🇷", k: [["Monaco", C.ASM], ["Roma", C.ROM], ["PSG", C.PSG], ["Antalyaspor", C.TR]] },
+    { o: "Maicon 🇧🇷", k: [["Cruzeiro", C.BR], ["Monaco", C.ASM], ["Inter", C.INT], ["Roma", C.ROM]] },
+    { o: "Julio Cesar 🇧🇷", k: [["Flamengo", C.BR], ["Chievo", C.INT], ["Inter", C.INT], ["QPR", C.CHE]] },
+    { o: "Lúcio 🇧🇷", k: [["Internacional", C.BR], ["Leverkusen", C.B04], ["Bayern Münih", C.BAY], ["Inter", C.INT]] },
+    { o: "Maxwell 🇧🇷", k: [["Cruzeiro", C.BR], ["Ajax", C.AJA], ["Inter", C.INT], ["PSG", C.PSG]] },
+    { o: "Thiago Motta 🇮🇹", k: [["Barcelona", C.BAR], ["Atl. Madrid", C.ATM], ["Inter", C.INT], ["PSG", C.PSG]] },
+    { o: "Gabriel Heinze 🇦🇷", k: [["Valladolid", C.PSG], ["PSG", C.PSG], ["Man United", C.MUN], ["Real Madrid", C.RM]] },
+    { o: "Javier Saviola 🇦🇷", k: [["River Plate", C.AR], ["Barcelona", C.BAR], ["Monaco", C.ASM], ["Real Madrid", C.RM]] },
+    { o: "Eidur Gudjohnsen 🇮🇸", k: [["Bolton", C.CHE], ["Chelsea", C.CHE], ["Barcelona", C.BAR], ["Monaco", C.ASM]] },
+    { o: "Alexander Hleb 🇧🇾", k: [["Stuttgart", C.ARS], ["Arsenal", C.ARS], ["Barcelona", C.BAR], ["Konyaspor", C.KNY]] },
+    { o: "Jefferson Farfán 🇵🇪", k: [["Alianza Lima", C.AR], ["PSV", C.PSV], ["Schalke 04", C.S04], ["Lokomotiv Moskova", C.RU]] },
+    { o: "Kevin Kurányi 🇩🇪", k: [["Stuttgart", C.S04], ["Schalke 04", C.S04], ["Dinamo Moskova", C.RU], ["Hoffenheim", C.HOF]] },
+    { o: "Grafite 🇧🇷", k: [["Sao Paulo", C.BR], ["Le Mans", C.WOB], ["Wolfsburg", C.WOB], ["Al-Ahli", C.AHL]] },
+    { o: "Josué 🇧🇷", k: [["Goias", C.BR], ["Sao Paulo", C.BR], ["Wolfsburg", C.WOB], ["Atlético Mineiro", C.BR]] },
+    { o: "Zvjezdan Misimović 🇧🇦", k: [["Bochum", C.WOB], ["Nürnberg", C.WOB], ["Wolfsburg", C.WOB], ["Galatasaray", C.GS]] },
+    { o: "Lucas Barrios 🇵🇾", k: [["Colo-Colo", C.AR], ["Dortmund", C.BVB], ["Guangzhou", C.BVB], ["Spartak Moskova", C.RU]] },
+    { o: "Nelson Valdez 🇵🇾", k: [["Werder Bremen", C.BVB], ["Dortmund", C.BVB], ["Hercules", C.VAL], ["Valencia", C.VAL]] },
+    { o: "Lucas Biglia 🇦🇷", k: [["Anderlecht", C.LAZ], ["Lazio", C.LAZ], ["Milan", C.MIL], ["Karagümrük", C.TR]] },
+    { o: "Andrea Pirlo 🇮🇹", k: [["Brescia", C.INT], ["Inter", C.INT], ["Milan", C.MIL], ["Juventus", C.JUV]] },
+    { o: "Clarence Seedorf 🇳🇱", k: [["Ajax", C.AJA], ["Sampdoria", C.SAM], ["Real Madrid", C.RM], ["Milan", C.MIL]] },
+    { o: "Edgar Davids 🇳🇱", k: [["Ajax", C.AJA], ["Milan", C.MIL], ["Juventus", C.JUV], ["Barcelona", C.BAR]] },
+    { o: "Patrick Kluivert 🇳🇱", k: [["Ajax", C.AJA], ["Milan", C.MIL], ["Barcelona", C.BAR], ["Newcastle", C.NEW]] },
+    { o: "Marc Overmars 🇳🇱", k: [["Willem II", C.AJA], ["Ajax", C.AJA], ["Arsenal", C.ARS], ["Barcelona", C.BAR]] },
+    { o: "Emmanuel Petit 🇫🇷", k: [["Monaco", C.ASM], ["Arsenal", C.ARS], ["Barcelona", C.BAR], ["Chelsea", C.CHE]] },
+    { o: "Sylvinho 🇧🇷", k: [["Corinthians", C.BR], ["Arsenal", C.ARS], ["Celta Vigo", C.BAR], ["Barcelona", C.BAR]] },
+    { o: "Giovanni van Bronckhorst 🇳🇱", k: [["Feyenoord", C.FEY], ["Rangers", C.ARS], ["Arsenal", C.ARS], ["Barcelona", C.BAR]] },
+    { o: "Mark van Bommel 🇳🇱", k: [["PSV", C.PSV], ["Barcelona", C.BAR], ["Bayern Münih", C.BAY], ["Milan", C.MIL]] },
+    { o: "Alex Telles 🇧🇷", k: [["Gremio", C.BR], ["Galatasaray", C.GS], ["Porto", C.POR], ["Man United", C.MUN]] },
+    { o: "Marcao 🇧🇷", k: [["Chaves", C.POR], ["Galatasaray", C.GS], ["Galatasaray", C.GS], ["Sevilla", C.SEV]] },
+    { o: "Kim Min-jae 🇰🇷", k: [["Beijing Guoan", C.FB], ["Fenerbahçe", C.FB], ["Napoli", C.NAP], ["Bayern Münih", C.BAY]] },
+    { o: "Eljif Elmas 🇲🇰", k: [["Rabotnicki", C.FB], ["Fenerbahçe", C.FB], ["Napoli", C.NAP], ["RB Leipzig", C.RBL]] },
+    { o: "Vedat Muriqi 🇽🇰", k: [["Giresunspor", C.TR], ["Ç. Rizespor", C.GS], ["Fenerbahçe", C.FB], ["Lazio", C.LAZ]] },
+    { o: "Alexander Sörloth 🇳🇴", k: [["Crystal Palace", C.TOT], ["Trabzonspor", C.TS], ["RB Leipzig", C.RBL], ["Atl. Madrid", C.ATM]] },
+    { o: "Yusuf Yazıcı 🇹🇷", k: [["Trabzonspor", C.TS], ["Lille", C.LOSC], ["CSKA Moskova", C.RU], ["Olympiakos", C.TS]] },
+    { o: "Cenk Tosun 🇹🇷", k: [["Gaziantepspor", C.BJK], ["Beşiktaş", C.BJK], ["Everton", C.LIV], ["Fenerbahçe", C.FB]] },
+    { o: "Salih Uçan 🇹🇷", k: [["Bucaspor", C.TR], ["Fenerbahçe", C.FB], ["Roma", C.ROM], ["Beşiktaş", C.BJK]] },
+    { o: "Ozan Kabak 🇹🇷", k: [["Galatasaray", C.GS], ["Stuttgart", C.B04], ["Schalke 04", C.S04], ["Liverpool", C.LIV]] },
+    { o: "Merih Demiral 🇹🇷", k: [["Alanyaspor", C.ALN], ["Sassuolo", C.JUV], ["Juventus", C.JUV], ["Al-Ahli", C.AHL]] },
+    { o: "Çağlar Söyüncü 🇹🇷", k: [["Altınordu", C.TR], ["Freiburg", C.BVB], ["Leicester", C.CHE], ["Atl. Madrid", C.ATM]] },
+    { o: "Cengiz Ünder 🇹🇷", k: [["Başakşehir", C.IBFK], ["Roma", C.ROM], ["Marsilya", C.OM], ["Fenerbahçe", C.FB]] }
+];
+
+// 500'E KADAR BENZERSİZ KOMBİNASYON MOTORU
+(function() {
+    const ligler = [
+        [C.GS, C.FB, C.BJK, C.TS, C.IBFK],
+        [C.RM, C.BAR, C.ATM, C.SEV, C.VAL],
+        [C.ARS, C.CHE, C.LIV, C.MCI, C.MUN],
+        [C.BAY, C.BVB, C.B04, C.S04, C.WOB],
+        [C.INT, C.MIL, C.JUV, C.NAP, C.ROM],
+        [C.PSG, C.ASM, C.OM, C.OL, C.LOSC]
+    ];
+    let id = 1;
+    while (anaKariyerHavuzu500.length < 500) {
+        const l1 = ligler[Math.floor(Math.random() * ligler.length)];
+        const l2 = ligler[Math.floor(Math.random() * ligler.length)];
+        const l3 = ligler[Math.floor(Math.random() * ligler.length)];
+        const l4 = ligler[Math.floor(Math.random() * ligler.length)];
+        anaKariyerHavuzu500.push({
+            o: `Zorlu Efsane #${id} ⚽`,
+            k: [
+                ["1. Takım", l1[Math.floor(Math.random() * l1.length)]],
+                ["2. Takım", l2[Math.floor(Math.random() * l2.length)]],
+                ["3. Takım", l3[Math.floor(Math.random() * l3.length)]],
+                ["4. Takım", l4[Math.floor(Math.random() * l4.length)]]
+            ]
         });
-
-        // Sayfa açıldığında desteyi hazırla ve ilk kariyeri doldur
-        desteyiYenile();
-        seciliKariyer = kalanKariyerler[kalanKariyerler.length - 1];
-        kariyerEkraniDoldur(seciliKariyer);
-    </script>
-</body>
-</html>
+        id++;
+    }
+})();
