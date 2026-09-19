@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>KONSOL OYUN</title>
+    <title>Futbol Bilgi Arenası PRO | Turan Medya</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- 500 OYUNCULU DEVASA VERİ MOTORU BURADAN ÇEKİLİR -->
+    <script src="kariyerler.js"></script>
     <style>
         :root {
             --bg-image: url('arkaplan.jpg');
@@ -75,7 +77,7 @@
         <div class="flex items-center gap-3">
             <span class="text-3xl">⚽</span>
             <div>
-                <h1 class="text-xl font-black tracking-wider text-amber-500 neon-glow">FIŞT FIŞT BAKSANA KARDEŞİM</h1>
+                <h1 class="text-xl font-black tracking-wider text-amber-500 neon-glow">FUTBOL ARENASI PRO</h1>
                 <p class="text-[11px] text-gray-400" id="modeDescription">1 Ülke + 1 Takım = 1 Oyuncu</p>
             </div>
         </div>
@@ -157,7 +159,10 @@
                 </div>
 
                 <div class="glass-card rounded-2xl px-6 py-4 w-full text-center border border-amber-500/30">
-                    <p class="text-[10px] uppercase font-extrabold tracking-widest text-gray-400">BU OYUNCU KİM?</p>
+                    <div class="flex items-center justify-between px-2 text-[10px] text-gray-400 uppercase font-bold">
+                        <span>BU OYUNCU KİM?</span>
+                        <span id="poolCounter" class="text-amber-500/80 font-black">Havuz: 500 Oyuncu</span>
+                    </div>
                     <h2 id="careerPlayerReveal" class="text-2xl font-black text-amber-400 mt-1 neon-glow tracking-wide">❓❓❓ (Tahmin Edin)</h2>
                 </div>
             </div>
@@ -234,7 +239,7 @@
     </main>
 
     <footer class="text-center text-[11px] text-gray-600 py-2">
-        GEBEŞ KAPLUNBAĞA — Futbol Bilgi Ligi v25.0
+        Toptan Muhabbetler Formatı — Futbol Bilgi Ligi v28.0 (500 Oyunculu Arşiv)
     </footer>
 
     <script>
@@ -298,7 +303,6 @@
         ];
 
         const takimlar = [
-            // SÜPER LİG
             { ad: "Galatasaray", logo: "superlig/galatasaray.football-logos.cc.png" },
             { ad: "Fenerbahçe", logo: "superlig/fenerbahce.football-logos.cc.png" },
             { ad: "Beşiktaş", logo: "superlig/besiktas.football-logos.cc.png" },
@@ -318,7 +322,6 @@
             { ad: "Çorum FK", logo: "superlig/corum.football-logos.cc.png" },
             { ad: "Erzurumspor", logo: "superlig/erzurumspor.football-logos.cc.png" },
 
-            // PREMIER LİG
             { ad: "Arsenal", logo: "premierlig/arsenal.football-logos.cc.png" },
             { ad: "Chelsea", logo: "premierlig/chelsea.football-logos.cc.png" },
             { ad: "Liverpool", logo: "premierlig/liverpool.football-logos.cc.png" },
@@ -329,7 +332,6 @@
             { ad: "Newcastle", logo: "premierlig/newcastle.football-logos.cc.png" },
             { ad: "Brighton", logo: "premierlig/brighton.football-logos.cc.png" },
 
-            // LA LIGA
             { ad: "Real Madrid", logo: "laliga/real-madrid.football-logos.cc.png" },
             { ad: "Barcelona", logo: "laliga/barcelona.football-logos.cc.png" },
             { ad: "Atletico Madrid", logo: "laliga/atletico-madrid.football-logos.cc.png" },
@@ -339,7 +341,6 @@
             { ad: "Athletic Bilbao", logo: "laliga/athletic-club.football-logos.cc.png" },
             { ad: "Real Sociedad", logo: "laliga/real-sociedad.football-logos.cc.png" },
 
-            // BUNDESLIGA
             { ad: "Bayern Münih", logo: "Bundesliga/bayern-munchen.football-logos.cc.png" },
             { ad: "Borussia Dortmund", logo: "Bundesliga/borussia-dortmund.football-logos.cc.png" },
             { ad: "Bayer Leverkusen", logo: "Bundesliga/bayer-leverkusen.football-logos.cc.png" },
@@ -347,7 +348,6 @@
             { ad: "RB Leipzig", logo: "Bundesliga/rb-leipzig.football-logos.cc.png" },
             { ad: "Eintracht Frankfurt", logo: "Bundesliga/eintracht-frankfurt.football-logos.cc.png" },
 
-            // SERIE A
             { ad: "Inter", logo: "Serie%20A/inter.football-logos.cc.png" },
             { ad: "Milan", logo: "Serie%20A/milan.football-logos.cc.png" },
             { ad: "Juventus", logo: "Serie%20A/juventus.football-logos.cc.png" },
@@ -357,14 +357,12 @@
             { ad: "Atalanta", logo: "Serie%20A/atalanta.football-logos.cc.png" },
             { ad: "Fiorentina", logo: "Serie%20A/fiorentina.football-logos.cc.png" },
 
-            // LIGUE 1
             { ad: "PSG", logo: "Ligue%201/paris-saint-germain.football-logos.cc.png" },
             { ad: "Monaco", logo: "Ligue%201/as-monaco.football-logos.cc.png" },
             { ad: "Marsilya", logo: "Ligue%201/marseille.football-logos.cc.png" },
             { ad: "Lyon", logo: "Ligue%201/lyon.football-logos.cc.png" },
             { ad: "Lille", logo: "Ligue%201/lille.football-logos.cc.png" },
 
-            // SUUDİ PRO LİG
             { ad: "Al-Nassr", logo: "Saudi%20Pro%20League/al-nassr.football-logos.cc.png" },
             { ad: "Al-Hilal", logo: "Saudi%20Pro%20League/al-hilal.football-logos.cc.png" },
             { ad: "Al-Ittihad", logo: "Saudi%20Pro%20League/al-ittihad.football-logos.cc.png" },
@@ -384,324 +382,17 @@
             { ad: "Santrafor / Forvet", icon: "🏹" }
         ];
 
-        // LOGO VE İSİMLERİ KESİNLİKLE EŞİTLENMİŞ KARİYER HAVUZU
-        const kariyerHavuzu = [
-            {
-                oyuncu: "Victor Osimhen 🇳🇬",
-                kulupler: [
-                    { ad: "Wolfsburg", logo: "Bundesliga/vfl-wolfsburg.football-logos.cc.png" },
-                    { ad: "Lille", logo: "Ligue%201/lille.football-logos.cc.png" },
-                    { ad: "Napoli", logo: "Serie%20A/napoli.football-logos.cc.png" },
-                    { ad: "Galatasaray", logo: "superlig/galatasaray.football-logos.cc.png" }
-                ]
-            },
-            {
-                oyuncu: "Mauro Icardi 🇦🇷",
-                kulupler: [
-                    { ad: "Sampdoria", logo: "Serie%20A/inter.football-logos.cc.png" },
-                    { ad: "Inter", logo: "Serie%20A/inter.football-logos.cc.png" },
-                    { ad: "PSG", logo: "Ligue%201/paris-saint-germain.football-logos.cc.png" },
-                    { ad: "Galatasaray", logo: "superlig/galatasaray.football-logos.cc.png" }
-                ]
-            },
-            {
-                oyuncu: "Edin Džeko 🇧🇦",
-                kulupler: [
-                    { ad: "Wolfsburg", logo: "Bundesliga/vfl-wolfsburg.football-logos.cc.png" },
-                    { ad: "Man City", logo: "premierlig/manchester-city.football-logos.cc.png" },
-                    { ad: "Roma", logo: "Serie%20A/roma.football-logos.cc.png" },
-                    { ad: "Fenerbahçe", logo: "superlig/fenerbahce.football-logos.cc.png" }
-                ]
-            },
-            {
-                oyuncu: "Neymar Jr 🇧🇷",
-                kulupler: [
-                    { ad: "Santos", logo: "https://flagcdn.com/w160/br.png" },
-                    { ad: "Barcelona", logo: "laliga/barcelona.football-logos.cc.png" },
-                    { ad: "PSG", logo: "Ligue%201/paris-saint-germain.football-logos.cc.png" },
-                    { ad: "Al-Hilal", logo: "Saudi%20Pro%20League/al-hilal.football-logos.cc.png" }
-                ]
-            },
-            {
-                oyuncu: "Cristiano Ronaldo 🇵🇹",
-                kulupler: [
-                    { ad: "Sporting CP", logo: "https://crests.football-data.org/498.png" },
-                    { ad: "Man United", logo: "premierlig/manchester-united.football-logos.cc.png" },
-                    { ad: "Real Madrid", logo: "laliga/real-madrid.football-logos.cc.png" },
-                    { ad: "Al-Nassr", logo: "Saudi%20Pro%20League/al-nassr.football-logos.cc.png" }
-                ]
-            },
-            {
-                oyuncu: "Karim Benzema 🇫🇷",
-                kulupler: [
-                    { ad: "Lyon", logo: "Ligue%201/lyon.football-logos.cc.png" },
-                    { ad: "Real Madrid", logo: "laliga/real-madrid.football-logos.cc.png" },
-                    { ad: "Real Madrid", logo: "laliga/real-madrid.football-logos.cc.png" },
-                    { ad: "Al-Ittihad", logo: "Saudi%20Pro%20League/al-ittihad.football-logos.cc.png" }
-                ]
-            },
-            {
-                oyuncu: "Kylian Mbappé 🇫🇷",
-                kulupler: [
-                    { ad: "Monaco", logo: "Ligue%201/as-monaco.football-logos.cc.png" },
-                    { ad: "PSG", logo: "Ligue%201/paris-saint-germain.football-logos.cc.png" },
-                    { ad: "PSG", logo: "Ligue%201/paris-saint-germain.football-logos.cc.png" },
-                    { ad: "Real Madrid", logo: "laliga/real-madrid.football-logos.cc.png" }
-                ]
-            },
-            {
-                oyuncu: "Ciro Immobile 🇮🇹",
-                kulupler: [
-                    { ad: "Dortmund", logo: "Bundesliga/borussia-dortmund.football-logos.cc.png" },
-                    { ad: "Sevilla", logo: "laliga/sevilla.football-logos.cc.png" },
-                    { ad: "Lazio", logo: "Serie%20A/lazio.football-logos.cc.png" },
-                    { ad: "Beşiktaş", logo: "superlig/besiktas.football-logos.cc.png" }
-                ]
-            },
-            {
-                oyuncu: "Michy Batshuayi 🇧🇪",
-                kulupler: [
-                    { ad: "Chelsea", logo: "premierlig/chelsea.football-logos.cc.png" },
-                    { ad: "Beşiktaş", logo: "superlig/besiktas.football-logos.cc.png" },
-                    { ad: "Fenerbahçe", logo: "superlig/fenerbahce.football-logos.cc.png" },
-                    { ad: "Galatasaray", logo: "superlig/galatasaray.football-logos.cc.png" }
-                ]
-            },
-            {
-                oyuncu: "Fred 🇧🇷",
-                kulupler: [
-                    { ad: "Internacional", logo: "https://flagcdn.com/w160/br.png" },
-                    { ad: "Shakhtar", logo: "https://crests.football-data.org/678.png" },
-                    { ad: "Man United", logo: "premierlig/manchester-united.football-logos.cc.png" },
-                    { ad: "Fenerbahçe", logo: "superlig/fenerbahce.football-logos.cc.png" }
-                ]
-            },
-            {
-                oyuncu: "Jude Bellingham 🏴󠁧󠁢󠁥󠁮󠁧󠁿",
-                kulupler: [
-                    { ad: "Birmingham", logo: "https://crests.football-data.org/332.png" },
-                    { ad: "Dortmund", logo: "Bundesliga/borussia-dortmund.football-logos.cc.png" },
-                    { ad: "Dortmund", logo: "Bundesliga/borussia-dortmund.football-logos.cc.png" },
-                    { ad: "Real Madrid", logo: "laliga/real-madrid.football-logos.cc.png" }
-                ]
-            },
-            {
-                oyuncu: "Erling Haaland 🇳🇴",
-                kulupler: [
-                    { ad: "Molde", logo: "https://flagcdn.com/w160/no.png" },
-                    { ad: "Salzburg", logo: "https://crests.football-data.org/1877.png" },
-                    { ad: "Dortmund", logo: "Bundesliga/borussia-dortmund.football-logos.cc.png" },
-                    { ad: "Man City", logo: "premierlig/manchester-city.football-logos.cc.png" }
-                ]
-            },
-            {
-                oyuncu: "Robert Lewandowski 🇵🇱",
-                kulupler: [
-                    { ad: "Lech Poznan", logo: "https://flagcdn.com/w160/pl.png" },
-                    { ad: "Dortmund", logo: "Bundesliga/borussia-dortmund.football-logos.cc.png" },
-                    { ad: "Bayern Münih", logo: "Bundesliga/bayern-munchen.football-logos.cc.png" },
-                    { ad: "Barcelona", logo: "laliga/barcelona.football-logos.cc.png" }
-                ]
-            },
-            {
-                oyuncu: "Mesut Özil 🇩🇪",
-                kulupler: [
-                    { ad: "Schalke 04", logo: "Bundesliga/schalke-04.football-logos.cc.png" },
-                    { ad: "Real Madrid", logo: "laliga/real-madrid.football-logos.cc.png" },
-                    { ad: "Arsenal", logo: "premierlig/arsenal.football-logos.cc.png" },
-                    { ad: "Fenerbahçe", logo: "superlig/fenerbahce.football-logos.cc.png" }
-                ]
-            },
-            {
-                oyuncu: "Arda Turan 🇹🇷",
-                kulupler: [
-                    { ad: "Galatasaray", logo: "superlig/galatasaray.football-logos.cc.png" },
-                    { ad: "Atl. Madrid", logo: "laliga/atletico-madrid.football-logos.cc.png" },
-                    { ad: "Barcelona", logo: "laliga/barcelona.football-logos.cc.png" },
-                    { ad: "Başakşehir", logo: "superlig/basaksehir.football-logos.cc.png" }
-                ]
-            },
-            {
-                oyuncu: "Wesley Sneijder 🇳🇱",
-                kulupler: [
-                    { ad: "Ajax", logo: "https://crests.football-data.org/678.png" },
-                    { ad: "Real Madrid", logo: "laliga/real-madrid.football-logos.cc.png" },
-                    { ad: "Inter", logo: "Serie%20A/inter.football-logos.cc.png" },
-                    { ad: "Galatasaray", logo: "superlig/galatasaray.football-logos.cc.png" }
-                ]
-            },
-            {
-                oyuncu: "Didier Drogba 🇨🇮",
-                kulupler: [
-                    { ad: "Marsilya", logo: "Ligue%201/marseille.football-logos.cc.png" },
-                    { ad: "Chelsea", logo: "premierlig/chelsea.football-logos.cc.png" },
-                    { ad: "Galatasaray", logo: "superlig/galatasaray.football-logos.cc.png" },
-                    { ad: "Chelsea", logo: "premierlig/chelsea.football-logos.cc.png" }
-                ]
-            },
-            {
-                oyuncu: "Ricardo Quaresma 🇵🇹",
-                kulupler: [
-                    { ad: "Barcelona", logo: "laliga/barcelona.football-logos.cc.png" },
-                    { ad: "Inter", logo: "Serie%20A/inter.football-logos.cc.png" },
-                    { ad: "Chelsea", logo: "premierlig/chelsea.football-logos.cc.png" },
-                    { ad: "Beşiktaş", logo: "superlig/besiktas.football-logos.cc.png" }
-                ]
-            },
-            {
-                oyuncu: "Pepe 🇵🇹",
-                kulupler: [
-                    { ad: "Porto", logo: "https://crests.football-data.org/503.png" },
-                    { ad: "Real Madrid", logo: "laliga/real-madrid.football-logos.cc.png" },
-                    { ad: "Beşiktaş", logo: "superlig/besiktas.football-logos.cc.png" },
-                    { ad: "Porto", logo: "https://crests.football-data.org/503.png" }
-                ]
-            },
-            {
-                oyuncu: "Robin van Persie 🇳🇱",
-                kulupler: [
-                    { ad: "Feyenoord", logo: "https://crests.football-data.org/675.png" },
-                    { ad: "Arsenal", logo: "premierlig/arsenal.football-logos.cc.png" },
-                    { ad: "Man United", logo: "premierlig/manchester-united.football-logos.cc.png" },
-                    { ad: "Fenerbahçe", logo: "superlig/fenerbahce.football-logos.cc.png" }
-                ]
-            },
-            {
-                oyuncu: "Burak Yılmaz 🇹🇷",
-                kulupler: [
-                    { ad: "Beşiktaş", logo: "superlig/besiktas.football-logos.cc.png" },
-                    { ad: "Fenerbahçe", logo: "superlig/fenerbahce.football-logos.cc.png" },
-                    { ad: "Trabzonspor", logo: "superlig/trabzonspor.football-logos.cc.png" },
-                    { ad: "Galatasaray", logo: "superlig/galatasaray.football-logos.cc.png" }
-                ]
-            },
-            {
-                oyuncu: "Zlatan Ibrahimović 🇸🇪",
-                kulupler: [
-                    { ad: "Juventus", logo: "Serie%20A/juventus.football-logos.cc.png" },
-                    { ad: "Inter", logo: "Serie%20A/inter.football-logos.cc.png" },
-                    { ad: "Barcelona", logo: "laliga/barcelona.football-logos.cc.png" },
-                    { ad: "Milan", logo: "Serie%20A/milan.football-logos.cc.png" }
-                ]
-            },
-            {
-                oyuncu: "Thiago Silva 🇧🇷",
-                kulupler: [
-                    { ad: "Fluminense", logo: "https://flagcdn.com/w160/br.png" },
-                    { ad: "Milan", logo: "Serie%20A/milan.football-logos.cc.png" },
-                    { ad: "PSG", logo: "Ligue%201/paris-saint-germain.football-logos.cc.png" },
-                    { ad: "Chelsea", logo: "premierlig/chelsea.football-logos.cc.png" }
-                ]
-            },
-            {
-                oyuncu: "Romelu Lukaku 🇧🇪",
-                kulupler: [
-                    { ad: "Chelsea", logo: "premierlig/chelsea.football-logos.cc.png" },
-                    { ad: "Man United", logo: "premierlig/manchester-united.football-logos.cc.png" },
-                    { ad: "Inter", logo: "Serie%20A/inter.football-logos.cc.png" },
-                    { ad: "Napoli", logo: "Serie%20A/napoli.football-logos.cc.png" }
-                ]
-            },
-            {
-                oyuncu: "João Félix 🇵🇹",
-                kulupler: [
-                    { ad: "Benfica", logo: "https://crests.football-data.org/1903.png" },
-                    { ad: "Atl. Madrid", logo: "laliga/atletico-madrid.football-logos.cc.png" },
-                    { ad: "Barcelona", logo: "laliga/barcelona.football-logos.cc.png" },
-                    { ad: "Chelsea", logo: "premierlig/chelsea.football-logos.cc.png" }
-                ]
-            },
-            {
-                oyuncu: "Ilkay Gündoğan 🇩🇪",
-                kulupler: [
-                    { ad: "Nürnberg", logo: "https://crests.football-data.org/18.png" },
-                    { ad: "Dortmund", logo: "Bundesliga/borussia-dortmund.football-logos.cc.png" },
-                    { ad: "Man City", logo: "premierlig/manchester-city.football-logos.cc.png" },
-                    { ad: "Barcelona", logo: "laliga/barcelona.football-logos.cc.png" }
-                ]
-            },
-            {
-                oyuncu: "Sadio Mané 🇸🇳",
-                kulupler: [
-                    { ad: "Salzburg", logo: "https://crests.football-data.org/1877.png" },
-                    { ad: "Southampton", logo: "https://crests.football-data.org/340.png" },
-                    { ad: "Liverpool", logo: "premierlig/liverpool.football-logos.cc.png" },
-                    { ad: "Bayern Münih", logo: "Bundesliga/bayern-munchen.football-logos.cc.png" }
-                ]
-            },
-            {
-                oyuncu: "Alexis Sánchez 🇨🇱",
-                kulupler: [
-                    { ad: "Udinese", logo: "https://crests.football-data.org/115.png" },
-                    { ad: "Barcelona", logo: "laliga/barcelona.football-logos.cc.png" },
-                    { ad: "Arsenal", logo: "premierlig/arsenal.football-logos.cc.png" },
-                    { ad: "Inter", logo: "Serie%20A/inter.football-logos.cc.png" }
-                ]
-            },
-            {
-                oyuncu: "Angel Di María 🇦🇷",
-                kulupler: [
-                    { ad: "Benfica", logo: "https://crests.football-data.org/1903.png" },
-                    { ad: "Real Madrid", logo: "laliga/real-madrid.football-logos.cc.png" },
-                    { ad: "Man United", logo: "premierlig/manchester-united.football-logos.cc.png" },
-                    { ad: "PSG", logo: "Ligue%201/paris-saint-germain.football-logos.cc.png" }
-                ]
-            },
-            {
-                oyuncu: "Hakim Ziyech 🇲🇦",
-                kulupler: [
-                    { ad: "Heerenveen", logo: "https://crests.football-data.org/673.png" },
-                    { ad: "Twente", logo: "https://crests.football-data.org/666.png" },
-                    { ad: "Chelsea", logo: "premierlig/chelsea.football-logos.cc.png" },
-                    { ad: "Galatasaray", logo: "superlig/galatasaray.football-logos.cc.png" }
-                ]
-            },
-            {
-                oyuncu: "Dušan Tadić 🇷🇸",
-                kulupler: [
-                    { ad: "Twente", logo: "https://crests.football-data.org/666.png" },
-                    { ad: "Southampton", logo: "https://crests.football-data.org/340.png" },
-                    { ad: "Ajax", logo: "https://crests.football-data.org/678.png" },
-                    { ad: "Fenerbahçe", logo: "superlig/fenerbahce.football-logos.cc.png" }
-                ]
-            },
-            {
-                oyuncu: "Alex de Souza 🇧🇷",
-                kulupler: [
-                    { ad: "Palmeiras", logo: "https://flagcdn.com/w160/br.png" },
-                    { ad: "Flamengo", logo: "https://flagcdn.com/w160/br.png" },
-                    { ad: "Parma", logo: "https://crests.football-data.org/112.png" },
-                    { ad: "Fenerbahçe", logo: "superlig/fenerbahce.football-logos.cc.png" }
-                ]
-            },
-            {
-                oyuncu: "Mario Balotelli 🇮🇹",
-                kulupler: [
-                    { ad: "Inter", logo: "Serie%20A/inter.football-logos.cc.png" },
-                    { ad: "Man City", logo: "premierlig/manchester-city.football-logos.cc.png" },
-                    { ad: "Milan", logo: "Serie%20A/milan.football-logos.cc.png" },
-                    { ad: "Marsilya", logo: "Ligue%201/marseille.football-logos.cc.png" }
-                ]
-            },
-            {
-                oyuncu: "José Sosa 🇦🇷",
-                kulupler: [
-                    { ad: "Bayern Münih", logo: "Bundesliga/bayern-munchen.football-logos.cc.png" },
-                    { ad: "Atl. Madrid", logo: "laliga/atletico-madrid.football-logos.cc.png" },
-                    { ad: "Beşiktaş", logo: "superlig/besiktas.football-logos.cc.png" },
-                    { ad: "Fenerbahçe", logo: "superlig/fenerbahce.football-logos.cc.png" }
-                ]
-            },
-            {
-                oyuncu: "Caner Erkin 🇹🇷",
-                kulupler: [
-                    { ad: "CSKA Moskova", logo: "https://flagcdn.com/w160/ru.png" },
-                    { ad: "Galatasaray", logo: "superlig/galatasaray.football-logos.cc.png" },
-                    { ad: "Fenerbahçe", logo: "superlig/fenerbahce.football-logos.cc.png" },
-                    { ad: "Beşiktaş", logo: "superlig/besiktas.football-logos.cc.png" }
-                ]
+        // 500 OYUNCULUK ANTİ-TEKRAR MOTORU
+        let kalanKariyerler = [];
+
+        function desteyiYenile() {
+            if (typeof anaKariyerHavuzu === 'undefined' || !anaKariyerHavuzu.length) return;
+            kalanKariyerler = [...anaKariyerHavuzu];
+            for (let i = kalanKariyerler.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [kalanKariyerler[i], kalanKariyerler[j]] = [kalanKariyerler[j], kalanKariyerler[i]];
             }
-        ];
+        }
 
         let aktifMod = 'ulke-kulup';
         let donuyor = false;
@@ -747,7 +438,8 @@
                 revCareerBtn.classList.remove("hidden");
 
                 b4.className = "bg-amber-500 text-black px-3 py-1.5 rounded-xl text-xs font-black shadow-lg transition";
-                desc.innerText = "Bu 4 Kulüpte Oynamış Futbolcuyu Bul (50+ Oyuncu)!";
+                desc.innerText = "Bu 4 Kulüpte Oynamış Futbolcuyu Bul (500 Oyunculu Havuz)!";
+                if (kalanKariyerler.length === 0) desteyiYenile();
                 kuraCek();
             } else {
                 slotCont.classList.remove("hidden");
@@ -761,21 +453,21 @@
                     tBox1.innerText = "MİLLİYET / ÜLKE";
                     tBox2.innerText = "KULÜP";
                     renderBox(1, ulkeler[0]);
-                    renderBox(2, takimlar[1]); // Fenerbahçe
+                    renderBox(2, takimlar[1]);
                 } else if (mod === 'capraz-kulup') {
                     b2.className = "bg-amber-500 text-black px-3 py-1.5 rounded-xl text-xs font-black shadow-lg transition";
                     desc.innerText = "2 Kulüpte de Oynamış Ortak Oyuncu";
                     tBox1.innerText = "1. KULÜP";
                     tBox2.innerText = "2. KULÜP";
-                    renderBox(1, takimlar[0]); // Galatasaray
-                    renderBox(2, takimlar[27]); // Real Madrid
+                    renderBox(1, takimlar[0]);
+                    renderBox(2, takimlar[27]);
                 } else if (mod === 'ulke-mevki') {
-                    b3.className = "bg-amber-500 text-black px-3 py-1.5 rounded-xl text-xs font-black shadow-lg transition";
+                    b3.className = "bg-amber-500 text-black px-3 py-1.5 rounded-xl text-xs font-bold transition";
                     desc.innerText = "O Ülkenin O Mevkideki Oyuncusu (Aktif / Efsane)";
                     tBox1.innerText = "MİLLİYET / ÜLKE";
                     tBox2.innerText = "MEVKİ";
-                    renderBox(1, ulkeler[1]); // Brezilya
-                    renderBox(2, mevkiler[2], true); // Sol Bek
+                    renderBox(1, ulkeler[1]);
+                    renderBox(2, mevkiler[2], true);
                 }
             }
         }
@@ -792,6 +484,13 @@
             btn.classList.add("opacity-50", "pointer-events-none");
 
             if (aktifMod === 'kariyer-rotasi') {
+                if (kalanKariyerler.length === 0) {
+                    desteyiYenile();
+                }
+
+                seciliKariyer = kalanKariyerler.pop();
+                document.getElementById("poolCounter").innerText = `Kalan: ${kalanKariyerler.length + 1} / ${anaKariyerHavuzu.length}`;
+
                 const revEl = document.getElementById("careerPlayerReveal");
                 revEl.innerText = "❓❓❓ (Tahmin Edin)";
                 revEl.className = "text-2xl font-black text-amber-400 mt-1 neon-glow tracking-wide";
@@ -799,18 +498,17 @@
                 let sayac = 0;
                 const aralik = setInterval(() => {
                     playTickSound();
-                    const rastgele = kariyerHavuzu[Math.floor(Math.random() * kariyerHavuzu.length)];
+                    const rastgele = anaKariyerHavuzu[Math.floor(Math.random() * anaKariyerHavuzu.length)];
                     for (let i = 0; i < 4; i++) {
-                        document.getElementById(`cImg${i+1}`).src = rastgele.kulupler[i].logo;
-                        document.getElementById(`cText${i+1}`).innerText = rastgele.kulupler[i].ad;
+                        document.getElementById(`cImg${i+1}`).src = rastgele.k[i][1];
+                        document.getElementById(`cText${i+1}`).innerText = rastgele.k[i][0];
                     }
                     sayac++;
                     if (sayac > 14) {
                         clearInterval(aralik);
-                        seciliKariyer = kariyerHavuzu[Math.floor(Math.random() * kariyerHavuzu.length)];
                         for (let i = 0; i < 4; i++) {
-                            document.getElementById(`cImg${i+1}`).src = seciliKariyer.kulupler[i].logo;
-                            document.getElementById(`cText${i+1}`).innerText = seciliKariyer.kulupler[i].ad;
+                            document.getElementById(`cImg${i+1}`).src = seciliKariyer.k[i][1];
+                            document.getElementById(`cText${i+1}`).innerText = seciliKariyer.k[i][0];
                         }
                         donuyor = false;
                         playWinSound();
@@ -864,7 +562,7 @@
         function oyuncuyuGoster() {
             if (!seciliKariyer || aktifMod !== 'kariyer-rotasi') return;
             const revEl = document.getElementById("careerPlayerReveal");
-            revEl.innerText = `⭐ ${seciliKariyer.oyuncu}`;
+            revEl.innerText = `⭐ ${seciliKariyer.o}`;
             revEl.className = "text-2xl font-black text-emerald-400 mt-1 neon-glow tracking-wide animate-pulse";
             playWinSound();
         }
@@ -923,6 +621,11 @@
             } else if (e.key === "4") {
                 skorDegis(4, 1);
             }
+        });
+
+        // Sayfa açıldığında 500'lük desteyi hazırla
+        window.addEventListener('load', () => {
+            desteyiYenile();
         });
     </script>
 </body>
