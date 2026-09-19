@@ -1,4 +1,4 @@
-// FUTBOL ARENASI PRO - 500 OYUNCULU DEVASA KARİYER VERİTABANI
+// FUTBOL ARENASI PRO - DEVASA KARİYER VERİTABANI
 const C = {
     GS: "superlig/galatasaray.football-logos.cc.png",
     FB: "superlig/fenerbahce.football-logos.cc.png",
@@ -226,8 +226,8 @@ const anaKariyerHavuzu = [
     { o: "Fernando Muslera 🇺🇾", k: [["Montevideo", C.AR], ["Lazio", C.LAZ], ["Lazio", C.LAZ], ["Galatasaray", C.GS]] }
 ];
 
-// 500'E TAMAMLAYICI OTOMATİK KOMBİNASYON & GENİŞLETİCİ MOTOR
-(function 500KariyerUret() {
+// 500'E TAMAMLAYICI GÜVENLİ GENİŞLETİCİ
+(function kariyerleriGenislet() {
     const ekstraYildizlar = [
         ["Harry Kane 🏴󠁧󠁢󠁥󠁮󠁧󠁿", [["Millwall", C.TOT], ["Norwich", C.TOT], ["Tottenham", C.TOT], ["Bayern Münih", C.BAY]]],
         ["Vinicius Jr 🇧🇷", [["Flamengo", C.BR], ["Real Madrid B", C.RM], ["Real Madrid", C.RM], ["Real Madrid", C.RM]]],
@@ -276,7 +276,7 @@ const anaKariyerHavuzu = [
         ["Rafael Leão 🇵🇹", [["Sporting CP", C.SCP], ["Lille", C.LOSC], ["Milan", C.MIL], ["Milan", C.MIL]]],
         ["Christian Pulisic 🇺🇸", [["Dortmund", C.BVB], ["Dortmund", C.BVB], ["Chelsea", C.CHE], ["Milan", C.MIL]]],
         ["Mike Maignan 🇫🇷", [["PSG Altyapı", C.PSG], ["Lille", C.LOSC], ["Lille", C.LOSC], ["Milan", C.MIL]]],
-        ["Dušan Vlahović 🇷🇸", k: [["Partizan", C.FIO], ["Fiorentina", C.FIO], ["Fiorentina", C.FIO], ["Juventus", C.JUV]]],
+        ["Dušan Vlahović 🇷🇸", [["Partizan", C.FIO], ["Fiorentina", C.FIO], ["Fiorentina", C.FIO], ["Juventus", C.JUV]]],
         ["Federico Chiesa 🇮🇹", [["Fiorentina Altyapı", C.FIO], ["Fiorentina", C.FIO], ["Juventus", C.JUV], ["Liverpool", C.LIV]]],
         ["Gleison Bremer 🇧🇷", [["Atlético Mineiro", C.BR], ["Torino", C.TOR], ["Torino", C.TOR], ["Juventus", C.JUV]]],
         ["Manuel Locatelli 🇮🇹", [["Milan Altyapı", C.MIL], ["Milan", C.MIL], ["Sassuolo", C.JUV], ["Juventus", C.JUV]]],
@@ -324,7 +324,6 @@ const anaKariyerHavuzu = [
         anaKariyerHavuzu.push({ o: item[0], k: item[1] });
     });
 
-    // 500'E KADAR BENZERSİZ KOMBİNASYONLAR İLE SÜREKLİ ZENGİNLEŞTİRME
     const ligHavuzlari = [
         [C.GS, C.FB, C.BJK, C.TS],
         [C.RM, C.BAR, C.ATM, C.SEV],
