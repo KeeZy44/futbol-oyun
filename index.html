@@ -7,8 +7,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- 500 OYUNCULU DEVASA VERİ MOTORU BURADAN ÇEKİLİR -->
-    <script src="kariyerler.js"></script>
     <style>
         :root {
             --bg-image: url('arkaplan.jpg');
@@ -161,7 +159,7 @@
                 <div class="glass-card rounded-2xl px-6 py-4 w-full text-center border border-amber-500/30">
                     <div class="flex items-center justify-between px-2 text-[10px] text-gray-400 uppercase font-bold">
                         <span>BU OYUNCU KİM?</span>
-                        <span id="poolCounter" class="text-amber-500/80 font-black">Havuz: 500 Oyuncu</span>
+                        <span id="poolCounter" class="text-amber-500 font-black tracking-wide">Kalan: --</span>
                     </div>
                     <h2 id="careerPlayerReveal" class="text-2xl font-black text-amber-400 mt-1 neon-glow tracking-wide">❓❓❓ (Tahmin Edin)</h2>
                 </div>
@@ -239,7 +237,7 @@
     </main>
 
     <footer class="text-center text-[11px] text-gray-600 py-2">
-        Toptan Muhabbetler Formatı — Futbol Bilgi Ligi v28.0 (500 Oyunculu Arşiv)
+        Toptan Muhabbetler Formatı — Futbol Bilgi Ligi v30.0 (Tek Dosya & Garantili Sistem)
     </footer>
 
     <script>
@@ -382,11 +380,206 @@
             { ad: "Santrafor / Forvet", icon: "🏹" }
         ];
 
-        // 500 OYUNCULUK ANTİ-TEKRAR MOTORU
+        const C = {
+            GS: "superlig/galatasaray.football-logos.cc.png",
+            FB: "superlig/fenerbahce.football-logos.cc.png",
+            BJK: "superlig/besiktas.football-logos.cc.png",
+            TS: "superlig/trabzonspor.football-logos.cc.png",
+            IBFK: "superlig/basaksehir.football-logos.cc.png",
+            ADS: "https://ssl.gstatic.com/onebox/media/sports/logos/optimized/3-uB1F2K7aX_487nZ592qw_500x500.png",
+            GEN: "superlig/genclerbirligi.football-logos.cc.png",
+            RIZ: "superlig/rizespor.football-logos.cc.png",
+            ALN: "superlig/alanyaspor.football-logos.cc.png",
+            GFK: "superlig/gaziantep.football-logos.cc.png",
+
+            RM: "laliga/real-madrid.football-logos.cc.png",
+            BAR: "laliga/barcelona.football-logos.cc.png",
+            ATM: "laliga/atletico-madrid.football-logos.cc.png",
+            SEV: "laliga/sevilla.football-logos.cc.png",
+            VAL: "laliga/valencia.football-logos.cc.png",
+            VIL: "laliga/villarreal.football-logos.cc.png",
+            BIL: "laliga/athletic-club.football-logos.cc.png",
+            RSO: "laliga/real-sociedad.football-logos.cc.png",
+
+            ARS: "premierlig/arsenal.football-logos.cc.png",
+            CHE: "premierlig/chelsea.football-logos.cc.png",
+            LIV: "premierlig/liverpool.football-logos.cc.png",
+            MCI: "premierlig/manchester-city.football-logos.cc.png",
+            MUN: "premierlig/manchester-united.football-logos.cc.png",
+            TOT: "premierlig/tottenham.football-logos.cc.png",
+            AVL: "premierlig/aston-villa.football-logos.cc.png",
+            NEW: "premierlig/newcastle.football-logos.cc.png",
+            BHA: "premierlig/brighton.football-logos.cc.png",
+
+            BAY: "Bundesliga/bayern-munchen.football-logos.cc.png",
+            BVB: "Bundesliga/borussia-dortmund.football-logos.cc.png",
+            B04: "Bundesliga/bayer-leverkusen.football-logos.cc.png",
+            S04: "Bundesliga/schalke-04.football-logos.cc.png",
+            RBL: "Bundesliga/rb-leipzig.football-logos.cc.png",
+            SGE: "Bundesliga/eintracht-frankfurt.football-logos.cc.png",
+            WOB: "Bundesliga/vfl-wolfsburg.football-logos.cc.png",
+
+            INT: "Serie%20A/inter.football-logos.cc.png",
+            MIL: "Serie%20A/milan.football-logos.cc.png",
+            JUV: "Serie%20A/juventus.football-logos.cc.png",
+            NAP: "Serie%20A/napoli.football-logos.cc.png",
+            ROM: "Serie%20A/roma.football-logos.cc.png",
+            LAZ: "Serie%20A/lazio.football-logos.cc.png",
+            ATA: "Serie%20A/atalanta.football-logos.cc.png",
+            FIO: "Serie%20A/fiorentina.football-logos.cc.png",
+
+            PSG: "Ligue%201/paris-saint-germain.football-logos.cc.png",
+            ASM: "Ligue%201/as-monaco.football-logos.cc.png",
+            OM: "Ligue%201/marseille.football-logos.cc.png",
+            OL: "Ligue%201/lyon.football-logos.cc.png",
+            LOSC: "Ligue%201/lille.football-logos.cc.png",
+
+            NAS: "Saudi%20Pro%20League/al-nassr.football-logos.cc.png",
+            HIL: "Saudi%20Pro%20League/al-hilal.football-logos.cc.png",
+            ITT: "Saudi%20Pro%20League/al-ittihad.football-logos.cc.png",
+            AHL: "Saudi%20Pro%20League/al-ahli.football-logos.cc.png",
+
+            POR: "https://crests.football-data.org/503.png",
+            BEN: "https://crests.football-data.org/1903.png",
+            SCP: "https://crests.football-data.org/498.png",
+            AJA: "https://crests.football-data.org/678.png",
+            PSV: "https://crests.football-data.org/674.png",
+            FEY: "https://crests.football-data.org/675.png",
+            TR: "https://flagcdn.com/w160/tr.png",
+            BR: "https://flagcdn.com/w160/br.png",
+            AR: "https://flagcdn.com/w160/ar.png",
+            RU: "https://flagcdn.com/w160/ru.png"
+        };
+
+        const anaKariyerHavuzu = [
+            { o: "Mauro Icardi 🇦🇷", k: [["Sampdoria", C.INT], ["Inter", C.INT], ["PSG", C.PSG], ["Galatasaray", C.GS]] },
+            { o: "Victor Osimhen 🇳🇬", k: [["Wolfsburg", C.WOB], ["Charleroi", C.LOSC], ["Napoli", C.NAP], ["Galatasaray", C.GS]] },
+            { o: "Edin Džeko 🇧🇦", k: [["Wolfsburg", C.WOB], ["Man City", C.MCI], ["Roma", C.ROM], ["Fenerbahçe", C.FB]] },
+            { o: "Ciro Immobile 🇮🇹", k: [["Dortmund", C.BVB], ["Sevilla", C.SEV], ["Lazio", C.LAZ], ["Beşiktaş", C.BJK]] },
+            { o: "Rafa Silva 🇵🇹", k: [["Feirense", C.POR], ["Braga", C.POR], ["Benfica", C.BEN], ["Beşiktaş", C.BJK]] },
+            { o: "Michy Batshuayi 🇧🇪", k: [["Chelsea", C.CHE], ["Beşiktaş", C.BJK], ["Fenerbahçe", C.FB], ["Galatasaray", C.GS]] },
+            { o: "Fred 🇧🇷", k: [["Internacional", C.BR], ["Shakhtar", C.AJA], ["Man United", C.MUN], ["Fenerbahçe", C.FB]] },
+            { o: "Arda Güler 🇹🇷", k: [["Gençlerbirliği", C.GEN], ["Fenerbahçe", C.FB], ["Fenerbahçe", C.FB], ["Real Madrid", C.RM]] },
+            { o: "Kerem Aktürkoğlu 🇹🇷", k: [["Başakşehir", C.IBFK], ["24 Erzincan", C.TR], ["Galatasaray", C.GS], ["Benfica", C.BEN]] },
+            { o: "Ferdi Kadıoğlu 🇹🇷", k: [["NEC Nijmegen", C.PSV], ["Fenerbahçe", C.FB], ["Fenerbahçe", C.FB], ["Brighton", C.BHA]] },
+            { o: "Dries Mertens 🇧🇪", k: [["Utrecht", C.PSV], ["PSV", C.PSV], ["Napoli", C.NAP], ["Galatasaray", C.GS]] },
+            { o: "Hakim Ziyech 🇲🇦", k: [["Heerenveen", C.AJA], ["Ajax", C.AJA], ["Chelsea", C.CHE], ["Galatasaray", C.GS]] },
+            { o: "Dušan Tadić 🇷🇸", k: [["Twente", C.AJA], ["Southampton", C.ARS], ["Ajax", C.AJA], ["Fenerbahçe", C.FB]] },
+            { o: "Lucas Torreira 🇺🇾", k: [["Sampdoria", C.INT], ["Arsenal", C.ARS], ["Atl. Madrid", C.ATM], ["Galatasaray", C.GS]] },
+            { o: "Mesut Özil 🇩🇪", k: [["Schalke 04", C.S04], ["Real Madrid", C.RM], ["Arsenal", C.ARS], ["Fenerbahçe", C.FB]] },
+            { o: "Arda Turan 🇹🇷", k: [["Galatasaray", C.GS], ["Atl. Madrid", C.ATM], ["Barcelona", C.BAR], ["Başakşehir", C.IBFK]] },
+            { o: "Wesley Sneijder 🇳🇱", k: [["Ajax", C.AJA], ["Real Madrid", C.RM], ["Inter", C.INT], ["Galatasaray", C.GS]] },
+            { o: "Didier Drogba 🇨🇮", k: [["Marsilya", C.OM], ["Chelsea", C.CHE], ["Galatasaray", C.GS], ["Chelsea", C.CHE]] },
+            { o: "Robin van Persie 🇳🇱", k: [["Feyenoord", C.FEY], ["Arsenal", C.ARS], ["Man United", C.MUN], ["Fenerbahçe", C.FB]] },
+            { o: "Ricardo Quaresma 🇵🇹", k: [["Sporting CP", C.SCP], ["Barcelona", C.BAR], ["Inter", C.INT], ["Beşiktaş", C.BJK]] },
+            { o: "Pepe 🇵🇹", k: [["Porto", C.POR], ["Real Madrid", C.RM], ["Beşiktaş", C.BJK], ["Porto", C.POR]] },
+            { o: "Burak Yılmaz 🇹🇷", k: [["Beşiktaş", C.BJK], ["Fenerbahçe", C.FB], ["Trabzonspor", C.TS], ["Galatasaray", C.GS]] },
+            { o: "Caner Erkin 🇹🇷", k: [["CSKA Moskova", C.RU], ["Galatasaray", C.GS], ["Fenerbahçe", C.FB], ["Beşiktaş", C.BJK]] },
+            { o: "Alex de Souza 🇧🇷", k: [["Palmeiras", C.BR], ["Flamengo", C.BR], ["Parma", C.MIL], ["Fenerbahçe", C.FB]] },
+            { o: "Gheorghe Hagi 🇷🇴", k: [["Steaua Bükreş", C.TR], ["Real Madrid", C.RM], ["Brescia", C.INT], ["Galatasaray", C.GS]] },
+            { o: "Mario Balotelli 🇮🇹", k: [["Inter", C.INT], ["Man City", C.MCI], ["Milan", C.MIL], ["Adana Demir", C.ADS]] },
+            { o: "José Sosa 🇦🇷", k: [["Bayern Münih", C.BAY], ["Atl. Madrid", C.ATM], ["Beşiktaş", C.BJK], ["Trabzonspor", C.TS]] },
+            { o: "Talisca 🇧🇷", k: [["Bahia", C.BR], ["Benfica", C.BEN], ["Beşiktaş", C.BJK], ["Al-Nassr", C.NAS]] },
+            { o: "Vincent Aboubakar 🇨🇲", k: [["Lorient", C.LOSC], ["Porto", C.POR], ["Beşiktaş", C.BJK], ["Al-Nassr", C.NAS]] },
+            { o: "Felipe Melo 🇧🇷", k: [["Fiorentina", C.FIO], ["Juventus", C.JUV], ["Galatasaray", C.GS], ["Inter", C.INT]] },
+            { o: "Nani 🇵🇹", k: [["Sporting CP", C.SCP], ["Man United", C.MUN], ["Fenerbahçe", C.FB], ["Valencia", C.VAL]] },
+            { o: "Demba Ba 🇸🇳", k: [["Hoffenheim", C.BVB], ["Newcastle", C.NEW], ["Chelsea", C.CHE], ["Beşiktaş", C.BJK]] },
+            { o: "Radamel Falcao 🇨🇴", k: [["Porto", C.POR], ["Atl. Madrid", C.ATM], ["Monaco", C.ASM], ["Galatasaray", C.GS]] },
+            { o: "Nicolas Anelka 🇫🇷", k: [["Arsenal", C.ARS], ["Real Madrid", C.RM], ["Man City", C.MCI], ["Fenerbahçe", C.FB]] },
+            { o: "Milan Baroš 🇨🇿", k: [["Liverpool", C.LIV], ["Aston Villa", C.AVL], ["Lyon", C.OL], ["Galatasaray", C.GS]] },
+            { o: "Emre Belözoğlu 🇹🇷", k: [["Galatasaray", C.GS], ["Inter", C.INT], ["Newcastle", C.NEW], ["Fenerbahçe", C.FB]] },
+            { o: "Gökhan Töre 🇹🇷", k: [["Hamburg", C.BVB], ["Rubin Kazan", C.RU], ["Beşiktaş", C.BJK], ["West Ham", C.ARS]] },
+            { o: "Loris Karius 🇩🇪", k: [["Mainz", C.S04], ["Liverpool", C.LIV], ["Beşiktaş", C.BJK], ["Newcastle", C.NEW]] },
+            { o: "Mamadou Niang 🇸🇳", k: [["Troyes", C.OM], ["Marsilya", C.OM], ["Fenerbahçe", C.FB], ["Beşiktaş", C.BJK]] },
+            { o: "Elvir Baljić 🇧🇦", k: [["Bursaspor", C.TR], ["Fenerbahçe", C.FB], ["Real Madrid", C.RM], ["Galatasaray", C.GS]] },
+            { o: "Kevin-Prince Boateng 🇬🇭", k: [["Tottenham", C.TOT], ["Milan", C.MIL], ["Barcelona", C.BAR], ["Beşiktaş", C.BJK]] },
+            { o: "Hugo Rodallega 🇨🇴", k: [["Wigan", C.CHE], ["Fulham", C.CHE], ["Akhisar", C.TR], ["Trabzonspor", C.TS]] },
+            { o: "Daniel Güiza 🇪🇸", k: [["Getafe", C.VAL], ["Mallorca", C.VAL], ["Fenerbahçe", C.FB], ["Getafe", C.VAL]] },
+            { o: "Simon Kjær 🇩🇰", k: [["Wolfsburg", C.WOB], ["Lille", C.LOSC], ["Fenerbahçe", C.FB], ["Milan", C.MIL]] },
+            { o: "Luiz Gustavo 🇧🇷", k: [["Hoffenheim", C.BVB], ["Bayern Münih", C.BAY], ["Marsilya", C.OM], ["Fenerbahçe", C.FB]] },
+            { o: "Bafétimbi Gomis 🇫🇷", k: [["Saint-Etienne", C.OL], ["Lyon", C.OL], ["Marsilya", C.OM], ["Galatasaray", C.GS]] },
+            { o: "Miralem Pjanić 🇧🇦", k: [["Lyon", C.OL], ["Roma", C.ROM], ["Juventus", C.JUV], ["Beşiktaş", C.BJK]] },
+            { o: "Goran Pandev 🇲🇰", k: [["Lazio", C.LAZ], ["Inter", C.INT], ["Napoli", C.NAP], ["Galatasaray", C.GS]] },
+            { o: "Steven Nzonzi 🇫🇷", k: [["Stoke City", C.CHE], ["Sevilla", C.SEV], ["Roma", C.ROM], ["Galatasaray", C.GS]] },
+            { o: "Alex Telles 🇧🇷", k: [["Gremio", C.BR], ["Galatasaray", C.GS], ["Porto", C.POR], ["Man United", C.MUN]] },
+            { o: "Marcao 🇧🇷", k: [["Chaves", C.POR], ["Galatasaray", C.GS], ["Galatasaray", C.GS], ["Sevilla", C.SEV]] },
+            { o: "Kim Min-jae 🇰🇷", k: [["Beijing Guoan", C.FB], ["Fenerbahçe", C.FB], ["Napoli", C.NAP], ["Bayern Münih", C.BAY]] },
+            { o: "Eljif Elmas 🇲🇰", k: [["Rabotnicki", C.FB], ["Fenerbahçe", C.FB], ["Napoli", C.NAP], ["RB Leipzig", C.RBL]] },
+            { o: "Vedat Muriqi 🇽🇰", k: [["Giresunspor", C.TR], ["Ç. Rizespor", C.RIZ], ["Fenerbahçe", C.FB], ["Lazio", C.LAZ]] },
+            { o: "Sörloth 🇳🇴", k: [["Crystal Palace", C.TOT], ["Trabzonspor", C.TS], ["RB Leipzig", C.RBL], ["Atl. Madrid", C.ATM]] },
+            { o: "Yusuf Yazıcı 🇹🇷", k: [["Trabzonspor", C.TS], ["Lille", C.LOSC], ["CSKA Moskova", C.RU], ["Olympiakos", C.TS]] },
+            { o: "Cenk Tosun 🇹🇷", k: [["Gaziantepspor", C.GFK], ["Beşiktaş", C.BJK], ["Everton", C.LIV], ["Fenerbahçe", C.FB]] },
+            { o: "Salih Uçan 🇹🇷", k: [["Bucaspor", C.TR], ["Fenerbahçe", C.FB], ["Roma", C.ROM], ["Beşiktaş", C.BJK]] },
+            { o: "Ozan Kabak 🇹🇷", k: [["Galatasaray", C.GS], ["Stuttgart", C.BVB], ["Schalke 04", C.S04], ["Liverpool", C.LIV]] },
+            { o: "Merih Demiral 🇹🇷", k: [["Alanyaspor", C.ALN], ["Sassuolo", C.JUV], ["Juventus", C.JUV], ["Al-Ahli", C.AHL]] },
+            { o: "Çağlar Söyüncü 🇹🇷", k: [["Altınordu", C.TR], ["Freiburg", C.BVB], ["Leicester", C.CHE], ["Atl. Madrid", C.ATM]] },
+            { o: "Cengiz Ünder 🇹🇷", k: [["Başakşehir", C.IBFK], ["Roma", C.ROM], ["Marsilya", C.OM], ["Fenerbahçe", C.FB]] },
+
+            { o: "Kylian Mbappé 🇫🇷", k: [["Monaco", C.ASM], ["PSG", C.PSG], ["PSG", C.PSG], ["Real Madrid", C.RM]] },
+            { o: "Cristiano Ronaldo 🇵🇹", k: [["Sporting CP", C.SCP], ["Man United", C.MUN], ["Real Madrid", C.RM], ["Al-Nassr", C.NAS]] },
+            { o: "Lionel Messi 🇦🇷", k: [["Newell's", C.AR], ["Barcelona", C.BAR], ["PSG", C.PSG], ["Inter Miami", C.AR]] },
+            { o: "Neymar Jr 🇧🇷", k: [["Santos", C.BR], ["Barcelona", C.BAR], ["PSG", C.PSG], ["Al-Hilal", C.HIL]] },
+            { o: "Karim Benzema 🇫🇷", k: [["Lyon", C.OL], ["Real Madrid", C.RM], ["Real Madrid", C.RM], ["Al-Ittihad", C.ITT]] },
+            { o: "Jude Bellingham 🏴󠁧󠁢󠁥󠁮󠁧󠁿", k: [["Birmingham", C.ARS], ["Dortmund", C.BVB], ["Dortmund", C.BVB], ["Real Madrid", C.RM]] },
+            { o: "Erling Haaland 🇳🇴", k: [["Molde", C.MCI], ["Salzburg", C.BVB], ["Dortmund", C.BVB], ["Man City", C.MCI]] },
+            { o: "Robert Lewandowski 🇵🇱", k: [["Lech Poznan", C.BVB], ["Dortmund", C.BVB], ["Bayern Münih", C.BAY], ["Barcelona", C.BAR]] },
+            { o: "Zlatan Ibrahimović 🇸🇪", k: [["Ajax", C.AJA], ["Juventus", C.JUV], ["Inter", C.INT], ["Milan", C.MIL]] },
+            { o: "Luis Suárez 🇺🇾", k: [["Ajax", C.AJA], ["Liverpool", C.LIV], ["Barcelona", C.BAR], ["Atl. Madrid", C.ATM]] },
+            { o: "Gareth Bale 🏴󠁧󠁢󠁷󠁬󠁳󠁿", k: [["Southampton", C.ARS], ["Tottenham", C.TOT], ["Real Madrid", C.RM], ["Tottenham", C.TOT]] },
+            { o: "Eden Hazard 🇧🇪", k: [["Lille", C.LOSC], ["Chelsea", C.CHE], ["Real Madrid", C.RM], ["Real Madrid", C.RM]] },
+            { o: "Luka Modrić 🇭🇷", k: [["Dinamo Zagreb", C.TOT], ["Tottenham", C.TOT], ["Real Madrid", C.RM], ["Real Madrid", C.RM]] },
+            { o: "Toni Kroos 🇩🇪", k: [["Hansa Rostock", C.BAY], ["Leverkusen", C.B04], ["Bayern Münih", C.BAY], ["Real Madrid", C.RM]] },
+            { o: "Sergio Ramos 🇪🇸", k: [["Sevilla", C.SEV], ["Real Madrid", C.RM], ["PSG", C.PSG], ["Sevilla", C.SEV]] },
+            { o: "Thiago Silva 🇧🇷", k: [["Fluminense", C.BR], ["Milan", C.MIL], ["PSG", C.PSG], ["Chelsea", C.CHE]] },
+            { o: "Álvaro Morata 🇪🇸", k: [["Real Madrid", C.RM], ["Juventus", C.JUV], ["Chelsea", C.CHE], ["Milan", C.MIL]] },
+            { o: "Romelu Lukaku 🇧🇪", k: [["Chelsea", C.CHE], ["Man United", C.MUN], ["Inter", C.INT], ["Napoli", C.NAP]] },
+            { o: "João Félix 🇵🇹", k: [["Benfica", C.BEN], ["Atl. Madrid", C.ATM], ["Barcelona", C.BAR], ["Chelsea", C.CHE]] },
+            { o: "Sadio Mané 🇸🇳", k: [["Metz", C.LOSC], ["Southampton", C.ARS], ["Liverpool", C.LIV], ["Al-Nassr", C.NAS]] },
+            { o: "Alexis Sánchez 🇨🇱", k: [["Udinese", C.MIL], ["Barcelona", C.BAR], ["Arsenal", C.ARS], ["Inter", C.INT]] },
+            { o: "Angel Di María 🇦🇷", k: [["Benfica", C.BEN], ["Real Madrid", C.RM], ["Man United", C.MUN], ["PSG", C.PSG]] },
+            { o: "Cesc Fàbregas 🇪🇸", k: [["Arsenal", C.ARS], ["Barcelona", C.BAR], ["Chelsea", C.CHE], ["Monaco", C.ASM]] },
+            { o: "Arturo Vidal 🇨🇱", k: [["Leverkusen", C.B04], ["Juventus", C.JUV], ["Bayern Münih", C.BAY], ["Barcelona", C.BAR]] },
+            { o: "James Rodríguez 🇨🇴", k: [["Porto", C.POR], ["Monaco", C.ASM], ["Real Madrid", C.RM], ["Bayern Münih", C.BAY]] },
+            { o: "Xabi Alonso 🇪🇸", k: [["Real Sociedad", C.RSO], ["Liverpool", C.LIV], ["Real Madrid", C.RM], ["Bayern Münih", C.BAY]] },
+            { o: "Fernando Torres 🇪🇸", k: [["Atl. Madrid", C.ATM], ["Liverpool", C.LIV], ["Chelsea", C.CHE], ["Milan", C.MIL]] },
+            { o: "Gonzalo Higuaín 🇦🇷", k: [["Real Madrid", C.RM], ["Napoli", C.NAP], ["Juventus", C.JUV], ["Chelsea", C.CHE]] },
+            { o: "Thibaut Courtois 🇧🇪", k: [["Genk", C.CHE], ["Atl. Madrid", C.ATM], ["Chelsea", C.CHE], ["Real Madrid", C.RM]] },
+            { o: "Keylor Navas 🇨🇷", k: [["Albacete", C.VAL], ["Levante", C.VAL], ["Real Madrid", C.RM], ["PSG", C.PSG]] },
+            { o: "David Luiz 🇧🇷", k: [["Benfica", C.BEN], ["Chelsea", C.CHE], ["PSG", C.PSG], ["Arsenal", C.ARS]] },
+            { o: "Willian 🇧🇷", k: [["Shakhtar", C.CHE], ["Chelsea", C.CHE], ["Arsenal", C.ARS], ["Fulham", C.CHE]] },
+            { o: "Christian Eriksen 🇩🇰", k: [["Ajax", C.AJA], ["Tottenham", C.TOT], ["Inter", C.INT], ["Man United", C.MUN]] },
+            { o: "Memphis Depay 🇳🇱", k: [["PSV", C.PSV], ["Man United", C.MUN], ["Lyon", C.OL], ["Atl. Madrid", C.ATM]] },
+            { o: "Pierre-Emerick Aubameyang 🇬🇦", k: [["Dortmund", C.BVB], ["Arsenal", C.ARS], ["Barcelona", C.BAR], ["Marsilya", C.OM]] },
+            { o: "Ivan Rakitić 🇭🇷", k: [["Schalke 04", C.S04], ["Sevilla", C.SEV], ["Barcelona", C.BAR], ["Al-Shabab", C.NAS]] },
+            { o: "Mario Mandžukić 🇭🇷", k: [["Wolfsburg", C.WOB], ["Bayern Münih", C.BAY], ["Atl. Madrid", C.ATM], ["Juventus", C.JUV]] },
+            { o: "Lassana Diarra 🇫🇷", k: [["Chelsea", C.CHE], ["Arsenal", C.ARS], ["Real Madrid", C.RM], ["PSG", C.PSG]] },
+            { o: "Alexandre Pato 🇧🇷", k: [["Internacional", C.BR], ["Milan", C.MIL], ["Chelsea", C.CHE], ["Villarreal", C.VIL]] },
+            { o: "Martin Braithwaite 🇩🇰", k: [["Toulouse", C.OL], ["Leganes", C.VAL], ["Barcelona", C.BAR], ["Gremio", C.BR]] },
+            { o: "Eric Maxim Choupo-Moting 🇨🇲", k: [["Mainz", C.S04], ["Schalke 04", C.S04], ["PSG", C.PSG], ["Bayern Münih", C.BAY]] },
+            { o: "Maxi López 🇦🇷", k: [["River Plate", C.AR], ["Barcelona", C.BAR], ["Milan", C.MIL], ["Sampdoria", C.INT]] },
+            { o: "Pepe Reina 🇪🇸", k: [["Barcelona", C.BAR], ["Liverpool", C.LIV], ["Bayern Münih", C.BAY], ["Milan", C.MIL]] },
+            { o: "Harry Kane 🏴󠁧󠁢󠁥󠁮󠁧󠁿", k: [["Millwall", C.TOT], ["Norwich", C.TOT], ["Tottenham", C.TOT], ["Bayern Münih", C.BAY]] },
+            { o: "Vinicius Jr 🇧🇷", k: [["Flamengo", C.BR], ["Real Madrid B", C.RM], ["Real Madrid", C.RM], ["Real Madrid", C.RM]] },
+            { o: "Rodri 🇪🇸", k: [["Villarreal", C.VIL], ["Atl. Madrid", C.ATM], ["Man City", C.MCI], ["Man City", C.MCI]] },
+            { o: "Kevin De Bruyne 🇧🇪", k: [["Genk", C.CHE], ["Chelsea", C.CHE], ["Wolfsburg", C.WOB], ["Man City", C.MCI]] },
+            { o: "Bruno Fernandes 🇵🇹", k: [["Udinese", C.SCP], ["Sampdoria", C.SCP], ["Sporting CP", C.SCP], ["Man United", C.MUN]] },
+            { o: "Bernardo Silva 🇵🇹", k: [["Benfica", C.BEN], ["Monaco", C.ASM], ["Monaco", C.ASM], ["Man City", C.MCI]] },
+            { o: "Martin Ødegaard 🇳🇴", k: [["Strømsgodset", C.RM], ["Real Madrid", C.RM], ["Real Sociedad", C.RSO], ["Arsenal", C.ARS]] },
+            { o: "Mohamed Salah 🇪🇬", k: [["Basel", C.CHE], ["Chelsea", C.CHE], ["Roma", C.ROM], ["Liverpool", C.LIV]] },
+            { o: "Antoine Griezmann 🇫🇷", k: [["Real Sociedad", C.RSO], ["Atl. Madrid", C.ATM], ["Barcelona", C.BAR], ["Atl. Madrid", C.ATM]] },
+            { o: "Frenkie de Jong 🇳🇱", k: [["Willem II", C.AJA], ["Ajax", C.AJA], ["Ajax", C.AJA], ["Barcelona", C.BAR]] },
+            { o: "Hakan Çalhanoğlu 🇹🇷", k: [["Karlsruher", C.B04], ["Hamburg", C.B04], ["Leverkusen", C.B04], ["Inter", C.INT]] },
+            { o: "Dušan Vlahović 🇷🇸", k: [["Partizan", C.FIO], ["Fiorentina", C.FIO], ["Fiorentina", C.FIO], ["Juventus", C.JUV]] },
+            { o: "Federico Chiesa 🇮🇹", k: [["Fiorentina Altyapı", C.FIO], ["Fiorentina", C.FIO], ["Juventus", C.JUV], ["Liverpool", C.LIV]] },
+            { o: "Paulo Dybala 🇦🇷", k: [["Instituto", C.AR], ["Palermo", C.JUV], ["Juventus", C.JUV], ["Roma", C.ROM]] },
+            { o: "Achraf Hakimi 🇲🇦", k: [["Real Madrid", C.RM], ["Dortmund", C.BVB], ["Inter", C.INT], ["PSG", C.PSG]] },
+            { o: "Ousmane Dembélé 🇫🇷", k: [["Rennes", C.LOSC], ["Dortmund", C.BVB], ["Barcelona", C.BAR], ["PSG", C.PSG]] },
+            { o: "Florian Wirtz 🇩🇪", k: [["Köln", C.B04], ["Leverkusen", C.B04], ["Leverkusen", C.B04], ["Leverkusen", C.B04]] }
+        ];
+
         let kalanKariyerler = [];
 
         function desteyiYenile() {
-            if (typeof anaKariyerHavuzu === 'undefined' || !anaKariyerHavuzu.length) return;
             kalanKariyerler = [...anaKariyerHavuzu];
             for (let i = kalanKariyerler.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -415,6 +608,13 @@
             textEl.innerText = data.ad;
         }
 
+        function kariyerEkraniDoldur(veri) {
+            for (let i = 0; i < 4; i++) {
+                document.getElementById(`cImg${i+1}`).src = veri.k[i][1];
+                document.getElementById(`cText${i+1}`).innerText = veri.k[i][0];
+            }
+        }
+
         function oyunModuDegistir(mod) {
             aktifMod = mod;
             const b1 = document.getElementById("modBtn1");
@@ -438,7 +638,7 @@
                 revCareerBtn.classList.remove("hidden");
 
                 b4.className = "bg-amber-500 text-black px-3 py-1.5 rounded-xl text-xs font-black shadow-lg transition";
-                desc.innerText = "Bu 4 Kulüpte Oynamış Futbolcuyu Bul (500 Oyunculu Havuz)!";
+                desc.innerText = "Bu 4 Kulüpte Oynamış Futbolcuyu Bul (Tekrarsız Havuz)!";
                 if (kalanKariyerler.length === 0) desteyiYenile();
                 kuraCek();
             } else {
@@ -499,17 +699,11 @@
                 const aralik = setInterval(() => {
                     playTickSound();
                     const rastgele = anaKariyerHavuzu[Math.floor(Math.random() * anaKariyerHavuzu.length)];
-                    for (let i = 0; i < 4; i++) {
-                        document.getElementById(`cImg${i+1}`).src = rastgele.k[i][1];
-                        document.getElementById(`cText${i+1}`).innerText = rastgele.k[i][0];
-                    }
+                    kariyerEkraniDoldur(rastgele);
                     sayac++;
                     if (sayac > 14) {
                         clearInterval(aralik);
-                        for (let i = 0; i < 4; i++) {
-                            document.getElementById(`cImg${i+1}`).src = seciliKariyer.k[i][1];
-                            document.getElementById(`cText${i+1}`).innerText = seciliKariyer.k[i][0];
-                        }
+                        kariyerEkraniDoldur(seciliKariyer);
                         donuyor = false;
                         playWinSound();
                         btn.classList.remove("opacity-50", "pointer-events-none");
@@ -623,10 +817,10 @@
             }
         });
 
-        // Sayfa açıldığında 500'lük desteyi hazırla
-        window.addEventListener('load', () => {
-            desteyiYenile();
-        });
+        // Sayfa açıldığında desteyi hazırla ve ilk kariyeri doldur
+        desteyiYenile();
+        seciliKariyer = kalanKariyerler[kalanKariyerler.length - 1];
+        kariyerEkraniDoldur(seciliKariyer);
     </script>
 </body>
 </html>
