@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>KONSOL OYUN</title>
+    <title>Konsol Oyun</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -108,6 +108,7 @@
                     <span id="titleBox1" class="text-[10px] uppercase font-black tracking-widest text-amber-500/80 mb-2">MİLLİYET / ÜLKE</span>
                     <div class="h-24 flex items-center justify-center">
                         <img id="imgBox1" src="https://flagcdn.com/w160/tr.png" class="logo-img rounded-md">
+                        <span id="iconBox1" class="text-5xl hidden">🇹🇷</span>
                     </div>
                     <h3 id="textBox1" class="text-base sm:text-lg font-black text-white mt-2">Türkiye</h3>
                 </div>
@@ -116,6 +117,7 @@
                     <span id="titleBox2" class="text-[10px] uppercase font-black tracking-widest text-amber-500/80 mb-2">KULÜP</span>
                     <div class="h-24 flex items-center justify-center">
                         <img id="imgBox2" src="superlig/fenerbahce.football-logos.cc.png" class="logo-img">
+                        <span id="iconBox2" class="text-5xl hidden">⚽</span>
                     </div>
                     <h3 id="textBox2" class="text-base sm:text-lg font-black text-white mt-2">Fenerbahçe</h3>
                 </div>
@@ -232,7 +234,7 @@
     </main>
 
     <footer class="text-center text-[11px] text-gray-600 py-2">
-        GEBEŞ KAPLUNBAĞA — Futbol Bilgi Ligi v23.0 (Tüm Ligler Entegre)
+        GEBEŞ KAPLUNBAĞA — Futbol Bilgi Ligi v24.0 (Tüm Modlar Aktif)
     </footer>
 
     <script>
@@ -295,9 +297,8 @@
             { ad: "Japonya", logo: "https://flagcdn.com/w160/jp.png" }
         ];
 
-        // GITHUB'DA OLUŞAN BÜYÜK/KÜÇÜK HARF VE BOŞLUKLU KLASÖR YOLLARINA BİREBİR UYARLANDI
         const takimlar = [
-            // --- SÜPER LİG (superlig/) ---
+            // SÜPER LİG
             { ad: "Galatasaray", logo: "superlig/galatasaray.football-logos.cc.png" },
             { ad: "Fenerbahçe", logo: "superlig/fenerbahce.football-logos.cc.png" },
             { ad: "Beşiktaş", logo: "superlig/besiktas.football-logos.cc.png" },
@@ -317,7 +318,7 @@
             { ad: "Çorum FK", logo: "superlig/corum.football-logos.cc.png" },
             { ad: "Erzurumspor", logo: "superlig/erzurumspor.football-logos.cc.png" },
 
-            // --- PREMIER LİG (premierlig/) ---
+            // PREMIER LİG
             { ad: "Arsenal", logo: "premierlig/arsenal.football-logos.cc.png" },
             { ad: "Chelsea", logo: "premierlig/chelsea.football-logos.cc.png" },
             { ad: "Liverpool", logo: "premierlig/liverpool.football-logos.cc.png" },
@@ -328,7 +329,7 @@
             { ad: "Newcastle", logo: "premierlig/newcastle.football-logos.cc.png" },
             { ad: "Brighton", logo: "premierlig/brighton.football-logos.cc.png" },
 
-            // --- LA LIGA (laliga/) ---
+            // LA LIGA
             { ad: "Real Madrid", logo: "laliga/real-madrid.football-logos.cc.png" },
             { ad: "Barcelona", logo: "laliga/barcelona.football-logos.cc.png" },
             { ad: "Atletico Madrid", logo: "laliga/atletico-madrid.football-logos.cc.png" },
@@ -338,7 +339,7 @@
             { ad: "Athletic Bilbao", logo: "laliga/athletic-club.football-logos.cc.png" },
             { ad: "Real Sociedad", logo: "laliga/real-sociedad.football-logos.cc.png" },
 
-            // --- BUNDESLIGA (Bundesliga/) ---
+            // BUNDESLIGA
             { ad: "Bayern Münih", logo: "Bundesliga/bayern-munchen.football-logos.cc.png" },
             { ad: "Borussia Dortmund", logo: "Bundesliga/borussia-dortmund.football-logos.cc.png" },
             { ad: "Bayer Leverkusen", logo: "Bundesliga/bayer-leverkusen.football-logos.cc.png" },
@@ -346,7 +347,7 @@
             { ad: "RB Leipzig", logo: "Bundesliga/rb-leipzig.football-logos.cc.png" },
             { ad: "Eintracht Frankfurt", logo: "Bundesliga/eintracht-frankfurt.football-logos.cc.png" },
 
-            // --- SERIE A (Serie%20A/) ---
+            // SERIE A
             { ad: "Inter", logo: "Serie%20A/inter.football-logos.cc.png" },
             { ad: "Milan", logo: "Serie%20A/milan.football-logos.cc.png" },
             { ad: "Juventus", logo: "Serie%20A/juventus.football-logos.cc.png" },
@@ -356,21 +357,33 @@
             { ad: "Atalanta", logo: "Serie%20A/atalanta.football-logos.cc.png" },
             { ad: "Fiorentina", logo: "Serie%20A/fiorentina.football-logos.cc.png" },
 
-            // --- LIGUE 1 (Ligue%201/) ---
+            // LIGUE 1
             { ad: "PSG", logo: "Ligue%201/paris-saint-germain.football-logos.cc.png" },
             { ad: "Monaco", logo: "Ligue%201/as-monaco.football-logos.cc.png" },
             { ad: "Marsilya", logo: "Ligue%201/marseille.football-logos.cc.png" },
             { ad: "Lyon", logo: "Ligue%201/lyon.football-logos.cc.png" },
             { ad: "Lille", logo: "Ligue%201/lille.football-logos.cc.png" },
 
-            // --- SUUDİ PRO LİG (Saudi%20Pro%20League/) ---
+            // SUUDİ PRO LİG
             { ad: "Al-Nassr", logo: "Saudi%20Pro%20League/al-nassr.football-logos.cc.png" },
             { ad: "Al-Hilal", logo: "Saudi%20Pro%20League/al-hilal.football-logos.cc.png" },
             { ad: "Al-Ittihad", logo: "Saudi%20Pro%20League/al-ittihad.football-logos.cc.png" },
             { ad: "Al-Ahli", logo: "Saudi%20Pro%20League/al-ahli.football-logos.cc.png" }
         ];
 
-        // DOĞRU DOSYA YOLLARIYLA 50+ KARİYER ROTASI
+        const mevkiler = [
+            { ad: "Kaleci", icon: "🧤" },
+            { ad: "Stoper", icon: "🛡️" },
+            { ad: "Sol Bek", icon: "🏃‍♂️" },
+            { ad: "Sağ Bek", icon: "🏃‍♂️" },
+            { ad: "Ön Libero / DOS", icon: "⚓" },
+            { ad: "Merkez Orta Saha", icon: "🧠" },
+            { ad: "On Numara (10)", icon: "🎯" },
+            { ad: "Sol Kanat", icon: "⚡" },
+            { ad: "Sağ Kanat", icon: "⚡" },
+            { ad: "Santrafor / Forvet", icon: "🏹" }
+        ];
+
         const kariyerHavuzu = [
             {
                 oyuncu: "Neymar Jr 🇧🇷",
@@ -609,7 +622,7 @@
             {
                 oyuncu: "Alexis Sánchez 🇨🇱",
                 kulupler: [
-                    { ad: "Udinese", logo: "Serie%20A/udinese.football-logos.cc.png" },
+                    { ad: "Udinese", logo: "https://crests.football-data.org/115.png" },
                     { ad: "Barcelona", logo: "laliga/barcelona.football-logos.cc.png" },
                     { ad: "Arsenal", logo: "premierlig/arsenal.football-logos.cc.png" },
                     { ad: "Inter", logo: "Serie%20A/inter.football-logos.cc.png" }
@@ -641,6 +654,42 @@
                     { ad: "Ajax", logo: "https://crests.football-data.org/678.png" },
                     { ad: "Fenerbahçe", logo: "superlig/fenerbahce.football-logos.cc.png" }
                 ]
+            },
+            {
+                oyuncu: "Alex de Souza 🇧🇷",
+                kulupler: [
+                    { ad: "Palmeiras", logo: "https://flagcdn.com/w160/br.png" },
+                    { ad: "Flamengo", logo: "https://flagcdn.com/w160/br.png" },
+                    { ad: "Parma", logo: "https://crests.football-data.org/112.png" },
+                    { ad: "Fenerbahçe", logo: "superlig/fenerbahce.football-logos.cc.png" }
+                ]
+            },
+            {
+                oyuncu: "Mario Balotelli 🇮🇹",
+                kulupler: [
+                    { ad: "Inter", logo: "Serie%20A/inter.football-logos.cc.png" },
+                    { ad: "Man City", logo: "premierlig/manchester-city.football-logos.cc.png" },
+                    { ad: "Milan", logo: "Serie%20A/milan.football-logos.cc.png" },
+                    { ad: "Marsilya", logo: "Ligue%201/marseille.football-logos.cc.png" }
+                ]
+            },
+            {
+                oyuncu: "José Sosa 🇦🇷",
+                kulupler: [
+                    { ad: "Bayern Münih", logo: "Bundesliga/bayern-munchen.football-logos.cc.png" },
+                    { ad: "Atl. Madrid", logo: "laliga/atletico-madrid.football-logos.cc.png" },
+                    { ad: "Beşiktaş", logo: "superlig/besiktas.football-logos.cc.png" },
+                    { ad: "Fenerbahçe", logo: "superlig/fenerbahce.football-logos.cc.png" }
+                ]
+            },
+            {
+                oyuncu: "Caner Erkin 🇹🇷",
+                kulupler: [
+                    { ad: "CSKA Moskova", logo: "https://flagcdn.com/w160/ru.png" },
+                    { ad: "Galatasaray", logo: "superlig/galatasaray.football-logos.cc.png" },
+                    { ad: "Fenerbahçe", logo: "superlig/fenerbahce.football-logos.cc.png" },
+                    { ad: "Beşiktaş", logo: "superlig/besiktas.football-logos.cc.png" }
+                ]
             }
         ];
 
@@ -648,11 +697,20 @@
         let donuyor = false;
         let seciliKariyer = null;
 
-        function renderBox(boxNum, data) {
+        function renderBox(boxNum, data, isCustom = false) {
             const imgEl = document.getElementById(`imgBox${boxNum}`);
+            const iconEl = document.getElementById(`iconBox${boxNum}`);
             const textEl = document.getElementById(`textBox${boxNum}`);
 
-            imgEl.src = data.logo;
+            if (isCustom) {
+                imgEl.classList.add("hidden");
+                iconEl.classList.remove("hidden");
+                iconEl.innerText = data.icon;
+            } else {
+                iconEl.classList.add("hidden");
+                imgEl.classList.remove("hidden");
+                imgEl.src = data.logo;
+            }
             textEl.innerText = data.ad;
         }
 
@@ -706,6 +764,8 @@
                     desc.innerText = "O Ülkenin O Mevkideki Oyuncusu (Aktif / Efsane)";
                     tBox1.innerText = "MİLLİYET / ÜLKE";
                     tBox2.innerText = "MEVKİ";
+                    renderBox(1, ulkeler[1]); // Brezilya
+                    renderBox(2, mevkiler[2], true); // Sol Bek
                 }
             }
         }
@@ -771,6 +831,11 @@
                         }
                         renderBox(1, rT1);
                         renderBox(2, rT2);
+                    } else if (aktifMod === 'ulke-mevki') {
+                        const rU = ulkeler[Math.floor(Math.random() * ulkeler.length)];
+                        const rM = mevkiler[Math.floor(Math.random() * mevkiler.length)];
+                        renderBox(1, rU);
+                        renderBox(2, rM, true);
                     }
 
                     sayac++;
