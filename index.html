@@ -29,11 +29,17 @@
             transform: scale(0.96);
             filter: blur(0.5px);
         }
+        .logo-img {
+            max-height: 90px;
+            max-width: 90px;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between p-3 sm:p-6 select-none">
 
-    <!-- ÜST BAŞLIK & 4 MOD SEÇİCİ -->
+    <!-- ÜST BAŞLIK & MOD SEÇİCİ -->
     <header class="max-w-4xl mx-auto w-full flex flex-col sm:flex-row items-center justify-between pb-4 border-b border-white/10 gap-3">
         <div class="flex items-center gap-3">
             <span class="text-3xl">⚽</span>
@@ -62,27 +68,33 @@
     <!-- OYUN VE SKOR ALANI -->
     <main class="max-w-4xl mx-auto w-full grid grid-cols-1 lg:grid-cols-3 gap-6 my-auto py-4">
 
-        <!-- KURA VE SLOT ALANI (SOL & ORTA) -->
+        <!-- KURA VE SLOT ALANI -->
         <div class="lg:col-span-2 flex flex-col items-center justify-center gap-4">
             <div class="grid grid-cols-2 gap-3 sm:gap-4 w-full max-w-lg">
                 <!-- 1. KUTU -->
-                <div id="card1" class="glass-card slot-border rounded-3xl p-5 flex flex-col items-center justify-center text-center h-56 transition-all duration-200">
-                    <span id="titleBox1" class="text-[10px] uppercase font-black tracking-widest text-amber-500/80 mb-1">MİLLİYET / ÜLKE</span>
-                    <div id="iconBox1" class="text-5xl sm:text-6xl my-auto">🇹🇷</div>
-                    <h3 id="textBox1" class="text-base sm:text-lg font-black text-white mt-1">Türkiye</h3>
-                    <p id="subBox1" class="text-xs text-amber-400 font-bold hidden"></p>
+                <div id="card1" class="glass-card slot-border rounded-3xl p-5 flex flex-col items-center justify-center text-center h-60 transition-all duration-200">
+                    <span id="titleBox1" class="text-[10px] uppercase font-black tracking-widest text-amber-500/80 mb-2">MİLLİYET / ÜLKE</span>
+                    <div id="boxContainer1" class="h-24 flex items-center justify-center">
+                        <img id="imgBox1" src="https://flagcdn.com/w160/tr.png" class="logo-img rounded-md">
+                        <span id="iconBox1" class="text-5xl hidden"></span>
+                    </div>
+                    <h3 id="textBox1" class="text-base sm:text-lg font-black text-white mt-2">Türkiye</h3>
+                    <p id="subBox1" class="text-xs text-amber-400 font-bold hidden mt-1"></p>
                 </div>
 
                 <!-- 2. KUTU -->
-                <div id="card2" class="glass-card slot-border rounded-3xl p-5 flex flex-col items-center justify-center text-center h-56 transition-all duration-200">
-                    <span id="titleBox2" class="text-[10px] uppercase font-black tracking-widest text-amber-500/80 mb-1">KULÜP</span>
-                    <div id="iconBox2" class="text-5xl sm:text-6xl my-auto">🦅</div>
-                    <h3 id="textBox2" class="text-base sm:text-lg font-black text-white mt-1">Beşiktaş</h3>
-                    <p id="subBox2" class="text-xs text-amber-400 font-bold hidden"></p>
+                <div id="card2" class="glass-card slot-border rounded-3xl p-5 flex flex-col items-center justify-center text-center h-60 transition-all duration-200">
+                    <span id="titleBox2" class="text-[10px] uppercase font-black tracking-widest text-amber-500/80 mb-2">KULÜP</span>
+                    <div id="boxContainer2" class="h-24 flex items-center justify-center">
+                        <img id="imgBox2" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Besiktas_JK_logo.svg/200px-Besiktas_JK_logo.svg.png" class="logo-img">
+                        <span id="iconBox2" class="text-5xl hidden"></span>
+                    </div>
+                    <h3 id="textBox2" class="text-base sm:text-lg font-black text-white mt-2">Beşiktaş</h3>
+                    <p id="subBox2" class="text-xs text-amber-400 font-bold hidden mt-1"></p>
                 </div>
             </div>
 
-            <!-- BUTONLAR (KURA VE PİYASA DEĞERİ AÇMA) -->
+            <!-- BUTONLAR -->
             <div class="w-full max-w-lg flex flex-col gap-2">
                 <button id="drawBtn" onclick="kuraCek()" class="w-full bg-gradient-to-r from-amber-500 to-amber-600 active:scale-95 text-black text-base font-black py-4 rounded-2xl shadow-xl shadow-amber-500/25 transition-all flex items-center justify-center gap-3 cursor-pointer">
                     <i class="fa-solid fa-dice text-xl"></i>
@@ -151,14 +163,14 @@
             </div>
 
             <div class="text-[10px] text-gray-500 text-center mt-3">
-                Klavye: 1, 2, 3, 4 tuşlarıyla puan ver | Space ile kura çek
+                Klavye: 1, 2, 3, 4 ile puan ver | Space ile kura çek
             </div>
         </div>
 
     </main>
 
     <footer class="text-center text-[11px] text-gray-600 py-2">
-        Toptan Muhabbetler Formatı — Futbol Bilgi Ligi v4.0
+        Toptan Muhabbetler Formatı — Futbol Bilgi Ligi v5.0
     </footer>
 
     <script>
@@ -194,42 +206,64 @@
             } catch(e) {}
         }
 
+        // GERÇEK BAYRAK CDN LİSTESİ
         const ulkeler = [
-            { ad: "Türkiye", bayrak: "🇹🇷" }, { ad: "Brezilya", bayrak: "🇧🇷" },
-            { ad: "Arjantin", bayrak: "🇦🇷" }, { ad: "Portekiz", bayrak: "🇵🇹" },
-            { ad: "Fransa", bayrak: "🇫🇷" }, { ad: "Almanya", bayrak: "🇩🇪" },
-            { ad: "İspanya", bayrak: "🇪🇸" }, { ad: "İtalya", bayrak: "🇮🇹" },
-            { ad: "İngiltere", bayrak: "🏴󠁧󠁢󠁥󠁮󠁧󠁿" }, { ad: "Hollanda", bayrak: "🇳🇱" },
-            { ad: "Belçika", bayrak: "🇧🇪" }, { ad: "Hırvatistan", bayrak: "🇭🇷" },
-            { ad: "Uruguay", bayrak: "🇺🇾" }, { ad: "Kolombiya", bayrak: "🇨🇴" },
-            { ad: "Nijerya", bayrak: "🇳🇬" }, { ad: "Senegal", bayrak: "🇸🇳" },
-            { ad: "Fildişi Sahili", bayrak: "🇨🇮" }, { ad: "Gana", bayrak: "🇬🇭" },
-            { ad: "Kamerun", bayrak: "🇨🇲" }, { ad: "Fas", bayrak: "🇲🇦" },
-            { ad: "Mısır", bayrak: "🇪🇬" }, { ad: "Sırbistan", bayrak: "🇷🇸" },
-            { ad: "Bosna Hersek", bayrak: "🇧🇦" }, { ad: "İsveç", bayrak: "🇸🇪" },
-            { ad: "Norveç", bayrak: "🇳🇴" }, { ad: "Danimarka", bayrak: "🇩🇰" },
-            { ad: "Polonya", bayrak: "🇵🇱" }, { ad: "İsviçre", bayrak: "🇨🇭" },
-            { ad: "Avusturya", bayrak: "🇦🇹" }, { ad: "Yunanistan", bayrak: "🇬🇷" },
-            { ad: "Japonya", bayrak: "🇯🇵" }, { ad: "Güney Kore", bayrak: "🇰🇷" },
-            { ad: "Şili", bayrak: "🇨🇱" }, { ad: "Cezayir", bayrak: "🇩🇿" }
+            { ad: "Türkiye", logo: "https://flagcdn.com/w160/tr.png" },
+            { ad: "Brezilya", logo: "https://flagcdn.com/w160/br.png" },
+            { ad: "Arjantin", logo: "https://flagcdn.com/w160/ar.png" },
+            { ad: "Portekiz", logo: "https://flagcdn.com/w160/pt.png" },
+            { ad: "Fransa", logo: "https://flagcdn.com/w160/fr.png" },
+            { ad: "Almanya", logo: "https://flagcdn.com/w160/de.png" },
+            { ad: "İspanya", logo: "https://flagcdn.com/w160/es.png" },
+            { ad: "İtalya", logo: "https://flagcdn.com/w160/it.png" },
+            { ad: "İngiltere", logo: "https://flagcdn.com/w160/gb-eng.png" },
+            { ad: "Hollanda", logo: "https://flagcdn.com/w160/nl.png" },
+            { ad: "Belçika", logo: "https://flagcdn.com/w160/be.png" },
+            { ad: "Hırvatistan", logo: "https://flagcdn.com/w160/hr.png" },
+            { ad: "Uruguay", logo: "https://flagcdn.com/w160/uy.png" },
+            { ad: "Kolombiya", logo: "https://flagcdn.com/w160/co.png" },
+            { ad: "Nijerya", logo: "https://flagcdn.com/w160/ng.png" },
+            { ad: "Senegal", logo: "https://flagcdn.com/w160/sn.png" },
+            { ad: "Fildişi Sahili", logo: "https://flagcdn.com/w160/ci.png" },
+            { ad: "Fas", logo: "https://flagcdn.com/w160/ma.png" },
+            { ad: "Mısır", logo: "https://flagcdn.com/w160/eg.png" },
+            { ad: "Sırbistan", logo: "https://flagcdn.com/w160/rs.png" },
+            { ad: "Bosna Hersek", logo: "https://flagcdn.com/w160/ba.png" },
+            { ad: "İsveç", logo: "https://flagcdn.com/w160/se.png" },
+            { ad: "Norveç", logo: "https://flagcdn.com/w160/no.png" },
+            { ad: "Danimarka", logo: "https://flagcdn.com/w160/dk.png" },
+            { ad: "Polonya", logo: "https://flagcdn.com/w160/pl.png" },
+            { ad: "İsviçre", logo: "https://flagcdn.com/w160/ch.png" },
+            { ad: "Avusturya", logo: "https://flagcdn.com/w160/at.png" },
+            { ad: "Japonya", logo: "https://flagcdn.com/w160/jp.png" },
+            { ad: "Güney Kore", logo: "https://flagcdn.com/w160/kr.png" }
         ];
 
+        // GERÇEK KULÜP LOGOLARI (ŞEFFAF PNG LİSTESİ)
         const takimlar = [
-            { ad: "Galatasaray", icon: "🦁" }, { ad: "Fenerbahçe", icon: "🟡" },
-            { ad: "Beşiktaş", icon: "🦅" }, { ad: "Trabzonspor", icon: "🔴" },
-            { ad: "Real Madrid", icon: "👑" }, { ad: "Barcelona", icon: "🔵" },
-            { ad: "Atletico Madrid", icon: "⚪" }, { ad: "Manchester City", icon: "🩵" },
-            { ad: "Manchester United", icon: "👹" }, { ad: "Liverpool", icon: "🔴" },
-            { ad: "Arsenal", icon: "🔴" }, { ad: "Chelsea", icon: "🔵" },
-            { ad: "Tottenham", icon: "⚪" }, { ad: "Bayern Münih", icon: "🔴" },
-            { ad: "Borussia Dortmund", icon: "🟡" }, { ad: "Bayer Leverkusen", icon: "⚫" },
-            { ad: "Juventus", icon: "⚪" }, { ad: "Inter", icon: "🔵" },
-            { ad: "Milan", icon: "🔴" }, { ad: "Napoli", icon: "🩵" },
-            { ad: "Roma", icon: "🐺" }, { ad: "PSG", icon: "🗼" },
-            { ad: "Marsilya", icon: "⚪" }, { ad: "Lyon", icon: "🦁" },
-            { ad: "Benfica", icon: "🦅" }, { ad: "Porto", icon: "🐉" },
-            { ad: "Sporting CP", icon: "🦁" }, { ad: "Ajax", icon: "⚪" },
-            { ad: "PSV Eindhoven", icon: "🔴" }, { ad: "Flamengo", icon: "🔴" }
+            { ad: "Galatasaray", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Galatasaray_Sports_Club_Logo.png/180px-Galatasaray_Sports_Club_Logo.png" },
+            { ad: "Fenerbahçe", logo: "https://upload.wikimedia.org/wikipedia/tr/thumb/8/86/Fenerbah%C3%A7e_SK.png/180px-Fenerbah%C3%A7e_SK.png" },
+            { ad: "Beşiktaş", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Besiktas_JK_logo.svg/200px-Besiktas_JK_logo.svg.png" },
+            { ad: "Trabzonspor", logo: "https://upload.wikimedia.org/wikipedia/tr/thumb/a/ab/TrabzonsporAmblemi.png/180px-TrabzonsporAmblemi.png" },
+            { ad: "Real Madrid", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/5/56/Real_Madrid_CF.svg/180px-Real_Madrid_CF.svg.png" },
+            { ad: "Barcelona", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/4/47/FC_Barcelona_%28crest%29.svg/180px-FC_Barcelona_%28crest%29.svg.png" },
+            { ad: "Atletico Madrid", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/f/f4/Atletico_Madrid_2017_logo.svg/180px-Atletico_Madrid_2017_logo.svg.png" },
+            { ad: "Manchester City", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/e/eb/Manchester_City_FC_badge.svg/180px-Manchester_City_FC_badge.svg.png" },
+            { ad: "Manchester United", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/7/7a/Manchester_United_FC_crest.svg/180px-Manchester_United_FC_crest.svg.png" },
+            { ad: "Liverpool", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/0/0c/Liverpool_FC.svg/180px-Liverpool_FC.svg.png" },
+            { ad: "Arsenal", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/5/53/Arsenal_FC.svg/180px-Arsenal_FC.svg.png" },
+            { ad: "Chelsea", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/c/cc/Chelsea_FC.svg/180px-Chelsea_FC.svg.png" },
+            { ad: "Tottenham", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/b/b4/Tottenham_Hotspur.svg/180px-Tottenham_Hotspur.svg.png" },
+            { ad: "Bayern Münih", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/FC_Bayern_M%C3%BCnchen_logo_%282017%29.svg/180px-FC_Bayern_M%C3%BCnchen_logo_%282017%29.svg.png" },
+            { ad: "Borussia Dortmund", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Borussia_Dortmund_logo.svg/180px-Borussia_Dortmund_logo.svg.png" },
+            { ad: "Bayer Leverkusen", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/5/59/Bayer_04_Leverkusen_logo.svg/180px-Bayer_04_Leverkusen_logo.svg.png" },
+            { ad: "Juventus", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Juventus_FC_2017_icon_%28black%29.svg/180px-Juventus_FC_2017_icon_%28black%29.svg.png" },
+            { ad: "Inter", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/FC_Internazionale_Milano_2021.svg/180px-FC_Internazionale_Milano_2021.svg.png" },
+            { ad: "Milan", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Logo_of_AC_Milan.svg/180px-Logo_of_AC_Milan.svg.png" },
+            { ad: "PSG", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/a/a7/Paris_Saint-Germain_F.C..svg/180px-Paris_Saint-Germain_F.C..svg.png" },
+            { ad: "Benfica", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/a/a2/SL_Benfica_logo.svg/180px-SL_Benfica_logo.svg.png" },
+            { ad: "Porto", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/f/f1/FC_Porto.svg/180px-FC_Porto.svg.png" },
+            { ad: "Ajax", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/7/79/Ajax_Amsterdam.svg/180px-Ajax_Amsterdam.svg.png" }
         ];
 
         const mevkiler = [
@@ -245,7 +279,6 @@
             { ad: "Santrafor / Forvet", icon: "🏹" }
         ];
 
-        // PİYASA DEĞERİ HAVUZU (Oyuncu, Kulüp, Değer M€)
         const oyuncuDegerleri = [
             { ad: "Erling Haaland", kulup: "Man City", deger: 200, icon: "⚡" },
             { ad: "Vinicius Junior", kulup: "Real Madrid", deger: 200, icon: "⚡" },
@@ -260,18 +293,11 @@
             { ad: "Rodri", kulup: "Man City", deger: 110, icon: "⚓" },
             { ad: "Declan Rice", kulup: "Arsenal", deger: 110, icon: "⚓" },
             { ad: "Martin Ødegaard", kulup: "Arsenal", deger: 110, icon: "🎯" },
-            { ad: "Eduardo Camavinga", kulup: "Real Madrid", deger: 100, icon: "🪄" },
-            { ad: "Aurélien Tchouaméni", kulup: "Real Madrid", deger: 100, icon: "🛡️" },
             { ad: "Cole Palmer", kulup: "Chelsea", deger: 100, icon: "🥶" },
             { ad: "Lautaro Martínez", kulup: "Inter", deger: 100, icon: "🏹" },
             { ad: "Harry Kane", kulup: "Bayern Münih", deger: 90, icon: "🏹" },
-            { ad: "Rafael Leão", kulup: "Milan", deger: 85, icon: "⚡" },
             { ad: "Arda Güler", kulup: "Real Madrid", deger: 60, icon: "🇹🇷" },
             { ad: "Kenan Yıldız", kulup: "Juventus", deger: 50, icon: "🇹🇷" },
-            { ad: "Barış Alper Yılmaz", kulup: "Galatasaray", deger: 25, icon: "🇹🇷" },
-            { ad: "Ferdi Kadıoğlu", kulup: "Brighton", deger: 35, icon: "🇹🇷" },
-            { ad: "Semih Kılıçsoy", kulup: "Beşiktaş", deger: 18, icon: "🇹🇷" },
-            { ad: "Mauro Icardi", kulup: "Galatasaray", deger: 12, icon: "🏹" },
             { ad: "Victor Osimhen", kulup: "Galatasaray", deger: 75, icon: "🦁" }
         ];
 
@@ -279,6 +305,23 @@
         let donuyor = false;
         let p1Mevcut = null;
         let p2Mevcut = null;
+
+        function renderBox(boxNum, data, isEmoji = false) {
+            const imgEl = document.getElementById(`imgBox${boxNum}`);
+            const iconEl = document.getElementById(`iconBox${boxNum}`);
+            const textEl = document.getElementById(`textBox${boxNum}`);
+
+            if (isEmoji) {
+                imgEl.classList.add("hidden");
+                iconEl.classList.remove("hidden");
+                iconEl.innerText = data.icon;
+            } else {
+                iconEl.classList.add("hidden");
+                imgEl.classList.remove("hidden");
+                imgEl.src = data.logo;
+            }
+            textEl.innerText = data.ad;
+        }
 
         function oyunModuDegistir(mod) {
             aktifMod = mod;
@@ -298,9 +341,7 @@
             c1.classList.remove("winner-border");
             c2.classList.remove("winner-border");
 
-            const allBtns = [b1, b2, b3, b4];
-            allBtns.forEach(b => b.className = "text-gray-400 hover:text-white px-3 py-1.5 rounded-xl text-xs font-bold transition");
-
+            [b1, b2, b3, b4].forEach(b => b.className = "text-gray-400 hover:text-white px-3 py-1.5 rounded-xl text-xs font-bold transition");
             sub1.classList.add("hidden");
             sub2.classList.add("hidden");
             revBtn.classList.add("hidden");
@@ -310,28 +351,22 @@
                 desc.innerText = "1 Ülke + 1 Takım = 1 Oyuncu";
                 tBox1.innerText = "MİLLİYET / ÜLKE";
                 tBox2.innerText = "KULÜP";
-                document.getElementById("iconBox1").innerText = "🇹🇷";
-                document.getElementById("textBox1").innerText = "Türkiye";
-                document.getElementById("iconBox2").innerText = "🦅";
-                document.getElementById("textBox2").innerText = "Beşiktaş";
+                renderBox(1, ulkeler[0]);
+                renderBox(2, takimlar[2]);
             } else if (mod === 'capraz-kulup') {
                 b2.className = "bg-amber-500 text-black px-3 py-1.5 rounded-xl text-xs font-black shadow-lg transition";
                 desc.innerText = "2 Kulüpte de Oynamış Ortak Oyuncu";
                 tBox1.innerText = "1. KULÜP";
                 tBox2.innerText = "2. KULÜP";
-                document.getElementById("iconBox1").innerText = "👑";
-                document.getElementById("textBox1").innerText = "Real Madrid";
-                document.getElementById("iconBox2").innerText = "🔵";
-                document.getElementById("textBox2").innerText = "Chelsea";
+                renderBox(1, takimlar[4]);
+                renderBox(2, takimlar[11]);
             } else if (mod === 'ulke-mevki') {
                 b3.className = "bg-amber-500 text-black px-3 py-1.5 rounded-xl text-xs font-black shadow-lg transition";
                 desc.innerText = "O Ülkenin O Mevkideki Oyuncusu (Aktif / Efsane)";
                 tBox1.innerText = "MİLLİYET / ÜLKE";
                 tBox2.innerText = "MEVKİ";
-                document.getElementById("iconBox1").innerText = "🇧🇷";
-                document.getElementById("textBox1").innerText = "Brezilya";
-                document.getElementById("iconBox2").innerText = "🏃‍♂️";
-                document.getElementById("textBox2").innerText = "Sol Bek";
+                renderBox(1, ulkeler[1]);
+                renderBox(2, mevkiler[2], true);
             } else if (mod === 'piyasa-degeri') {
                 b4.className = "bg-amber-500 text-black px-3 py-1.5 rounded-xl text-xs font-black shadow-lg transition";
                 desc.innerText = "Kim Daha Değerli? Tahmin Et ve Değeri Aç!";
@@ -352,14 +387,9 @@
 
             const c1 = document.getElementById("card1");
             const c2 = document.getElementById("card2");
-            const i1 = document.getElementById("iconBox1");
-            const t1 = document.getElementById("textBox1");
-            const i2 = document.getElementById("iconBox2");
-            const t2 = document.getElementById("textBox2");
             const sub1 = document.getElementById("subBox1");
             const sub2 = document.getElementById("subBox2");
             const btn = document.getElementById("drawBtn");
-            const revBtn = document.getElementById("revealBtn");
 
             c1.classList.remove("winner-border");
             c2.classList.remove("winner-border");
@@ -375,27 +405,21 @@
                 if (aktifMod === 'ulke-kulup') {
                     const rU = ulkeler[Math.floor(Math.random() * ulkeler.length)];
                     const rT = takimlar[Math.floor(Math.random() * takimlar.length)];
-                    i1.innerText = rU.bayrak;
-                    t1.innerText = rU.ad;
-                    i2.innerText = rT.icon;
-                    t2.innerText = rT.ad;
+                    renderBox(1, rU);
+                    renderBox(2, rT);
                 } else if (aktifMod === 'capraz-kulup') {
                     let rT1 = takimlar[Math.floor(Math.random() * takimlar.length)];
                     let rT2 = takimlar[Math.floor(Math.random() * takimlar.length)];
                     while(rT1.ad === rT2.ad) {
                         rT2 = takimlar[Math.floor(Math.random() * takimlar.length)];
                     }
-                    i1.innerText = rT1.icon;
-                    t1.innerText = rT1.ad;
-                    i2.innerText = rT2.icon;
-                    t2.innerText = rT2.ad;
+                    renderBox(1, rT1);
+                    renderBox(2, rT2);
                 } else if (aktifMod === 'ulke-mevki') {
                     const rU = ulkeler[Math.floor(Math.random() * ulkeler.length)];
                     const rM = mevkiler[Math.floor(Math.random() * mevkiler.length)];
-                    i1.innerText = rU.bayrak;
-                    t1.innerText = rU.ad;
-                    i2.innerText = rM.icon;
-                    t2.innerText = rM.ad;
+                    renderBox(1, rU);
+                    renderBox(2, rM, true);
                 } else if (aktifMod === 'piyasa-degeri') {
                     let o1 = oyuncuDegerleri[Math.floor(Math.random() * oyuncuDegerleri.length)];
                     let o2 = oyuncuDegerleri[Math.floor(Math.random() * oyuncuDegerleri.length)];
@@ -404,10 +428,8 @@
                     }
                     p1Mevcut = o1;
                     p2Mevcut = o2;
-                    i1.innerText = o1.icon;
-                    t1.innerText = `${o1.ad} (${o1.kulup})`;
-                    i2.innerText = o2.icon;
-                    t2.innerText = `${o2.ad} (${o2.kulup})`;
+                    renderBox(1, { ad: `${o1.ad} (${o1.kulup})`, icon: o1.icon }, true);
+                    renderBox(2, { ad: `${o2.ad} (${o2.kulup})`, icon: o2.icon }, true);
                     sub1.classList.remove("hidden");
                     sub2.classList.remove("hidden");
                     sub1.innerText = "Değer: ??? M€";
