@@ -170,7 +170,7 @@
     </main>
 
     <footer class="text-center text-[11px] text-gray-600 py-2">
-        Toptan Muhabbetler Formatı — Futbol Bilgi Ligi v5.0
+        Toptan Muhabbetler Formatı — Futbol Bilgi Ligi v5.1
     </footer>
 
     <script>
@@ -206,7 +206,41 @@
             } catch(e) {}
         }
 
-        // GERÇEK BAYRAK CDN LİSTESİ
+        // ==========================================
+        // TRANSFERMARKT GÜNCEL PİYASA DEĞERLERİ HAVUZU
+        // Buradan istediğin oyuncunun değerini anında değiştirebilirsin
+        // ==========================================
+        const oyuncuDegerleri = [
+            { ad: "Erling Haaland", kulup: "Man City", deger: 200, icon: "⚡" },
+            { ad: "Vinicius Junior", kulup: "Real Madrid", deger: 200, icon: "⚡" },
+            { ad: "Lamine Yamal", kulup: "Barcelona", deger: 180, icon: "💎" },
+            { ad: "Jude Bellingham", kulup: "Real Madrid", deger: 180, icon: "👑" },
+            { ad: "Kylian Mbappé", kulup: "Real Madrid", deger: 180, icon: "⚡" },
+            { ad: "Phil Foden", kulup: "Man City", deger: 140, icon: "🎯" },
+            { ad: "Bukayo Saka", kulup: "Arsenal", deger: 140, icon: "🔴" },
+            { ad: "Florian Wirtz", kulup: "Leverkusen", deger: 130, icon: "🧠" },
+            { ad: "Jamal Musiala", kulup: "Bayern Münih", deger: 130, icon: "🪄" },
+            { ad: "Federico Valverde", kulup: "Real Madrid", deger: 130, icon: "🛡️" },
+            { ad: "Rodri", kulup: "Man City", deger: 130, icon: "⚓" },
+            { ad: "Declan Rice", kulup: "Arsenal", deger: 120, icon: "⚓" },
+            { ad: "Cole Palmer", kulup: "Chelsea", deger: 110, icon: "🥶" },
+            { ad: "Lautaro Martínez", kulup: "Inter", deger: 110, icon: "🏹" },
+            { ad: "Martin Ødegaard", kulup: "Arsenal", deger: 110, icon: "🎯" },
+            { ad: "Eduardo Camavinga", kulup: "Real Madrid", deger: 100, icon: "🪄" },
+            { ad: "Aurélien Tchouaméni", kulup: "Real Madrid", deger: 100, icon: "🛡️" },
+            { ad: "Harry Kane", kulup: "Bayern Münih", deger: 100, icon: "🏹" },
+            { ad: "Arda Güler", kulup: "Real Madrid", deger: 90, icon: "🇹🇷" },
+            { ad: "Rafael Leão", kulup: "Milan", deger: 90, icon: "⚡" },
+            { ad: "Victor Osimhen", kulup: "Galatasaray", deger: 75, icon: "🦁" },
+            { ad: "Kenan Yıldız", kulup: "Juventus", deger: 60, icon: "🇹🇷" },
+            { ad: "Ferdi Kadıoğlu", kulup: "Brighton", deger: 35, icon: "🇹🇷" },
+            { ad: "Barış Alper Yılmaz", kulup: "Galatasaray", deger: 30, icon: "🇹🇷" },
+            { ad: "Semih Kılıçsoy", kulup: "Beşiktaş", deger: 22, icon: "🇹🇷" },
+            { ad: "Mauro Icardi", kulup: "Galatasaray", deger: 15, icon: "🏹" },
+            { ad: "Ciro Immobile", kulup: "Beşiktaş", deger: 4, icon: "🦅" }
+        ];
+
+        // GERÇEK BAYRAK LİSTESİ
         const ulkeler = [
             { ad: "Türkiye", logo: "https://flagcdn.com/w160/tr.png" },
             { ad: "Brezilya", logo: "https://flagcdn.com/w160/br.png" },
@@ -224,19 +258,16 @@
             { ad: "Kolombiya", logo: "https://flagcdn.com/w160/co.png" },
             { ad: "Nijerya", logo: "https://flagcdn.com/w160/ng.png" },
             { ad: "Senegal", logo: "https://flagcdn.com/w160/sn.png" },
-            { ad: "Fildişi Sahili", logo: "https://flagcdn.com/w160/ci.png" },
             { ad: "Fas", logo: "https://flagcdn.com/w160/ma.png" },
             { ad: "Mısır", logo: "https://flagcdn.com/w160/eg.png" },
             { ad: "Sırbistan", logo: "https://flagcdn.com/w160/rs.png" },
-            { ad: "Bosna Hersek", logo: "https://flagcdn.com/w160/ba.png" },
             { ad: "İsveç", logo: "https://flagcdn.com/w160/se.png" },
             { ad: "Norveç", logo: "https://flagcdn.com/w160/no.png" },
             { ad: "Danimarka", logo: "https://flagcdn.com/w160/dk.png" },
             { ad: "Polonya", logo: "https://flagcdn.com/w160/pl.png" },
             { ad: "İsviçre", logo: "https://flagcdn.com/w160/ch.png" },
             { ad: "Avusturya", logo: "https://flagcdn.com/w160/at.png" },
-            { ad: "Japonya", logo: "https://flagcdn.com/w160/jp.png" },
-            { ad: "Güney Kore", logo: "https://flagcdn.com/w160/kr.png" }
+            { ad: "Japonya", logo: "https://flagcdn.com/w160/jp.png" }
         ];
 
         // GERÇEK KULÜP LOGOLARI (ŞEFFAF PNG LİSTESİ)
@@ -277,28 +308,6 @@
             { ad: "Sol Kanat", icon: "⚡" },
             { ad: "Sağ Kanat", icon: "⚡" },
             { ad: "Santrafor / Forvet", icon: "🏹" }
-        ];
-
-        const oyuncuDegerleri = [
-            { ad: "Erling Haaland", kulup: "Man City", deger: 200, icon: "⚡" },
-            { ad: "Vinicius Junior", kulup: "Real Madrid", deger: 200, icon: "⚡" },
-            { ad: "Jude Bellingham", kulup: "Real Madrid", deger: 180, icon: "👑" },
-            { ad: "Kylian Mbappé", kulup: "Real Madrid", deger: 180, icon: "⚡" },
-            { ad: "Lamine Yamal", kulup: "Barcelona", deger: 180, icon: "💎" },
-            { ad: "Phil Foden", kulup: "Man City", deger: 140, icon: "🎯" },
-            { ad: "Bukayo Saka", kulup: "Arsenal", deger: 130, icon: "🔴" },
-            { ad: "Florian Wirtz", kulup: "Leverkusen", deger: 130, icon: "🧠" },
-            { ad: "Jamal Musiala", kulup: "Bayern Münih", deger: 130, icon: "🪄" },
-            { ad: "Federico Valverde", kulup: "Real Madrid", deger: 130, icon: "🛡️" },
-            { ad: "Rodri", kulup: "Man City", deger: 110, icon: "⚓" },
-            { ad: "Declan Rice", kulup: "Arsenal", deger: 110, icon: "⚓" },
-            { ad: "Martin Ødegaard", kulup: "Arsenal", deger: 110, icon: "🎯" },
-            { ad: "Cole Palmer", kulup: "Chelsea", deger: 100, icon: "🥶" },
-            { ad: "Lautaro Martínez", kulup: "Inter", deger: 100, icon: "🏹" },
-            { ad: "Harry Kane", kulup: "Bayern Münih", deger: 90, icon: "🏹" },
-            { ad: "Arda Güler", kulup: "Real Madrid", deger: 60, icon: "🇹🇷" },
-            { ad: "Kenan Yıldız", kulup: "Juventus", deger: 50, icon: "🇹🇷" },
-            { ad: "Victor Osimhen", kulup: "Galatasaray", deger: 75, icon: "🦁" }
         ];
 
         let aktifMod = 'ulke-kulup';
